@@ -1,47 +1,74 @@
 # Village — Cooperative Finance Platform
 
-A React single-page application for cooperative finance. Users form groups to pool money, vote on fund allocation, and achieve shared financial goals.
+A marketing site + app shell for Village, built with React + Vite.
 
 ## Quick Start
 
 ```bash
+# 1. Install dependencies
 npm install
+
+# 2. Start the dev server
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Then open **http://localhost:5173** in your browser.
 
-## Build for Production
+## Build for Production (Netlify)
 
 ```bash
 npm run build
 ```
 
-This generates a `dist/` folder with static assets ready to deploy.
+Drag the `dist/` folder into Netlify. The `_redirects` file for SPA routing:
 
-## Preview Production Build
-
-```bash
-npm run preview
+```
+# dist/_redirects
+/* /index.html 200
 ```
 
-## Deploy
+## Project Structure
 
-### Netlify
-Push to a Git repo and connect it to Netlify — it will auto-detect the Vite config. Or drag and drop the `dist/` folder into [Netlify Drop](https://app.netlify.com/drop).
-
-### Vercel
-```bash
-npx vercel
 ```
-Or push to a Git repo and connect it to Vercel.
+src/
+├── components/
+│   ├── Nav.jsx           # Top navigation bar
+│   └── Footer.jsx        # Site footer
+├── context/
+│   └── AuthContext.jsx   # Auth state + all demo data
+├── hooks/
+│   └── useInView.js      # Scroll-triggered animation hook
+├── pages/
+│   ├── Landing.jsx       # Home / hero
+│   ├── About.jsx         # Team, mission, timeline
+│   ├── HowItWorks.jsx    # 5-step explainer, pricing, FAQ
+│   ├── Community.jsx     # Who Village serves, rollout cities
+│   └── Pricing.jsx       # Tier comparison, model notes, FAQ
+└── index.css             # Design system — CSS variables, typography
+```
 
-### Any Static Host
-Upload the contents of `dist/` to any static file host (GitHub Pages, Cloudflare Pages, AWS S3 + CloudFront, etc.). Make sure to configure SPA fallback routing so all paths serve `index.html`.
+## Design System
+
+Defined in `src/index.css`:
+
+| Variable       | Value      | Role                    |
+|----------------|------------|-------------------------|
+| --green        | #2A4A1E    | Primary / CTA           |
+| --terracotta   | #C05030    | Accent / highlight      |
+| --cream        | #F4EEE2    | Page background         |
+| --ink          | #1C1A14    | Body text               |
+| --serif        | Playfair Display | Headings          |
+| --mono         | DM Mono    | Labels, tags, metadata  |
+| --sans         | DM Sans    | Body copy               |
 
 ## Tech Stack
 
-- **React 18** — UI framework
-- **Vite 5** — Build tool & dev server
-- **Lucide React** — Icon library
-- **Young Serif + Karla** — Typography (loaded via Google Fonts)
+- React 19 + Vite 8
+- react-router-dom v7
+- lucide-react icons
+- Google Fonts (Playfair Display, DM Sans, DM Mono)
+
+## Demo Mode
+
+`AuthContext.jsx` contains all demo village data — members, votes, chat, activity.
+Any credentials work at login. The demo loads Hector Miranda's profile with two villages pre-populated.
