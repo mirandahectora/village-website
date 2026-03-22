@@ -174,8 +174,7 @@ function MarqueeBand() {
       <a href="#waitlist" style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.1em', color: 'var(--cream)', textDecoration: 'none', borderBottom: '1px solid rgba(244,238,226,0.5)' }}>
         Join the list →
       </a>
-      <span style={{ width: 1, height: 14, background: 'rgba(255, 255, 255, 0.3)', display: 'inline-block' }} />
-      <span style={{ width: 1, height: 14, background: 'rgba(255, 255, 255, 0.3)', display: 'inline-block' }} />
+      <span style={{ width: 3, height: 14, background: 'rgba(255, 255, 255, 0.3)', display: 'inline-block' }} />
       <span style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.1em' }}>
         Organizational partners for alpha testing wanted
       </span>
