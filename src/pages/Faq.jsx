@@ -4,7 +4,7 @@ import { useInView, revealStyle } from '../hooks/useInView'
 const FAQ = [
   {
     q: 'How is Village different from a credit union?',
-    a: 'Credit unions are institutions bound geographically with professional management. Village is a service that facilitaites peer-managed cooperatives not dependent on the location or profession of its members. Village members govern everything directly. Village provides the infrastructure; your village provides the decisions.',
+    a: 'Credit unions are geographically bound with professional management. Village is a hub for peer-managed cooperatives not dependent on the location or profession of its members. Village provides the infrastructure; your village provides the decisions.',
   },
   {
     q: 'Are there any fees beyond the contribution percentage?',
@@ -28,7 +28,7 @@ const FAQ = [
   },
   {
     q: 'How does the matching algorithm work?',
-    a: 'Our KNN algorithm uses a 212-feature financial profile to identify compatible matches. It weighs similarity in goals and contribution capacity against complementarity across financial circumstances.',
+    a: 'Our proprietary algorithm uses a 212-feature financial profile to identify compatible matches. It weighs similarity in goals and contribution capacity against complementarity across financial circumstances.',
   },
   {
     q: 'Does Village take a cut of investment returns?',
