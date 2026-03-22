@@ -220,7 +220,7 @@ function TamSection() {
           const [tRef, tVis] = useInView()
           const accent = t.color === 'green' ? 'var(--green)' : 'var(--terracotta)'
           return (
-            <div key={t.id} ref={tRef} style={{
+            <div key={i} ref={tRef} style={{
               borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
               ...revealStyle(tVis, i * 100),
             }}>
@@ -326,7 +326,6 @@ function AumSection() {
           background: 'var(--cream-mid)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          {/* Replace src with your image path, e.g. src="/your-image.jpg" */}
           <img
             src="/aum-visual.jpg"
             alt="Village community"

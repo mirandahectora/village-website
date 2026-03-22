@@ -5,7 +5,7 @@ const TEAM = [
   {
     name: 'Richie George',
     focus: 'Co-founder, CXO',
-    bio: 'Studies History and Philosophy at Yale. His work focuses on the history of public and private finance and liberal fiscal policy, and how democratic theory can redesign financial institutions from the ground up.',
+    bio: 'Studies History and Philosophy at Yale. Their work focuses on the history of public and private finance and liberal fiscal policy, and how democratic theory can redesign financial institutions from the ground up.',
     img: "/richie.png",
     position: "60% 29%",
     scale: 1.5
@@ -47,11 +47,6 @@ export default function About() {
             Built at Yale.<br />
             <em style={{ color: 'var(--terracotta)' }}>Made for Everyone.</em>
           </h1>
-          <p style={{
-            fontFamily: 'var(--mono)', fontSize: 11,
-            color: 'var(--ink-muted)', lineHeight: 1.8, letterSpacing: '0.06em',
-          }}>
-          </p>
         </div>
 
         <div style={{ padding: '80px 64px', position: 'relative', overflow: 'hidden' }}>
@@ -111,7 +106,7 @@ export default function About() {
           borderTop: '1px solid var(--rule)',
         }}>
           {TEAM.map((member) => (
-            <TeamCard m={member} />
+            <TeamCard key={member.name} m={member} />
           ))}
         </div>
       </section>
@@ -330,14 +325,6 @@ function TeamCard({ m }) {
         <img src={m.img} alt={m.name}
           style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: m.position || 'center', transform: `scale(${m.scale || 1})`, transformOrigin: m.position || 'center' }}
         />
-        <div style={{
-          position: 'absolute', inset: 0,
-        }} />
-        <div style={{
-          position: 'absolute', bottom: 16, left: 20,
-          fontFamily: 'var(--mono)', fontSize: 10,
-          color: 'rgba(244,238,226,0.7)', letterSpacing: '0.1em',
-        }}>{m.id}</div>
       </div>
 
       <div style={{ padding: '28px 28px 36px' }}>

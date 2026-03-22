@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 
 /**
- * Returns [ref, isVisible]. Once an element enters the viewport it
- * stays "visible" (one-shot trigger, like Stecca's clean reveals).
+ * Returns [ref, isVisible]. Tracks whether the element is currently
+ * in the viewport using IntersectionObserver.
  */
 export function useInView(options = {}) {
   const ref = useRef(null)
