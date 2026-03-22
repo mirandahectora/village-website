@@ -77,12 +77,12 @@ const TIMELINE_PHASES = [
       {
         date: 'Mar 2027',
         title: 'Community Group Testing',
-        desc: 'Partner with unions, campus organisations, and immigrant networks for structured testing cycles. Collect qualitative and quantitative feedback on matching, governance, and payout flows.',
+        desc: 'Partner with unions, campus organizations, and immigrant networks for structured testing cycles. Collect qualitative and quantitative feedback on matching, governance, and payout flows.',
       },
       {
         date: 'Jun 2027',
         title: 'Algorithm & Service Recalibration',
-        desc: 'Retrain matching models on real financial data and user behaviour. Refine constitution templates, contribution flows, and democratic voting UX based on live usage.',
+        desc: 'Retrain matching models on real financial data and user behavior. Refine constitution templates, contribution flows, and democratic voting UX based on live usage.',
       },
       {
         date: 'Oct 2027',

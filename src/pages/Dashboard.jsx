@@ -227,10 +227,15 @@ function CreateVillageView({ onDone }) {
     payoutStructure: 'voted',
     amendmentThreshold: 'two_thirds',
     quorum: 'two_thirds',
-    dishonourableExit: 'returned_no_interest',
+    dishonorableExit: 'returned_no_interest',
     probationPeriod: '1_month',
     latePaymentPolicy: 'grace_7',
     exitNoticePeriod: '1_month',
+    memberAdmission: 'vote_required',
+    // Portfolio allocation (brokerage only)
+    equities: 60,
+    bonds: 30,
+    cash: 10,
   })
   const [photoPreview, setPhotoPreview] = useState(null)
   const [submitted, setSubmitted] = useState(false)
@@ -267,14 +272,19 @@ function CreateVillageView({ onDone }) {
       structure: {
         accountType: form.accountType,
         payInFrequency: form.payInFrequency,
+        poolTarget: form.poolTarget ? Number(form.poolTarget) : null,
         minContribution: form.minContribution ? Number(form.minContribution) : null,
         payoutStructure: form.payoutStructure,
         amendmentThreshold: form.amendmentThreshold,
         quorum: form.quorum,
-        dishonourableExit: form.dishonourableExit,
+        memberAdmission: form.memberAdmission,
+        dishonorableExit: form.dishonorableExit,
         probationPeriod: form.probationPeriod,
         latePaymentPolicy: form.latePaymentPolicy,
         exitNoticePeriod: form.exitNoticePeriod,
+        ...(form.accountType === 'brokerage' && {
+          portfolioAllocation: { equities: Number(form.equities), bonds: Number(form.bonds), cash: Number(form.cash) },
+        }),
       },
       founded: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
       memberList: [{ id: 'me', initials: user?.avatar || '?', name: `${user?.first_name || ''} ${user?.last_name?.[0] || ''}.`, role: 'Founder', contrib: 0, status: 'active' }],
@@ -439,11 +449,21 @@ function CreateVillageView({ onDone }) {
               </div>
             </div>
 
-            {/* Dishonourable exit + probation */}
+            {/* Member admission */}
+            <div style={{ marginBottom: 20 }}>
+              {label('Member admission')}
+              <select value={form.memberAdmission} onChange={e => update('memberAdmission', e.target.value)} style={{ ...inputSt, cursor: 'pointer' }}>
+                <option value="vote_required">Vote required for all new members</option>
+                <option value="invite_no_vote">Invited members admitted without a vote</option>
+                <option value="any_member">Any member can admit others freely</option>
+              </select>
+            </div>
+
+            {/* Dishonorable exit + probation */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
               <div>
-                {label('Dishonourable exit protocol')}
-                <select value={form.dishonourableExit} onChange={e => update('dishonourableExit', e.target.value)} style={{ ...inputSt, cursor: 'pointer' }}>
+                {label('Dishonorable exit protocol')}
+                <select value={form.dishonorableExit} onChange={e => update('dishonorableExit', e.target.value)} style={{ ...inputSt, cursor: 'pointer' }}>
                   <option value="withheld">Funds withheld</option>
                   <option value="returned_no_interest">Returned without interest</option>
                   <option value="returned_with_interest">Returned with interest</option>
@@ -461,7 +481,7 @@ function CreateVillageView({ onDone }) {
             </div>
 
             {/* Late payment policy + exit notice */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 0 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
               <div>
                 {label('Late payment policy')}
                 <select value={form.latePaymentPolicy} onChange={e => update('latePaymentPolicy', e.target.value)} style={{ ...inputSt, cursor: 'pointer' }}>
@@ -482,6 +502,26 @@ function CreateVillageView({ onDone }) {
                 </select>
               </div>
             </div>
+
+            {/* Portfolio allocation (brokerage only) */}
+            {form.accountType === 'brokerage' && (
+              <div style={{ marginBottom: 0 }}>
+                {label('Portfolio allocation', 'must total 100%')}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+                  {[['equities', 'Equities %'], ['bonds', 'Bonds %'], ['cash', 'Cash %']].map(([key, lbl]) => (
+                    <div key={key}>
+                      <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.08em', marginBottom: 6 }}>{lbl}</div>
+                      <input type="number" min="0" max="100" value={form[key]} onChange={e => update(key, e.target.value)} style={inputSt} />
+                    </div>
+                  ))}
+                </div>
+                {Number(form.equities) + Number(form.bonds) + Number(form.cash) !== 100 && (
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--terracotta)', marginTop: 8, letterSpacing: '0.04em' }}>
+                    Total: {Number(form.equities) + Number(form.bonds) + Number(form.cash)}% — must equal 100%
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <button onClick={handleCreate} className="btn btn-primary" style={{ fontSize: 13, padding: '14px 32px' }}>

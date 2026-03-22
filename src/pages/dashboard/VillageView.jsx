@@ -1058,15 +1058,53 @@ function SecondaryChart({ village, accentColor }) {
   }
 
   // ── Checking: cumulative pool contributions bar chart ──
+  const checkFreq = village.structure?.payInFrequency || 'monthly'
+  const checkScales = SCALES[checkFreq] || SCALES.monthly
+  const toMonthsCheck = (s) => {
+    if (checkFreq === 'monthly')  return s.n
+    if (checkFreq === 'weekly')   return Math.round(s.n / 4.345)
+    if (checkFreq === 'biweekly') return Math.round(s.n * 2 / 4.345)
+    return s.n
+  }
+  const CHECK_PROJ_OPTIONS = [
+    { label: 'Now', months: 0 },
+    ...checkScales.filter(s => !s.ytd).map(s => ({ label: s.label, months: toMonthsCheck(s) })),
+  ]
+
   let running = 0
-  const bars = contribEvents.map(e => {
+  const histBars = contribEvents.map(e => {
     running += e.amount
-    return { ...e, cumulative: running }
+    return { ...e, cumulative: running, isProjected: false }
   })
-  const maxCum = bars[bars.length - 1].cumulative
+
+  const checkLastTs = contribEvents[contribEvents.length - 1].ts
+  const checkHistMonths = Math.max(1, (checkLastTs - contribEvents[0].ts) / (30.44 * 86400000))
+  const avgMonthlyContrib = running / checkHistMonths
+  const periodsPerMonth = checkFreq === 'weekly' ? 4.345 : checkFreq === 'biweekly' ? 2.167 : 1
+  const avgPeriodContrib = avgMonthlyContrib / periodsPerMonth
+
+  const checkProjBars = []
+  if (projMonths > 0) {
+    const periodsToProject = Math.round(projMonths * periodsPerMonth)
+    let cum = running
+    for (let p = 1; p <= periodsToProject; p++) {
+      cum += avgPeriodContrib
+      const ts = new Date(checkLastTs)
+      if (checkFreq === 'weekly')        ts.setDate(ts.getDate() + 7 * p)
+      else if (checkFreq === 'biweekly') ts.setDate(ts.getDate() + 14 * p)
+      else                               ts.setMonth(ts.getMonth() + p)
+      checkProjBars.push({
+        ts, label: ts.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+        amount: avgPeriodContrib, cumulative: cum, isProjected: true,
+      })
+    }
+  }
+
+  const allBars = [...histBars, ...checkProjBars]
+  const maxCum = allBars[allBars.length - 1].cumulative
   const BAR_H = 80
   const Y_W = 36
-  const yTicks = [0, Math.round(maxCum / 2), maxCum]
+  const yTicks = [0, Math.round(maxCum / 2), Math.round(maxCum)]
 
   return (
     <div style={{ marginTop: 24, paddingTop: 24, borderTop: '1px solid var(--rule)', flexShrink: 0 }}>
@@ -1075,9 +1113,10 @@ function SecondaryChart({ village, accentColor }) {
           Lifetime Pool Contributions
         </div>
         <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink)', fontWeight: 600 }}>
-          ${maxCum.toLocaleString()} total
+          ${Math.round(running).toLocaleString()} total
         </div>
       </div>
+
       <div style={{ display: 'grid', gridTemplateColumns: `${Y_W}px 1fr` }}>
         <div style={{ position: 'relative', height: BAR_H }}>
           {yTicks.map((tick, i) => (
@@ -1090,7 +1129,7 @@ function SecondaryChart({ village, accentColor }) {
             }}>{tick >= 1000 ? `$${Math.round(tick / 1000)}k` : `$${tick}`}</div>
           ))}
         </div>
-        <div style={{ position: 'relative', height: BAR_H }}>
+        <div ref={barChartRef} style={{ position: 'relative', height: BAR_H }}>
           {yTicks.map((tick, i) => (
             <div key={i} style={{
               position: 'absolute', left: 0, right: 0,
@@ -1098,12 +1137,12 @@ function SecondaryChart({ village, accentColor }) {
               borderTop: `1px ${tick === 0 ? 'solid' : 'dashed'} var(--rule)`,
             }} />
           ))}
-          <div ref={barChartRef} style={{ display: 'flex', alignItems: 'flex-end', gap: 2, height: '100%' }}>
-            {bars.map((b, i) => {
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, height: '100%' }}>
+            {allBars.map((b, i) => {
               const isPinned = pinnedBar === i
               const isActive = isPinned || hoveredBar === i
-              const nearLeft = i < bars.length * 0.3
-              const nearRight = i > bars.length * 0.7
+              const nearLeft = i < allBars.length * 0.3
+              const nearRight = i > allBars.length * 0.7
               const barH = Math.max(Math.round((b.cumulative / maxCum) * BAR_H), 2)
               return (
                 <div key={i}
@@ -1113,7 +1152,9 @@ function SecondaryChart({ village, accentColor }) {
                   style={{
                     flex: 1, position: 'relative', height: `${barH}px`,
                     background: accentColor,
-                    opacity: isActive ? 1 : 0.35 + (i / Math.max(bars.length - 1, 1)) * 0.65,
+                    opacity: b.isProjected
+                      ? (isActive ? 0.55 : 0.25)
+                      : (isActive ? 1 : 0.35 + (i / Math.max(histBars.length - 1, 1)) * 0.65),
                     borderRadius: '2px 2px 0 0',
                     cursor: 'pointer', transition: 'opacity 0.15s',
                   }}
@@ -1132,8 +1173,11 @@ function SecondaryChart({ village, accentColor }) {
                       pointerEvents: isPinned ? 'auto' : 'none',
                       whiteSpace: 'nowrap', zIndex: 20,
                     }}>
-                      <div style={{ fontSize: 9, opacity: 0.6 }}>{b.ts.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
-                      <div style={{ color: accentColor }}>+${b.amount.toLocaleString()}</div>
+                      <div style={{ fontSize: 9, opacity: 0.6 }}>
+                        {b.isProjected ? 'projected · ' : ''}
+                        {b.ts.toLocaleDateString('en-US', { month: 'short', day: b.isProjected ? undefined : 'numeric', year: 'numeric' })}
+                      </div>
+                      <div style={{ color: accentColor }}>+${Math.round(b.amount).toLocaleString()}</div>
                     </div>
                   )}
                 </div>
@@ -1142,9 +1186,67 @@ function SecondaryChart({ village, accentColor }) {
           </div>
         </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, paddingLeft: Y_W }}>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)' }}>{bars[0]?.label}</span>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)' }}>{bars[bars.length - 1]?.label}</span>
+
+      {/* X-axis labels */}
+      {(() => {
+        const n = allBars.length
+        if (n === 0) return null
+        const firstTs   = allBars[0].ts
+        const lastBarTs = allBars[n - 1].ts
+        const spanYears = (lastBarTs.getFullYear() - firstTs.getFullYear()) +
+          (lastBarTs.getMonth() - firstTs.getMonth()) / 12
+        const multiYear = spanYears > 1.5
+        const toLeft = (i) => n <= 1 ? 50 : (i / (n - 1)) * 100
+        const step = n <= 8 ? 1 : n <= 18 ? 2 : n <= 36 ? 4 : n <= 72 ? 6 : 12
+        const tickIdxs = allBars.reduce((acc, _, i) => {
+          if (i % step === 0 || i === n - 1) acc.push(i)
+          return acc
+        }, [])
+        const monthFmt = (b) => multiYear
+          ? b.ts.toLocaleDateString('en-US', { month: 'short' })
+          : b.isProjected
+            ? b.ts.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+            : b.ts.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+        const yearTicks = []
+        if (multiYear) {
+          for (let y = firstTs.getFullYear(); y <= lastBarTs.getFullYear(); y++) {
+            const target = new Date(y, 0, 1)
+            let closest = null, minDiff = Infinity
+            allBars.forEach((b, i) => { const d = Math.abs(b.ts - target); if (d < minDiff) { minDiff = d; closest = i } })
+            if (closest !== null && minDiff < 60 * 86400000) yearTicks.push(closest)
+          }
+        }
+        return (
+          <div style={{ position: 'relative', height: multiYear ? 26 : 14, marginTop: 4, paddingLeft: Y_W }}>
+            {tickIdxs.map(i => (
+              <div key={i} style={{
+                position: 'absolute', bottom: multiYear ? 13 : 0, left: `${toLeft(i)}%`,
+                transform: 'translateX(-50%)', fontFamily: 'var(--mono)', fontSize: 9,
+                color: 'var(--ink-muted)', lineHeight: 1, whiteSpace: 'nowrap',
+              }}>{monthFmt(allBars[i])}</div>
+            ))}
+            {yearTicks.map(i => (
+              <div key={i} style={{
+                position: 'absolute', bottom: 0, left: `${toLeft(i)}%`,
+                transform: 'translateX(-50%)', fontFamily: 'var(--mono)', fontSize: 9, fontWeight: 600,
+                color: 'var(--ink)', lineHeight: 1, whiteSpace: 'nowrap',
+              }}>{allBars[i].ts.getFullYear()}</div>
+            ))}
+          </div>
+        )
+      })()}
+
+      {/* Projection selector */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 4, marginTop: 12 }}>
+        {CHECK_PROJ_OPTIONS.map(opt => (
+          <button key={opt.months} onClick={() => { setProjMonths(opt.months); setPinnedBar(null) }} style={{
+            fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.06em',
+            padding: '3px 8px', cursor: 'pointer', border: '1px solid var(--rule)', borderRadius: 2,
+            background: projMonths === opt.months ? 'var(--ink)' : 'transparent',
+            color: projMonths === opt.months ? 'var(--cream)' : 'var(--ink-muted)',
+            transition: 'background 0.15s, color 0.15s',
+          }}>{opt.label}</button>
+        ))}
       </div>
     </div>
   )
@@ -1420,7 +1522,7 @@ function VotesTab({ village, castVote, cancelVote, draftResolution, user }) {
           <div style={{ marginBottom: 20 }}>
             <h2 style={{ fontSize: 20 }}>Requires your vote</h2>
           </div>
-          {open.map(v => <VoteCard key={v.id} vote={v} villageId={village.id} castVote={castVote} cancelVote={cancelVote} user={user} />)}
+          {open.map(v => <VoteCard key={v.id} vote={v} villageId={village.id} castVote={castVote} cancelVote={cancelVote} user={user} memberCount={village.memberList.length} />)}
         </>
       )}
 
@@ -1431,7 +1533,7 @@ function VotesTab({ village, castVote, cancelVote, draftResolution, user }) {
             <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}></span>
             <h2 style={{ fontSize: 20 }}>Past decisions</h2>
           </div>
-          {closed.map(v => <VoteCard key={v.id} vote={v} villageId={village.id} castVote={castVote} />)}
+          {closed.map(v => <VoteCard key={v.id} vote={v} villageId={village.id} castVote={castVote} memberCount={village.memberList.length} />)}
         </>
       )}
 
@@ -1448,9 +1550,9 @@ function VotesTab({ village, castVote, cancelVote, draftResolution, user }) {
   )
 }
 
-function VoteCard({ vote, villageId, castVote, cancelVote, user }) {
+function VoteCard({ vote, villageId, castVote, cancelVote, user, memberCount }) {
   const total      = vote.yes + vote.no + vote.abstain
-  const eligible   = vote.total || total
+  const eligible   = memberCount || vote.total || total
   const yesPct     = eligible > 0 ? Math.round((vote.yes     / eligible) * 100) : 0
   const noPct      = eligible > 0 ? Math.round((vote.no      / eligible) * 100) : 0
   const abstainPct = eligible > 0 ? Math.round((vote.abstain / eligible) * 100) : 0
@@ -1534,7 +1636,7 @@ function VoteCard({ vote, villageId, castVote, cancelVote, user }) {
               ${Number(vote.amount).toLocaleString()}
             </span>
           )}
-          <span>{vote.total} voters</span>
+          <span>{eligible} voters</span>
           {timeLeft && (
             <span style={{
               display: 'flex', alignItems: 'center', gap: 4,
@@ -1644,7 +1746,7 @@ const STRUCTURE_LABELS = {
   payoutStructure:    { rotating: 'Rotating (ROSCA)', voted: 'Voted allocation', proportional: 'Proportional draw' },
   amendmentThreshold: { majority: 'Simple majority (>50%)', two_thirds: 'Two-thirds (≥67%)', unanimous: 'Unanimous (100%)' },
   quorum:             { any: 'Any member may vote', two_thirds: '2/3 of members must vote', all: 'All members must vote' },
-  dishonourableExit:  { withheld: 'Funds withheld', returned_no_interest: 'Returned without interest', returned_with_interest: 'Returned with interest' },
+  dishonorableExit:  { withheld: 'Funds withheld', returned_no_interest: 'Returned without interest', returned_with_interest: 'Returned with interest' },
   probationPeriod:    { none: 'None', '1_month': '1 month', '3_months': '3 months', '6_months': '6 months' },
   latePaymentPolicy:  { grace_7: '7-day grace period, then flagged', immediate_penalty: 'Immediate penalty fee applied', removal_3_missed: 'Removal after 3 consecutive missed payments', voted: 'Handled by member vote' },
   exitNoticePeriod:   { immediate: 'Immediate (no notice required)', '1_month': '1 month', '2_months': '2 months', '3_months': '3 months', '1_cycle': '1 full contribution cycle' },
@@ -1656,7 +1758,7 @@ const AMEND_OPTIONS = {
   payoutStructure:    Object.entries(STRUCTURE_LABELS.payoutStructure),
   amendmentThreshold: Object.entries(STRUCTURE_LABELS.amendmentThreshold),
   quorum:             Object.entries(STRUCTURE_LABELS.quorum),
-  dishonourableExit:  Object.entries(STRUCTURE_LABELS.dishonourableExit),
+  dishonorableExit:  Object.entries(STRUCTURE_LABELS.dishonorableExit),
   probationPeriod:    Object.entries(STRUCTURE_LABELS.probationPeriod),
   latePaymentPolicy:  Object.entries(STRUCTURE_LABELS.latePaymentPolicy),
   exitNoticePeriod:   Object.entries(STRUCTURE_LABELS.exitNoticePeriod),
@@ -1694,7 +1796,7 @@ function ConstitutionTab({ village, draftResolution }) {
       rows: [
         { label: 'Probationary period', field: 'probationPeriod',   val: s?.probationPeriod   ? STRUCTURE_LABELS.probationPeriod[s.probationPeriod]     : '-' },
         { label: 'Late payment policy', field: 'latePaymentPolicy', val: s?.latePaymentPolicy ? STRUCTURE_LABELS.latePaymentPolicy[s.latePaymentPolicy] : '-' },
-        { label: 'Dishonourable exit',  field: 'dishonourableExit', val: s?.dishonourableExit ? STRUCTURE_LABELS.dishonourableExit[s.dishonourableExit] : '-' },
+        { label: 'Dishonorable exit',  field: 'dishonorableExit', val: s?.dishonorableExit ? STRUCTURE_LABELS.dishonorableExit[s.dishonorableExit] : '-' },
         { label: 'Exit notice period',  field: 'exitNoticePeriod',  val: s?.exitNoticePeriod  ? STRUCTURE_LABELS.exitNoticePeriod[s.exitNoticePeriod]   : '-' },
       ],
     },
@@ -2369,8 +2471,14 @@ function MembersTab({ village, draftResolution, onLeave }) {
                 Before you go
               </div>
               <ul style={{ margin: 0, paddingLeft: 18, fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--ink)', lineHeight: 1.7 }}>
-                <li>Leaving is permanent and cannot be undone without a member vote to re-admit you. If you wish to leave without incurring a dishonorable exit penalty, </li>
-                <li>Your contributions to date will be handled per the village's exit policy: <strong>{STRUCTURE_LABELS.dishonourableExit[village.structure?.dishonourableExit] || '-'}</strong>.</li>
+                <li>Leaving is permanent and cannot be undone without{
+                  village.structure?.memberAdmission === 'any_member'
+                    ? ' a re-invitation from any member'
+                    : village.structure?.memberAdmission === 'invite_no_vote'
+                      ? ' a re-invitation from an existing member'
+                      : ' a member vote to re-admit you'
+                }. By confirming your exit, you are giving notice of your intent to leave the village.</li>
+                <li>Your contributions to date will be handled per the village's exit policy, unless otherwise specified: <strong>{STRUCTURE_LABELS.dishonorableExit[village.structure?.dishonorableExit] || '-'}</strong>.</li>
                 <li>Per the village constitution, your exit notice period is <strong>{STRUCTURE_LABELS.exitNoticePeriod[village.structure?.exitNoticePeriod] || '-'}</strong>. Your membership remains active until that window has passed.</li>
               </ul>
             </div>

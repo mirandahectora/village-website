@@ -315,7 +315,7 @@ function CtaSection() {
             </h3>
             <div>
               <p style={{ fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.8, marginBottom: 24, marginTop: 0 }}>
-                Community organisations, credit unions, nonprofits, and financial educators: if our work overlaps with yours, reach out.
+                Community organizations, credit unions, nonprofits, and financial educators: if our work overlaps with yours, reach out.
               </p>
               <a href="mailto:hello@village.finance" style={{
                 fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.08em',

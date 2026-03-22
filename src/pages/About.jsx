@@ -13,14 +13,14 @@ const TEAM = [
   {
     name: 'Héctor Miranda Plaza',
     focus: 'Co-founder, CXO',
-    bio: 'B.A. in Statistics & Data Science and B.A. in Political Science at Yale. I have professional experience with statistical modelling, deep learning, and geographical systems across political, biomedical, and econometric fields. I also study decisionmaking theory, opinion formation, and governance structures in democratic societies.',
+    bio: 'B.A. in Statistics & Data Science and B.A. in Political Science at Yale. I have professional experience with statistical modeling, deep learning, and geographical systems across political, biomedical, and econometric fields. I also study decisionmaking theory, opinion formation, and governance structures in democratic societies.',
     img: "/hector.jpg",
     position: "center 20%"
   },
   {
     name: 'Matthew Diomidous',
     focus: 'Co-founder, CXO',
-    bio: 'Statistics and Data Science at Yale. Academic research focuses on quantitative modelling and data-driven systems design, with strong interest in network dynamics, platform infrastructure, and governance mechanisms.',
+    bio: 'Statistics and Data Science at Yale. Academic research focuses on quantitative modeling and data-driven systems design, with strong interest in network dynamics, platform infrastructure, and governance mechanisms.',
     img: "/matt.jpeg",
     position: "center"
   },
