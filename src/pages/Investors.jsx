@@ -126,12 +126,12 @@ const TIMELINE_PHASES = [
       {
         date: 'Year 3–4',
         title: 'LATAM Expansion',
-        desc: 'Launch in Mexico City, São Paulo, Bogotá, and other high-density ROSCA markets. Tanda and chit fund cultural heritage makes adoption structurally natural.',
+        desc: 'Launch in Mexico City, São Paulo, Bogotá, and other high-density ROSCA markets. Tanda cultural heritage makes adoption structurally natural.',
       },
       {
         date: 'Year 4–5',
         title: 'Africa & South Asia',
-        desc: 'Enter stokvel-native markets in South Africa and cooperative finance communities across India, Bangladesh, and the broader South Asian diaspora.',
+        desc: 'Enter markets with existing community finance traditions in South Africa and cooperative finance communities across India, Bangladesh, and the broader South Asian diaspora.',
       },
     ],
   },
@@ -509,7 +509,7 @@ function InvestorCta() {
             Covering cooperative<br />finance?
           </h3>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.8, marginBottom: 32 }}>
-            We're happy to speak on the record about Village, the stokvel model, and the broader case for community-owned financial infrastructure.
+            We're happy to speak on the record about Village, our operations, and the broader case for community-owned financial infrastructure.
           </p>
           <a href="mailto:press@village.finance" style={{
             fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.08em',
