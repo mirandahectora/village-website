@@ -18,6 +18,7 @@ export default function Nav() {
     { to: '/',           label: 'Home' },
     { to: '/about',      label: 'About' },
     { to: '/investors',  label: 'Investors' },
+    { to: '/faq',        label: 'FAQ' },
   ]
 
   return (

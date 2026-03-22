@@ -10,7 +10,7 @@ const STEPS = [
     num: '01', title: 'Build your financial profile', color: 'green',
     icon: <UserCheck size={24} />,
     img: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&q=80',
-    desc: 'Village collects a detailed financial snapshot of your income sources, debts, assets, and goals. This profile establishes your contribution capacity and anchors your village\'s shared priorities.',
+    desc: 'You can provide Village a snapshot of your income sources, debts, assets, and goals. This information is stored using 256-bit encryption and will not be released to third parties under any circumstances.',
   },
   {
     num: '02', title: 'Invite your community', color: 'terra',
@@ -19,7 +19,7 @@ const STEPS = [
     desc: 'Already part of a union, campus group, faith community, or diaspora network? Bring them with you. Village is built for groups that already trust each other.',
   },
   {
-    num: '03', title: 'Form your village, set your constitution', color: 'green',
+    num: '03', title: 'Form your village, make your constitution', color: 'green',
     icon: <Vote size={24} />,
     img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&q=80',
     desc: 'Once your group is formed, members establish the rules together: contribution intervals, payout conditions, voting thresholds, and shared goals.',
@@ -39,41 +39,6 @@ const STEPS = [
 ]
 
 
-const FAQ = [
-  {
-    q: 'How is Village different from a credit union?',
-    a: 'Credit unions are regulated institutions with professional management. Village is a peer-managed cooperative. Members govern everything directly. Village provides the infrastructure; your village provides the decisions.',
-  },
-  {
-    q: 'Are there any fees beyond the contribution percentage?',
-    a: 'No. Village charges a single percentage on pooled contributions. No monthly subscription, no joining fee, no withdrawal fee, no exit penalty.',
-  },
-  {
-    q: "What if I don't have an existing community to bring?",
-    a: "Village's matching algorithm pairs you with members who have compatible goals and similar financial circumstances, drawn from a detailed profile. You build the trust from there.",
-  },
-  {
-    q: 'What happens if my village grows across a tier threshold?',
-    a: "Your fee rate adjusts at the next contribution interval. You'll be notified when your village crosses into a new tier.",
-  },
-  {
-    q: 'What if a member stops contributing?',
-    a: 'Village constitutions establish non-contribution protocols. Most villages choose graduated warnings followed by a democratic vote to suspend or remove non-contributing members.',
-  },
-  {
-    q: 'How are funds kept safe?',
-    a: "All funds are held in escrow, separate from Village's operating accounts. No funds can be released without a democratic village vote. All transactions are fully auditable.",
-  },
-  {
-    q: 'How does the matching algorithm work?',
-    a: 'Our KNN algorithm uses a 212-feature financial profile to identify compatible matches. It weighs similarity in goals and contribution capacity against complementarity across financial circumstances.',
-  },
-  {
-    q: 'Does Village take a cut of investment returns?',
-    a: 'No. Village only charges on contributions deposited, not on investment returns, interest, or any downstream value your village generates. Your upside is entirely yours.',
-  },
-]
-
 export default function Landing() {
   return (
     <main className="page">
@@ -82,7 +47,6 @@ export default function Landing() {
       <WhatIsVillage />
       <StepsSection />
       <AlgorithmicMatchingSection />
-      <FaqSection />
       <CtaSection />
     </main>
   )
@@ -229,14 +193,14 @@ function WhatIsVillage() {
         </div>
         <div style={{ padding: '80px 64px', ...revealStyle(vis, 120) }} ref={ref2}>
           <p style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(20px, 2vw, 26px)', lineHeight: 1.6, marginBottom: 40, fontWeight: 400 }}>
-            Village is a cooperative finance platform that lets you form financial clubs within your community, pool funds democratically, and work toward shared financial goals together.
+            Village is a platform for cooperative finance that empowers you create financial clubs within your community, pool funds collectively, and work democratically toward shared financial goals.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24 }}>
             {[
               { icon: <Users size={18} />, title: 'Your Village', desc: 'Villages are groups of 5–30 members working toward shared financial goals. Start one with people you know, or join an existing one.' },
               { icon: <Vote size={18} />, title: 'Democratic Control', desc: 'Once money enters a village, members vote on how to save, invest, and spend the funds.' },
               { icon: <Shield size={18} />, title: 'Escrow Security', desc: 'Village funds are held in escrow accounts through our BaaS partners, ensuring security, transparency, and auditability at all times.' },
-              { icon: <TrendingUp size={18} />, title: 'Shared Growth', desc: 'Pooled funds go further. Members access returns and debt payoff at a scale that would be out of reach on their own.' },
+              { icon: <TrendingUp size={18} />, title: 'Shared Growth', desc: 'Pooled funds work on economies of scale. Members access greater returns, faster debt payoff, and lower personal risk when they work together.' },
               { icon: <Lock size={18} />, title: 'Your Data is Yours', desc: 'We don\'t own any financial data you share with us, and we will never sell or share it with other companies for profit. Full stop.' },
               { icon: <DollarSign size={18} />, title: 'We Win When You Win', desc: 'Village charges a small percentage on contributions. No subscription, no exit fee. We only get paid when your village does.' },
             ].map((f, i) => <FeatureCard key={i} {...f} />)}
@@ -275,10 +239,10 @@ function AlgorithmicMatchingSection() {
             We can find the right <br /><em style={{ color: 'var(--terracotta)' }}>village for you.</em>
           </h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.8, marginBottom: 32 }}>
-            Village is designed first for communities that already exist: unions, campus groups, faith networks, diaspora circles. But not everyone has that ready-made social graph. For those who don't, our matching algorithm can build one.
+            Village is designed first for existing communities such as unions, campus groups, faith networks, and diaspora circles. But not everyone has that ready-made network. For those who don't, our matching algorithm can build one.
           </p>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.8 }}>
-            Our matching algorithm draws on 212 financial variables to find members with compatible goals, similar contribution capacity, and complementary financial circumstances. It builds the group; from there, the community takes over.
+            Our matching algorithm draws on up to 212 financial variables to find members with compatible goals, similar contribution capacity, and complementary financial circumstances. It builds the group, and from there, the community takes over.
           </p>
         </div>
       </div>
@@ -424,35 +388,6 @@ function StepRow({ step, i }) {
   )
 }
 
-
-function FaqSection() {
-  const [ref, vis] = useInView()
-  return (
-    <section style={{ borderBottom: '1px solid var(--rule)' }}>
-      <div ref={ref} style={{
-        maxWidth: 1280, margin: '0 auto', padding: '48px 32px',
-        borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
-        display: 'flex', gap: 24, alignItems: 'baseline',
-        position: 'relative', overflow: 'hidden',
-        ...revealStyle(vis, 0),
-      }}>
-        <FlickeringGrid color="#2A4A1E" maxOpacity={0.1} flickerChance={0.06} squareSize={4} gridGap={6} />
-        <h2 style={{ fontSize: 'clamp(24px, 2.5vw, 36px)', position: 'relative' }}>Common Questions</h2>
-      </div>
-      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderTop: '1px solid var(--rule)' }}>
-        {FAQ.map((item, i) => {
-          const [ref, vis] = useInView()
-          return (
-            <div key={i} ref={ref} style={{ padding: '36px 48px', borderRight: i % 2 === 0 ? '1px solid var(--rule)' : 'none', borderBottom: '1px solid var(--rule)', ...revealStyle(vis, (i % 2) * 100) }}>
-              <div style={{ fontFamily: 'var(--serif)', fontSize: 17, fontWeight: 700, marginBottom: 12, lineHeight: 1.3 }}>{item.q}</div>
-              <div style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--ink-muted)', lineHeight: 1.8 }}>{item.a}</div>
-            </div>
-          )
-        })}
-      </div>
-    </section>
-  )
-}
 
 function FeatureCard({ icon, title, desc }) {
   return (

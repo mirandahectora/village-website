@@ -7,6 +7,7 @@ import Footer from './components/Footer'
 import Landing from './pages/Landing'
 import About from './pages/About'
 import Investors from './pages/Investors'
+import Faq from './pages/Faq'
 import Auth from './pages/Auth'
 import Dashboard from './pages/Dashboard'
 import './index.css'
@@ -50,6 +51,7 @@ function AnimatedRoutes() {
             <Route path="/"           element={<Landing />} />
             <Route path="/about"      element={<About />} />
             <Route path="/investors"  element={<Investors />} />
+            <Route path="/faq"        element={<Faq />} />
             <Route path="/auth"       element={user ? <Navigate to="/dashboard" /> : <Auth />} />
             <Route path="/dashboard"  element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           </Routes>
