@@ -4,8 +4,7 @@ import { useInView, revealStyle } from '../hooks/useInView'
 const TEAM = [
   {
     name: 'Richie George',
-    role: 'Co-founder · CXO',
-    focus: 'Finance Theory & Governance',
+    focus: 'Co-founder, CXO',
     bio: 'Studies History and Philosophy at Yale. His work focuses on the history of public and private finance and liberal fiscal policy, and how democratic theory can redesign financial institutions from the ground up.',
     img: "/richie.png",
     position: "60% 29%",
@@ -13,16 +12,14 @@ const TEAM = [
   },
   {
     name: 'Hector Miranda Plaza',
-    role: 'Co-founder · CXO',
-    focus: 'Matching Algorithm & Data Science',
+    focus: 'Co-founder, CXO',
     bio: 'Statistics, Data Science and Political Science at Yale, with a certificate in German. Brings deep expertise in statistical modelling, deep learning, and geographical systems across political, biomedical, and econometric fields.',
     img: "/hector.jpg",
     position: "center 20%"
   },
   {
     name: 'Matthew Diomidous',
-    role: 'Co-founder · CXO',
-    focus: 'Platform Infrastructure & Quantitative Modeling',
+    focus: 'Co-founder, CXO',
     bio: 'Statistics and Data Science at Yale. Academic research focuses on quantitative modelling and data-driven systems design, with strong interest in network dynamics, platform infrastructure, and governance mechanisms.',
     img: "/matt.jpeg",
     position: "center"
@@ -335,7 +332,6 @@ function TeamCard({ m }) {
         />
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to top, rgba(28,26,20,0.6) 0%, transparent 50%)',
         }} />
         <div style={{
           position: 'absolute', bottom: 16, left: 20,
@@ -353,11 +349,6 @@ function TeamCard({ m }) {
           color: 'var(--terracotta)', letterSpacing: '0.1em',
           textTransform: 'uppercase', marginBottom: 8,
         }}>{m.focus}</div>
-        <div style={{
-          fontFamily: 'var(--mono)', fontSize: 10,
-          color: 'var(--ink-muted)', letterSpacing: '0.08em',
-          marginBottom: 16,
-        }}>{m.role}</div>
         <p style={{
           fontFamily: 'var(--sans)', fontSize: 13,
           color: 'var(--ink-muted)', lineHeight: 1.7,
