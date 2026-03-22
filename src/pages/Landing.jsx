@@ -137,7 +137,7 @@ function HeroSection() {
           fontFamily: 'var(--sans)', fontSize: 18, color: 'var(--ink-muted)',
           lineHeight: 1.7, marginTop: 24, marginBottom: 0,
         }}>
-          Whether you are looking to invest, save up, pay debts, or start a project with others, Village provides the tools to make sure it takes off.
+          Whether you are looking to invest, save up, pay debts, or start a project with others, Village provides the tools to make it happen.
         </p>
       </div>
       <div style={{ position: 'relative', overflow: 'hidden', minHeight: 600 }}>
@@ -174,7 +174,8 @@ function MarqueeBand() {
       <a href="#waitlist" style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.1em', color: 'var(--cream)', textDecoration: 'none', borderBottom: '1px solid rgba(244,238,226,0.5)' }}>
         Join the list →
       </a>
-      <span style={{ width: 1, height: 14, background: 'rgba(244,238,226,0.3)', display: 'inline-block' }} />
+      <span style={{ width: 1, height: 14, background: 'rgba(255, 255, 255, 0.3)', display: 'inline-block' }} />
+      <span style={{ width: 1, height: 14, background: 'rgba(255, 255, 255, 0.3)', display: 'inline-block' }} />
       <span style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.1em' }}>
         Organizational partners for alpha testing wanted
       </span>

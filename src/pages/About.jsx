@@ -6,7 +6,7 @@ const TEAM = [
     name: 'Richie George',
     focus: 'Co-founder, CXO',
     bio: 'Studies History and Philosophy at Yale. Their work focuses on the history of public and private finance and liberal fiscal policy, and how democratic theory can redesign financial institutions from the ground up.',
-    img: "/richie.png",
+    img: "/richie.png", 
     position: "60% 29%",
     scale: 1.5
   },
