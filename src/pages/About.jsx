@@ -49,27 +49,18 @@ export default function About() {
           </h1>
         </div>
 
-        <div style={{ padding: '80px 64px', position: 'relative', overflow: 'hidden' }}>
-          <img
-            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80"
-            alt="Students collaborating"
-            style={{
-              position: 'absolute', inset: 0, width: '100%', height: '100%',
-              objectFit: 'cover', filter: 'saturate(0.6)',
-              opacity: 0.35,
-            }}
-          />
-          <div style={{ position: 'relative' }}>
+        <div style={{ padding: '80px 64px', background: 'var(--green)', display: 'flex', alignItems: 'center' }}>
+          <div>
             <p style={{
               fontFamily: 'var(--serif)', fontSize: 'clamp(20px, 2vw, 28px)',
-              lineHeight: 1.6, fontWeight: 400, maxWidth: 560,
+              lineHeight: 1.6, fontWeight: 400, maxWidth: 560, color: 'var(--cream)',
             }}>
               "What if financial institutions didn't just serve communities?
               What if communities <em>were</em> the institutions?"
             </p>
             <div style={{
               fontFamily: 'var(--mono)', fontSize: 11,
-              color: 'var(--ink-muted)', letterSpacing: '0.08em',
+              color: 'rgba(244,238,226,0.6)', letterSpacing: '0.08em',
               marginTop: 24,
             }}>The founding question, 2025</div>
           </div>
@@ -230,17 +221,17 @@ function OriginsSection() {
           ...revealStyle(visC, 120),
         }}>
           <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--terracotta)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 20 }}>
-            The decision
+            Our Answer
           </div>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.85, marginBottom: 20 }}>
-            Village was founded to formalise that model: to give it matching infrastructure,
-            democratic governance, and legal scaffolding strong enough that anyone could use it,
-            not just those who already knew the right people.
+            Village was founded to formalize a model of collective finance in the tradition of the stokvels, the tandas, the susus, and
+            every informal lending circle in the world By giving it matching infrastructure,
+            democratic governance, and strong legal scaffolding, Village ensures that everyone can power to achieve financial freedom, 
+            not just those who already know the right people. 
           </p>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.85 }}>
-            We are building the platform that the stokvel tradition, the tandas, the susus, and
-            every informal lending circle deserves: one that scales without losing the thing that
-            makes them work: accountability to each other.
+            We are building a platform that democratizees finance, to put the power of financial decisionmaking back into the hands of
+            the many, not just the few.
           </p>
         </div>
       </div>
@@ -278,13 +269,13 @@ function MissionVisionSection() {
             Mission
           </div>
           <h3 style={{ fontSize: 'clamp(22px, 2vw, 30px)', lineHeight: 1.25, marginBottom: 28 }}>
-            Make cooperative finance accessible to{' '}
+            Make cooperative finance availale to{' '}
             <em style={{ color: 'var(--green)' }}>everyone.</em>
           </h3>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.85 }}>
-            Village exists to give every person access to the kind of financial support that
-            has always existed inside communities, but was never formalised, scaled, or made
-            portable. We build infrastructure that turns mutual trust into mutual credit,
+            Village exists to give every person access to the financial support that
+            has always existed in communities, but was never formalized, scaled, or accessible from any location.
+            We build infrastructure that turns mutual trust into mutual credit,
             regardless of credit history, zip code, or income.
           </p>
         </div>
@@ -304,9 +295,8 @@ function MissionVisionSection() {
           </h3>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.85 }}>
             We envision a financial system where the primary unit of trust is the community,
-            not the corporation. Where lending decisions are made by people who know each other,
-            governed democratically, and accountable to members, not to shareholders or
-            regulators with no stake in the outcome.
+            not the corporation. Where financial decisions are made by people who know each other,
+            in groups governed democratically and accountable to members.
           </p>
         </div>
       </div>
