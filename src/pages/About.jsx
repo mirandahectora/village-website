@@ -5,15 +5,15 @@ const TEAM = [
   {
     name: 'Richie George',
     focus: 'Co-founder, CXO',
-    bio: 'Studies History and Philosophy at Yale. Their work focuses on the history of public and private finance and liberal fiscal policy, and how democratic theory can redesign financial institutions from the ground up.',
+    bio: 'B.A. in History and Philosophy at Yale. I study how public finance has shaped communities in the U.S. and abroad and how democratic theory can rethink local and global finance for the twenty-first century. I also bring expertise from quantitative approaches in cognitive science and public health.',
     img: "/richie.png", 
     position: "60% 29%",
     scale: 1.5
   },
   {
-    name: 'Hector Miranda Plaza',
+    name: 'Héctor Miranda Plaza',
     focus: 'Co-founder, CXO',
-    bio: 'Statistics, Data Science and Political Science at Yale, with a certificate in German. Brings deep expertise in statistical modelling, deep learning, and geographical systems across political, biomedical, and econometric fields.',
+    bio: 'B.A. in Statistics & Data Science and B.A. in Political Science at Yale. I have professional experience with statistical modelling, deep learning, and geographical systems across political, biomedical, and econometric fields. I also study decisionmaking theory, opinion formation, and governance structures in democratic societies.',
     img: "/hector.jpg",
     position: "center 20%"
   },
@@ -128,7 +128,7 @@ function JoinTeamSection() {
             Join the<br /><em style={{ color: 'var(--terracotta)' }}>founding team.</em>
           </h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.8, marginBottom: 16 }}>
-            We're a small, early-stage team building serious financial infrastructure. If you want founding-level ownership and the chance to work on genuinely hard problems (matching algorithms, escrow systems, democratic governance tooling), we want to hear from you.
+            We're a small, early-stage team building serious financial infrastructure. If you want to work on hard problems about the future of finance with big social impact, we want to hear from you.
           </p>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.8 }}>
             Send your resume and a note on your preferred role to{' '}
