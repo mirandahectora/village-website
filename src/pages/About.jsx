@@ -5,7 +5,7 @@ const TEAM = [
   {
     name: 'Richie George',
     focus: 'Co-founder, CXO',
-    bio: 'B.A. in History and Philosophy at Yale. I study how public finance has shaped communities in the U.S. and abroad and how democratic theory can rethink local and global finance for the twenty-first century. I also bring expertise from quantitative approaches in cognitive science and public health.',
+    bio: 'B.A. in History and B.A. Philosophy at Yale. I study how public finance has shaped communities in the U.S. and abroad and how democratic theory can rethink local and global finance for the twenty-first century. I also bring expertise from quantitative approaches in cognitive science and public health.',
     img: "/richie.png", 
     position: "60% 29%",
     scale: 1.5
@@ -13,14 +13,14 @@ const TEAM = [
   {
     name: 'Héctor Miranda Plaza',
     focus: 'Co-founder, CXO',
-    bio: 'B.A. in Statistics & Data Science and B.A. in Political Science at Yale. I have professional experience with statistical modeling, deep learning, and geographical systems across political, biomedical, and econometric fields. I also study decisionmaking theory, opinion formation, and governance structures in democratic societies.',
+    bio: 'B.A. in Statistics & Data Science and B.A. in Political Science at Yale. I have professional experience with statistical modeling, deep learning, and geographical systems across political, biomedical, and econometric fields. I also study decision-making theory, opinion formation, and governance structures in democratic societies.',
     img: "/hector.jpg",
     position: "center 20%"
   },
   {
     name: 'Matthew Diomidous',
     focus: 'Co-founder, CXO',
-    bio: 'Statistics and Data Science at Yale. Academic research focuses on quantitative modeling and data-driven systems design, with strong interest in network dynamics, platform infrastructure, and governance mechanisms.',
+    bio: 'B.S. in Statistics & Data Science at Yale. I have academic experience in quantitative modeling and data-driven systems design, with a strong interest in network dynamics, platform infrastructure, and governance mechanisms. I also explore how data-driven insights can inform strategic decision-making and organizational behavior.',
     img: "/matt.jpeg",
     position: "center"
   },
@@ -225,12 +225,12 @@ function OriginsSection() {
           </div>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.85, marginBottom: 20 }}>
             Village was founded to formalize a model of collective finance in the tradition of the stokvels, the tandas, the susus, and
-            every informal lending circle in the world By giving it matching infrastructure,
+            every informal lending circle in the world. By giving it matching infrastructure,
             democratic governance, and strong legal scaffolding, Village ensures that everyone can power to achieve financial freedom, 
             not just those who already know the right people. 
           </p>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.85 }}>
-            We are building a platform that democratizees finance, to put the power of financial decisionmaking back into the hands of
+            We are building a platform that democratizees finance, to put the power of financial decision-making back into the hands of
             the many, not just the few.
           </p>
         </div>
@@ -269,7 +269,7 @@ function MissionVisionSection() {
             Mission
           </div>
           <h3 style={{ fontSize: 'clamp(22px, 2vw, 30px)', lineHeight: 1.25, marginBottom: 28 }}>
-            Make cooperative finance availale to{' '}
+            Make cooperative finance available to{' '}
             <em style={{ color: 'var(--green)' }}>everyone.</em>
           </h3>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.85 }}>
