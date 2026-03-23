@@ -148,7 +148,7 @@ function JoinTeamSection() {
           </div>
           {[
             { area: 'Engineering', detail: 'Full-stack, ML, fintech infrastructure, security and cryptography' },
-            { area: 'Product & Design', detail: 'Product management, UX design' },
+            { area: 'Product & Design', detail: 'Product management, marketing, UX/UI design' },
             { area: 'Operations & Growth', detail: 'Community partnerships, compliance, analytics' },
           ].map((item, i) => (
             <div key={i} style={{ paddingTop: i > 0 ? 32 : 0, borderTop: i > 0 ? '1px solid var(--rule)' : 'none' }}>
