@@ -147,7 +147,7 @@ function JoinTeamSection() {
             Areas we're hiring in
           </div>
           {[
-            { area: 'Engineering', detail: 'Full-stack, ML, fintech infrastructure' },
+            { area: 'Engineering', detail: 'Full-stack, ML, fintech infrastructure, security and cryptography' },
             { area: 'Product & Design', detail: 'Product management, UX design' },
             { area: 'Operations & Growth', detail: 'Community partnerships, compliance, analytics' },
           ].map((item, i) => (
