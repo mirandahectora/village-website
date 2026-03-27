@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import VillageView from './dashboard/VillageView'
 import ExploreView from './dashboard/ExploreView'
 import SettingsView from './dashboard/SettingsView'
 import MessagesView from './dashboard/MessagesView'
+import { useMobile } from '../hooks/useMobile'
 import {
-  Compass, Settings, LogOut, Plus, MessageSquare, ArrowRight, Camera,
+  Compass, Settings, LogOut, Plus, MessageSquare, ArrowRight, Camera, Monitor,
 } from 'lucide-react'
 
 export default function Dashboard() {
   const { user, villages, logout, leaveVillage, dms, startDM } = useAuth()
   const navigate = useNavigate()
+  const isMobile = useMobile()
   const [activeVillage, setActiveVillage] = useState(villages?.[0]?.id || null)
   const [view, setView] = useState('village') // 'village' | 'explore' | 'create' | 'messages' | 'settings'
   const [tab, setTab] = useState('overview') // 'overview' | 'chat' | 'votes' | 'members' | 'constitution'
@@ -44,6 +46,37 @@ export default function Dashboard() {
   }, [villages])
 
   if (!user) return null
+
+  if (isMobile) {
+    return (
+      <div style={{
+        minHeight: '100vh', background: 'var(--cream)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        padding: '40px 24px', textAlign: 'center',
+      }}>
+        <Monitor size={48} color="var(--green)" strokeWidth={1.5} style={{ marginBottom: 32 }} />
+        <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 16, lineHeight: 1.15 }}>
+          The Village dashboard<br />is designed for desktop.
+        </h1>
+        <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.8, maxWidth: 360, marginBottom: 40 }}>
+          To access your village, manage contributions, and vote on proposals, please open Village on a computer or laptop browser.
+        </p>
+        <p style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-muted)', letterSpacing: '0.08em', marginBottom: 32 }}>
+          village.finance/dashboard
+        </p>
+        <button
+          onClick={() => { logout(); navigate('/') }}
+          style={{
+            fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.08em',
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: 'var(--ink-muted)', textDecoration: 'underline', padding: 0,
+          }}
+        >
+          Sign out
+        </button>
+      </div>
+    )
+  }
 
   const currentVillage = villages?.find(v => v.id === activeVillage)
 
