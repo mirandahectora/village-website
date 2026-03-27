@@ -1,12 +1,13 @@
 import { FlickeringGrid } from '../components/ui/flickering-grid'
 import { useInView, revealStyle } from '../hooks/useInView'
+import { useMobile } from '../hooks/useMobile'
 
 const TEAM = [
   {
     name: 'Richie George',
     focus: 'Co-founder, CXO',
     bio: 'B.A. in History and B.A. Philosophy at Yale. I study how public finance has shaped communities in the U.S. and abroad and how democratic theory can rethink local and global finance for the twenty-first century. I also bring expertise from quantitative approaches in cognitive science and public health.',
-    img: "/richie.png", 
+    img: "/richie.png",
     position: "60% 29%",
     scale: 1.5
   },
@@ -27,6 +28,7 @@ const TEAM = [
 ]
 
 export default function About() {
+  const isMobile = useMobile()
   return (
     <main className="page">
 
@@ -34,13 +36,14 @@ export default function About() {
       <section style={{
         borderBottom: '1px solid var(--rule)',
         maxWidth: 1280, margin: '0 auto',
-        display: 'grid', gridTemplateColumns: '1fr 2fr',
+        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 2fr',
         borderLeft: '1px solid var(--rule)',
         borderRight: '1px solid var(--rule)',
       }}>
         <div style={{
-          padding: '80px 48px',
-          borderRight: '1px solid var(--rule)',
+          padding: isMobile ? '48px 24px' : '80px 48px',
+          borderRight: isMobile ? 'none' : '1px solid var(--rule)',
+          borderBottom: isMobile ? '1px solid var(--rule)' : 'none',
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
         }}>
           <h1 style={{ fontSize: 'clamp(36px, 4vw, 56px)', lineHeight: 1.05, marginBottom: 24 }}>
@@ -49,10 +52,10 @@ export default function About() {
           </h1>
         </div>
 
-        <div style={{ padding: '80px 64px', background: 'var(--green)', display: 'flex', alignItems: 'center' }}>
+        <div style={{ padding: isMobile ? '40px 24px' : '80px 64px', background: 'var(--green)', display: 'flex', alignItems: 'center' }}>
           <div>
             <p style={{
-              fontFamily: 'var(--serif)', fontSize: 'clamp(20px, 2vw, 28px)',
+              fontFamily: 'var(--serif)', fontSize: 'clamp(18px, 2vw, 28px)',
               lineHeight: 1.6, fontWeight: 400, maxWidth: 560, color: 'var(--cream)',
             }}>
               "What if financial institutions didn't just serve communities?
@@ -73,55 +76,61 @@ export default function About() {
       <MissionVisionSection />
 
       {/* ── TEAM ────────────────────────────────────────── */}
-      <section style={{ borderBottom: '1px solid var(--rule)' }}>
-        {/* Header */}
-        <div style={{
-          maxWidth: 1280, margin: '0 auto',
-          padding: '48px 32px',
-          borderLeft: '1px solid var(--rule)',
-          borderRight: '1px solid var(--rule)',
-          borderBottom: '1px solid var(--rule)',
-          display: 'flex', gap: 24, alignItems: 'baseline',
-          position: 'relative', overflow: 'hidden',
-        }}>
-          <FlickeringGrid color="#2A4A1E" maxOpacity={0.1} flickerChance={0.06} squareSize={4} gridGap={6} />
-          <h2 style={{ fontSize: 'clamp(24px, 2.5vw, 36px)', position: 'relative' }}> Meet the Team </h2>
-        </div>
-
-        {/* Team grid */}
-        <div style={{
-          maxWidth: 1280, margin: '0 auto',
-          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
-          borderLeft: '1px solid var(--rule)',
-          borderRight: '1px solid var(--rule)',
-          borderTop: '1px solid var(--rule)',
-        }}>
-          {TEAM.map((member) => (
-            <TeamCard key={member.name} m={member} />
-          ))}
-        </div>
-      </section>
+      <TeamSection isMobile={isMobile} />
 
       {/* ── JOIN THE TEAM ────────────────────────────────── */}
       <JoinTeamSection />
-
 
     </main>
   )
 }
 
-function JoinTeamSection() {
-  const [ref, vis] = useInView()
+function TeamSection({ isMobile }) {
   return (
     <section style={{ borderBottom: '1px solid var(--rule)' }}>
       <div style={{
         maxWidth: 1280, margin: '0 auto',
-        display: 'grid', gridTemplateColumns: '1fr 1fr',
+        padding: isMobile ? '32px 24px' : '48px 32px',
+        borderLeft: '1px solid var(--rule)',
+        borderRight: '1px solid var(--rule)',
+        borderBottom: '1px solid var(--rule)',
+        display: 'flex', gap: 24, alignItems: 'baseline',
+        position: 'relative', overflow: 'hidden',
+      }}>
+        <FlickeringGrid color="#2A4A1E" maxOpacity={0.1} flickerChance={0.06} squareSize={4} gridGap={6} />
+        <h2 style={{ fontSize: 'clamp(24px, 2.5vw, 36px)', position: 'relative' }}> Meet the Team </h2>
+      </div>
+
+      <div style={{
+        maxWidth: 1280, margin: '0 auto',
+        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+        borderLeft: '1px solid var(--rule)',
+        borderRight: '1px solid var(--rule)',
+        borderTop: '1px solid var(--rule)',
+      }}>
+        {TEAM.map((member) => (
+          <TeamCard key={member.name} m={member} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function JoinTeamSection() {
+  const [ref, vis] = useInView()
+  const isMobile = useMobile()
+  return (
+    <section style={{ borderBottom: '1px solid var(--rule)' }}>
+      <div style={{
+        maxWidth: 1280, margin: '0 auto',
+        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)',
         borderTop: '1px solid var(--rule)',
       }}>
         <div ref={ref} style={{
-          padding: '72px 64px', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
+          padding: isMobile ? '40px 24px' : '72px 64px',
+          borderRight: isMobile ? 'none' : '1px solid var(--rule)',
+          borderBottom: '1px solid var(--rule)',
           ...revealStyle(vis, 0),
         }}>
           <h2 style={{ fontSize: 'clamp(26px, 2.5vw, 36px)', marginBottom: 24 }}>
@@ -139,7 +148,8 @@ function JoinTeamSection() {
           </p>
         </div>
         <div style={{
-          padding: '72px 64px', borderBottom: '1px solid var(--rule)',
+          padding: isMobile ? '40px 24px' : '72px 64px',
+          borderBottom: '1px solid var(--rule)',
           background: 'var(--cream-mid)',
           display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32,
         }}>
@@ -166,11 +176,11 @@ function OriginsSection() {
   const [ref, vis] = useInView()
   const [refA, visA] = useInView()
   const [refC, visC] = useInView()
+  const isMobile = useMobile()
   return (
     <section style={{ borderBottom: '1px solid var(--rule)' }}>
-      {/* Header */}
       <div ref={ref} style={{
-        maxWidth: 1280, margin: '0 auto', padding: '48px 32px',
+        maxWidth: 1280, margin: '0 auto', padding: isMobile ? '32px 24px' : '48px 32px',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
         display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
         position: 'relative', overflow: 'hidden',
@@ -180,15 +190,14 @@ function OriginsSection() {
         <h2 style={{ fontSize: 'clamp(24px, 2.5vw, 36px)', position: 'relative' }}>Origins</h2>
       </div>
 
-      {/* Row 1: full-width opening */}
       <div ref={refA} style={{
         maxWidth: 1280, margin: '0 auto',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
-        padding: '72px 64px',
+        padding: isMobile ? '40px 24px' : '72px 64px',
         ...revealStyle(visA, 0),
       }}>
         <p style={{
-          fontFamily: 'var(--serif)', fontSize: 'clamp(20px, 2vw, 28px)',
+          fontFamily: 'var(--serif)', fontSize: 'clamp(18px, 2vw, 28px)',
           lineHeight: 1.65, fontWeight: 400, maxWidth: 820,
         }}>
           Village started as a question in a seminar room at Yale in 2025: why does the financial
@@ -196,26 +205,27 @@ function OriginsSection() {
         </p>
       </div>
 
-      {/* Row 2: two-column narrative */}
       <div style={{
         maxWidth: 1280, margin: '0 auto',
-        display: 'grid', gridTemplateColumns: '1fr 1fr',
+        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)',
       }}>
-        <div style={{
-          borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
-          position: 'relative', overflow: 'hidden', minHeight: 360,
-        }}>
-          <img
-            src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
-            alt="Community gathering"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0, filter: 'saturate(0.6) sepia(0.08)' }}
-          />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(28,26,20,0.35) 0%, transparent 60%)' }} />
-        </div>
+        {!isMobile && (
+          <div style={{
+            borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
+            position: 'relative', overflow: 'hidden', minHeight: 360,
+          }}>
+            <img
+              src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
+              alt="Community gathering"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0, filter: 'saturate(0.6) sepia(0.08)' }}
+            />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(28,26,20,0.35) 0%, transparent 60%)' }} />
+          </div>
+        )}
 
         <div ref={refC} style={{
-          padding: '64px 64px',
+          padding: isMobile ? '40px 24px' : '64px 64px',
           borderBottom: '1px solid var(--rule)',
           background: 'var(--cream-mid)',
           ...revealStyle(visC, 120),
@@ -226,8 +236,8 @@ function OriginsSection() {
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.85, marginBottom: 20 }}>
             Village was founded to formalize a model of collective finance in the tradition of the stokvels, the tandas, the susus, and
             every informal lending circle in the world. By giving it matching infrastructure,
-            democratic governance, and strong legal scaffolding, Village ensures that everyone can power to achieve financial freedom, 
-            not just those who already know the right people. 
+            democratic governance, and strong legal scaffolding, Village ensures that everyone can power to achieve financial freedom,
+            not just those who already know the right people.
           </p>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.85 }}>
             We are building a platform that democratizees finance, to put the power of financial decision-making back into the hands of
@@ -243,10 +253,11 @@ function MissionVisionSection() {
   const [ref, vis] = useInView()
   const [refM, visM] = useInView()
   const [refV, visV] = useInView()
+  const isMobile = useMobile()
   return (
     <section style={{ borderBottom: '1px solid var(--rule)' }}>
       <div ref={ref} style={{
-        maxWidth: 1280, margin: '0 auto', padding: '48px 32px',
+        maxWidth: 1280, margin: '0 auto', padding: isMobile ? '32px 24px' : '48px 32px',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
         display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
         position: 'relative', overflow: 'hidden',
@@ -257,12 +268,13 @@ function MissionVisionSection() {
       </div>
       <div style={{
         maxWidth: 1280, margin: '0 auto',
-        display: 'grid', gridTemplateColumns: '1fr 1fr',
+        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)',
       }}>
         <div ref={refM} style={{
-          padding: '72px 64px',
-          borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
+          padding: isMobile ? '40px 24px' : '72px 64px',
+          borderRight: isMobile ? 'none' : '1px solid var(--rule)',
+          borderBottom: '1px solid var(--rule)',
           ...revealStyle(visM, 0),
         }}>
           <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--green)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 24 }}>
@@ -281,7 +293,7 @@ function MissionVisionSection() {
         </div>
 
         <div ref={refV} style={{
-          padding: '72px 64px',
+          padding: isMobile ? '40px 24px' : '72px 64px',
           borderBottom: '1px solid var(--rule)',
           background: 'var(--cream-mid)',
           ...revealStyle(visV, 100),

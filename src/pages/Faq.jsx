@@ -1,5 +1,6 @@
 import { FlickeringGrid } from '../components/ui/flickering-grid'
 import { useInView, revealStyle } from '../hooks/useInView'
+import { useMobile } from '../hooks/useMobile'
 
 const FAQ = [
   {
@@ -38,11 +39,12 @@ const FAQ = [
 
 export default function Faq() {
   const [refH, visH] = useInView()
+  const isMobile = useMobile()
   return (
     <main className="page">
       <section style={{ borderBottom: '1px solid var(--rule)' }}>
         <div ref={refH} style={{
-          maxWidth: 1280, margin: '0 auto', padding: '48px 32px',
+          maxWidth: 1280, margin: '0 auto', padding: isMobile ? '32px 24px' : '48px 32px',
           borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
           display: 'flex', gap: 24, alignItems: 'baseline',
           position: 'relative', overflow: 'hidden',
@@ -51,11 +53,21 @@ export default function Faq() {
           <FlickeringGrid color="#2A4A1E" maxOpacity={0.1} flickerChance={0.06} squareSize={4} gridGap={6} />
           <h2 style={{ fontSize: 'clamp(24px, 2.5vw, 36px)', position: 'relative' }}>Common Questions</h2>
         </div>
-        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderTop: '1px solid var(--rule)' }}>
+        <div style={{
+          maxWidth: 1280, margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+          borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderTop: '1px solid var(--rule)',
+        }}>
           {FAQ.map((item, i) => {
             const [ref, vis] = useInView()
             return (
-              <div key={i} ref={ref} style={{ padding: '36px 48px', borderRight: i % 2 === 0 ? '1px solid var(--rule)' : 'none', borderBottom: '1px solid var(--rule)', ...revealStyle(vis, (i % 2) * 100) }}>
+              <div key={i} ref={ref} style={{
+                padding: isMobile ? '28px 24px' : '36px 48px',
+                borderRight: (!isMobile && i % 2 === 0) ? '1px solid var(--rule)' : 'none',
+                borderBottom: '1px solid var(--rule)',
+                ...revealStyle(vis, (i % 2) * 100),
+              }}>
                 <div style={{ fontFamily: 'var(--serif)', fontSize: 17, fontWeight: 700, marginBottom: 12, lineHeight: 1.3 }}>{item.q}</div>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--ink-muted)', lineHeight: 1.8 }}>{item.a}</div>
               </div>

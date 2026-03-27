@@ -1,8 +1,8 @@
-import { ArrowRight, TrendingUp, Check } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { ArrowRight, Check } from 'lucide-react'
 import { useState } from 'react'
 import { useInView, revealStyle } from '../hooks/useInView'
 import { FlickeringGrid } from '../components/ui/flickering-grid'
+import { useMobile } from '../hooks/useMobile'
 
 const TAM_DATA = [
   {
@@ -34,6 +34,14 @@ const AUM_PROJECTIONS = [
   { year: 'Year 3', label: 'National + LATAM', aum: '$520M',  users: '190,000', villages: '13,000', fee: '$5.2M',   pct: 100 },
   { year: 'Year 4', label: 'Scale', aum: '$1.4B',  users: '500,000', villages: '35,000', fee: '$10.5M',  pct: 100 },
   { year: 'Year 5', label: 'Mature Platform', aum: '$3.2B',  users: '1.1M',    villages: '80,000', fee: '$19.2M',  pct: 100 },
+]
+
+const AUM_DESCS = [
+  'NYC closed alpha: first real villages, first pooled funds.',
+  'US city expansion across NYC, San Francisco, and Boston.',
+  'National rollout plus LATAM pilot in Mexico City and São Paulo.',
+  'Platform at scale: reverse credit pilot underway.',
+  'Mature platform across US, LATAM, and early Africa & South Asia entry.',
 ]
 
 const TIMELINE_PHASES = [
@@ -138,7 +146,6 @@ const TIMELINE_PHASES = [
 ]
 
 
-
 export default function Investors() {
   return (
     <main className="page">
@@ -152,15 +159,18 @@ export default function Investors() {
 }
 
 function InvestorHero() {
+  const isMobile = useMobile()
   return (
     <section style={{
       borderBottom: '1px solid var(--rule)',
       maxWidth: 1280, margin: '0 auto',
-      display: 'grid', gridTemplateColumns: '1fr 2fr',
+      display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 2fr',
       borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)',
     }}>
       <div style={{
-        padding: '80px 48px', borderRight: '1px solid var(--rule)',
+        padding: isMobile ? '48px 24px' : '80px 48px',
+        borderRight: isMobile ? 'none' : '1px solid var(--rule)',
+        borderBottom: isMobile ? '1px solid var(--rule)' : 'none',
         display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
       }}>
         <div>
@@ -171,8 +181,8 @@ function InvestorHero() {
           </h1>
         </div>
       </div>
-      <div style={{ padding: '80px 64px' }}>
-        <p style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(20px, 2vw, 26px)', lineHeight: 1.6, marginBottom: 40, fontWeight: 400, maxWidth: 640 }}>
+      <div style={{ padding: isMobile ? '40px 24px' : '80px 64px' }}>
+        <p style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(18px, 2vw, 26px)', lineHeight: 1.6, marginBottom: 40, fontWeight: 400, maxWidth: 640 }}>
           Village is an early-stage cooperative finance platform targeting the $380B informal savings market, beginning with 57M underbanked Americans and expanding globally.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, border: '1px solid var(--rule)', marginBottom: 40 }}>
@@ -181,9 +191,9 @@ function InvestorHero() {
             { label: 'Stage', value: 'Pre-Seed' },
             { label: 'HQ', value: 'NYC' },
           ].map((s, i) => (
-            <div key={i} style={{ padding: '24px 28px', borderRight: i < 2 ? '1px solid var(--rule)' : 'none' }}>
+            <div key={i} style={{ padding: isMobile ? '16px' : '24px 28px', borderRight: i < 2 ? '1px solid var(--rule)' : 'none' }}>
               <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>{s.label}</div>
-              <div style={{ fontFamily: 'var(--serif)', fontSize: 24, fontWeight: 700 }}>{s.value}</div>
+              <div style={{ fontFamily: 'var(--serif)', fontSize: isMobile ? 20 : 24, fontWeight: 700 }}>{s.value}</div>
             </div>
           ))}
         </div>
@@ -199,10 +209,11 @@ function InvestorHero() {
 
 function TamSection() {
   const [ref, vis] = useInView()
+  const isMobile = useMobile()
   return (
     <section style={{ borderBottom: '1px solid var(--rule)' }}>
       <div ref={ref} style={{
-        maxWidth: 1280, margin: '0 auto', padding: '48px 32px',
+        maxWidth: 1280, margin: '0 auto', padding: isMobile ? '32px 24px' : '48px 32px',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
         display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
         position: 'relative', overflow: 'hidden',
@@ -213,7 +224,7 @@ function TamSection() {
       </div>
       <div style={{
         maxWidth: 1280, margin: '0 auto',
-        display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
+        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderTop: '1px solid var(--rule)',
       }}>
         {TAM_DATA.map((t, i) => {
@@ -221,15 +232,16 @@ function TamSection() {
           const accent = t.color === 'green' ? 'var(--green)' : 'var(--terracotta)'
           return (
             <div key={i} ref={tRef} style={{
-              borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
-              ...revealStyle(tVis, i * 100),
+              borderRight: !isMobile ? '1px solid var(--rule)' : 'none',
+              borderBottom: '1px solid var(--rule)',
+              ...revealStyle(tVis, isMobile ? 0 : i * 100),
             }}>
-              <div style={{ padding: '36px 40px 28px', borderBottom: '1px solid var(--rule)', borderTop: `3px solid ${accent}` }}>
+              <div style={{ padding: isMobile ? '28px 24px 20px' : '36px 40px 28px', borderBottom: '1px solid var(--rule)', borderTop: `3px solid ${accent}` }}>
                 <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(44px, 4vw, 64px)', fontWeight: 900, color: accent, lineHeight: 1, marginBottom: 8 }}>{t.value}</div>
                 <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.06em', marginBottom: 16 }}>{t.sublabel}</div>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: 11, color: accent, letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600 }}>{t.label}</div>
               </div>
-              <div style={{ padding: '28px 40px 36px' }}>
+              <div style={{ padding: isMobile ? '20px 24px 28px' : '28px 40px 36px' }}>
                 <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--ink-muted)', lineHeight: 1.8 }}>{t.desc}</p>
               </div>
             </div>
@@ -239,8 +251,8 @@ function TamSection() {
       <div style={{
         maxWidth: 1280, margin: '0 auto',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
-        padding: '40px 56px',
-        display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 48, alignItems: 'center',
+        padding: isMobile ? '32px 24px' : '40px 56px',
+        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 2fr', gap: isMobile ? 20 : 48, alignItems: 'center',
         background: 'var(--cream-mid)',
       }}>
         <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', lineHeight: 2 }}>
@@ -258,10 +270,11 @@ function TamSection() {
 
 function AumSection() {
   const [ref, vis] = useInView()
+  const isMobile = useMobile()
   return (
     <section style={{ borderBottom: '1px solid var(--rule)' }}>
       <div ref={ref} style={{
-        maxWidth: 1280, margin: '0 auto', padding: '48px 32px',
+        maxWidth: 1280, margin: '0 auto', padding: isMobile ? '32px 24px' : '48px 32px',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
         display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
         position: 'relative', overflow: 'hidden',
@@ -277,6 +290,40 @@ function AumSection() {
         {AUM_PROJECTIONS.map((row, i) => {
           const [rRef, rVis] = useInView()
           const accent = i % 2 === 0 ? 'var(--green)' : 'var(--terracotta)'
+          if (isMobile) {
+            return (
+              <div key={row.year} ref={rRef} style={{
+                padding: '24px',
+                borderBottom: '1px solid var(--rule)',
+                borderTop: `3px solid ${accent}`,
+                ...revealStyle(rVis, 0),
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                  <div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em' }}>{row.year}</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.06em', marginTop: 2 }}>{row.label}</div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontFamily: 'var(--serif)', fontSize: 26, fontWeight: 900, color: accent }}>{row.aum}</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>AUM</div>
+                  </div>
+                </div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--ink-muted)', lineHeight: 1.6, marginBottom: 12 }}>
+                  {AUM_DESCS[i]}
+                </div>
+                <div style={{ display: 'flex', gap: 24 }}>
+                  <div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600 }}>{row.users}</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>members</div>
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600, color: accent }}>{row.fee}</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>annual revenue</div>
+                  </div>
+                </div>
+              </div>
+            )
+          }
           return (
             <div key={row.year} ref={rRef} style={{
               display: 'grid', gridTemplateColumns: '160px 140px 1fr 140px 160px',
@@ -294,11 +341,7 @@ function AumSection() {
               </div>
               <div style={{ padding: '28px 32px', borderRight: '1px solid var(--rule)' }}>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--ink-muted)', lineHeight: 1.6 }}>
-                  {i === 0 && 'NYC closed alpha: first real villages, first pooled funds.'}
-                  {i === 1 && 'US city expansion across NYC, San Francisco, and Boston.'}
-                  {i === 2 && 'National rollout plus LATAM pilot in Mexico City and São Paulo.'}
-                  {i === 3 && 'Platform at scale: reverse credit pilot underway.'}
-                  {i === 4 && 'Mature platform across US, LATAM, and early Africa & South Asia entry.'}
+                  {AUM_DESCS[i]}
                 </div>
               </div>
               <div style={{ padding: '28px 24px', borderRight: '1px solid var(--rule)', textAlign: 'right' }}>
@@ -316,28 +359,28 @@ function AumSection() {
       <div style={{
         maxWidth: 1280, margin: '0 auto',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
-        display: 'grid', gridTemplateColumns: '1fr 1fr',
+        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
       }}>
-        {/* Image panel */}
-        <div style={{
-          borderRight: '1px solid var(--rule)',
-          minHeight: 280,
-          overflow: 'hidden',
-          background: 'var(--cream-mid)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <img
-            src="/aum-visual.jpg"
-            alt="Village community"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            onError={e => {
-              e.currentTarget.style.display = 'none'
-              e.currentTarget.parentElement.style.background = 'var(--cream-mid)'
-            }}
-          />
-        </div>
-        {/* Revenue model panel */}
-        <div style={{ padding: '40px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
+        {!isMobile && (
+          <div style={{
+            borderRight: '1px solid var(--rule)',
+            minHeight: 280,
+            overflow: 'hidden',
+            background: 'var(--cream-mid)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <img
+              src="/aum-visual.jpg"
+              alt="Village community"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              onError={e => {
+                e.currentTarget.style.display = 'none'
+                e.currentTarget.parentElement.style.background = 'var(--cream-mid)'
+              }}
+            />
+          </div>
+        )}
+        <div style={{ padding: isMobile ? '32px 24px' : '40px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
           <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>
             REVENUE MODEL
           </div>
@@ -352,10 +395,11 @@ function AumSection() {
 
 function TimelineSection() {
   const [ref, vis] = useInView()
+  const isMobile = useMobile()
   return (
     <section style={{ borderBottom: '1px solid var(--rule)' }}>
       <div ref={ref} style={{
-        maxWidth: 1280, margin: '0 auto', padding: '48px 32px',
+        maxWidth: 1280, margin: '0 auto', padding: isMobile ? '32px 24px' : '48px 32px',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
         display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
         position: 'relative', overflow: 'hidden',
@@ -373,13 +417,13 @@ function TimelineSection() {
 
 function TimelinePhase({ phase }) {
   const [hRef, hVis] = useInView()
+  const isMobile = useMobile()
   const accent = phase.color === 'green' ? 'var(--green)' : 'var(--terracotta)'
   const accentBg = phase.color === 'green' ? 'rgba(42,74,30,0.06)' : 'rgba(192,80,48,0.06)'
   return (
     <div>
-      {/* Phase header */}
       <div ref={hRef} style={{
-        display: 'grid', gridTemplateColumns: '110px 1fr',
+        display: 'grid', gridTemplateColumns: isMobile ? '56px 1fr' : '110px 1fr',
         borderBottom: '1px solid var(--rule)',
         background: accentBg,
         ...revealStyle(hVis, 0),
@@ -392,7 +436,7 @@ function TimelinePhase({ phase }) {
             {phase.num}
           </span>
         </div>
-        <div style={{ padding: '20px 40px', display: 'flex', alignItems: 'center', gap: 16 }}>
+        <div style={{ padding: isMobile ? '16px 20px' : '20px 40px', display: 'flex', alignItems: 'center', gap: 16 }}>
           <h3 style={{
             fontFamily: 'var(--serif)', fontSize: 'clamp(18px, 1.8vw, 24px)',
             fontWeight: 900, color: accent, letterSpacing: '0.01em',
@@ -402,7 +446,6 @@ function TimelinePhase({ phase }) {
           <div style={{ height: 1, flex: 1, background: `${accent}30` }} />
         </div>
       </div>
-      {/* Milestones */}
       {phase.milestones.map((m, i) => <TimelineMilestone key={i} m={m} i={i} accent={accent} />)}
     </div>
   )
@@ -411,21 +454,21 @@ function TimelinePhase({ phase }) {
 function TimelineMilestone({ m, i, accent }) {
   const [ref, vis] = useInView()
   const [checked, setChecked] = useState(false)
+  const isMobile = useMobile()
   return (
     <div ref={ref} style={{
-      display: 'grid', gridTemplateColumns: '110px 1fr',
+      display: 'grid', gridTemplateColumns: isMobile ? '56px 1fr' : '110px 1fr',
       borderBottom: '1px solid var(--rule)',
       ...revealStyle(vis, i * 80),
     }}>
-      {/* Left gutter with date and checkbox */}
       <div style={{
         borderRight: '1px solid var(--rule)',
         display: 'flex', flexDirection: 'column', alignItems: 'center',
-        paddingTop: 30, paddingBottom: 24, gap: 12,
+        paddingTop: 24, paddingBottom: 20, gap: 10,
       }}>
         <span style={{
-          fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 500,
-          color: accent, letterSpacing: '0.06em', textAlign: 'center', lineHeight: 1.4,
+          fontFamily: 'var(--mono)', fontSize: isMobile ? 9 : 10, fontWeight: 500,
+          color: accent, letterSpacing: '0.04em', textAlign: 'center', lineHeight: 1.4,
         }}>{m.date}</span>
         <button
           onClick={() => setChecked(c => !c)}
@@ -444,9 +487,8 @@ function TimelineMilestone({ m, i, accent }) {
           {checked && <Check size={12} color="var(--cream)" strokeWidth={3} />}
         </button>
       </div>
-      {/* Content */}
       <div style={{
-        padding: '28px 40px 32px',
+        padding: isMobile ? '20px 20px 24px' : '28px 40px 32px',
         opacity: checked ? 0.45 : 1,
         transition: 'opacity 0.2s',
       }}>
@@ -460,11 +502,11 @@ function TimelineMilestone({ m, i, accent }) {
 
 function InvestorCta() {
   const [ref, vis] = useInView()
+  const isMobile = useMobile()
   return (
     <section style={{ borderBottom: '1px solid var(--rule)' }}>
-      {/* Header */}
       <div style={{
-        maxWidth: 1280, margin: '0 auto', padding: '48px 32px',
+        maxWidth: 1280, margin: '0 auto', padding: isMobile ? '32px 24px' : '48px 32px',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
         position: 'relative', overflow: 'hidden',
       }}>
@@ -472,15 +514,13 @@ function InvestorCta() {
         <h2 style={{ fontSize: 'clamp(24px, 2.5vw, 36px)', position: 'relative' }}>Get in touch</h2>
       </div>
 
-      {/* Contact grid */}
       <div ref={ref} style={{
         maxWidth: 1280, margin: '0 auto',
-        display: 'grid', gridTemplateColumns: '1fr 1fr',
+        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)',
         ...revealStyle(vis, 0),
       }}>
-        {/* Investors */}
-        <div style={{ padding: '64px 56px', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
+        <div style={{ padding: isMobile ? '40px 24px' : '64px 56px', borderRight: isMobile ? 'none' : '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
           <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--green)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 20 }}>
             Investors
           </div>
@@ -500,8 +540,7 @@ function InvestorCta() {
           </a>
         </div>
 
-        {/* Press */}
-        <div style={{ padding: '64px 56px', borderBottom: '1px solid var(--rule)', background: 'var(--cream-mid)' }}>
+        <div style={{ padding: isMobile ? '40px 24px' : '64px 56px', borderBottom: '1px solid var(--rule)', background: 'var(--cream-mid)' }}>
           <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--terracotta)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 20 }}>
             Press & Media
           </div>
@@ -520,7 +559,6 @@ function InvestorCta() {
             press@village.finance <ArrowRight size={12} />
           </a>
         </div>
-
       </div>
     </section>
   )

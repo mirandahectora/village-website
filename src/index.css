@@ -87,6 +87,20 @@ hr.rule { border: none; border-top: 1px solid var(--rule); width: 100%; }
 ::-webkit-scrollbar-track { background: var(--cream); }
 ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
 
+/* ── Mobile ──────────────────────────────────────── */
+@media (max-width: 767px) {
+  .page { padding-top: 72px; }
+
+  /* Ensure images don't overflow */
+  img { max-width: 100%; }
+
+  /* Larger tap targets for buttons */
+  .btn { min-height: 48px; }
+
+  /* Prevent horizontal scroll from oversized content */
+  body { overflow-x: hidden; }
+}
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }

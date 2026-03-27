@@ -13,8 +13,8 @@ export default function Dashboard() {
   const { user, villages, logout, leaveVillage, dms, startDM } = useAuth()
   const navigate = useNavigate()
   const [activeVillage, setActiveVillage] = useState(villages?.[0]?.id || null)
-  const [view, setView] = useState('village') // 'village' | 'explore' | 'messages' | 'settings'
-  const [tab, setTab] = useState('overview') // 'overview' | 'chat' | 'votes' | 'members'
+  const [view, setView] = useState('village') // 'village' | 'explore' | 'create' | 'messages' | 'settings'
+  const [tab, setTab] = useState('overview') // 'overview' | 'chat' | 'votes' | 'members' | 'constitution'
   const [activeDM, setActiveDM] = useState(null)
 
   const handleLeave = () => {
