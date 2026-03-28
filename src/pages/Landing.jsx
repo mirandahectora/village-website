@@ -48,6 +48,7 @@ export default function Landing() {
       <WhatIsVillage />
       <StepsSection />
       <AlgorithmicMatchingSection />
+      <FeeSection />
       <CtaSection />
     </main>
   )
@@ -266,6 +267,69 @@ function AlgorithmicMatchingSection() {
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.8 }}>
             Our matching algorithm draws on up to 212 financial variables to find members with compatible goals, similar contribution capacity, and complementary financial circumstances. It builds the group, and from there, the community takes over.
           </p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+const FEE_TIERS = [
+  { rate: '2%',   color: 'green',  range: '$0 – $100,000 pooled' },
+  { rate: '1.5%', color: 'terra',  range: '$100,001 – $250,000 pooled' },
+  { rate: '1%',   color: 'green',  range: '$250,001+ ' },
+]
+
+function FeeSection() {
+  const [ref, vis] = useInView()
+  const isMobile = useMobile()
+  return (
+    <section style={{ borderBottom: '1px solid var(--rule)' }} ref={ref}>
+      <div style={{
+        maxWidth: 1280, margin: '0 auto',
+        borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)',
+        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+        ...revealStyle(vis, 0),
+      }}>
+        <div style={{
+          padding: isMobile ? '40px 24px' : '64px 64px',
+          borderRight: isMobile ? 'none' : '1px solid var(--rule)',
+          borderBottom: '1px solid var(--rule)',
+          display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        }}>
+          <p style={{
+            fontFamily: 'var(--serif)', fontSize: 'clamp(20px, 2vw, 28px)',
+            lineHeight: 1.5, fontWeight: 400, margin: 0,
+          }}>
+            We make our money with a small, up-front percentage fee of funds entered into villages. The more money your village pools, the lower the fee; your success compounds.
+          </p>
+        </div>
+        <div style={{
+          borderBottom: '1px solid var(--rule)',
+          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
+        }}>
+          {FEE_TIERS.map((tier, i) => {
+            const accent = tier.color === 'green' ? 'var(--green)' : 'var(--terracotta)'
+            return (
+              <div key={i} style={{
+                padding: isMobile ? '28px 20px' : '48px 36px',
+                borderRight: i < 2 ? '1px solid var(--rule)' : 'none',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center',
+              }}>
+                <div style={{
+                  fontFamily: 'var(--serif)', fontWeight: 900, color: accent,
+                  fontSize: 'clamp(36px, 3.5vw, 52px)', lineHeight: 1, marginBottom: 12,
+                }}>
+                  {tier.rate}
+                </div>
+                <div style={{
+                  fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)',
+                  letterSpacing: '0.06em', lineHeight: 1.6,
+                }}>
+                  {tier.range}
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>

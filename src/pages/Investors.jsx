@@ -7,24 +7,24 @@ import { useMobile } from '../hooks/useMobile'
 const TAM_DATA = [
   {
     label: 'Total Addressable Market',
-    value: '$4.2T',
-    sublabel: 'US consumer credit + cooperative finance',
+    value: '$33.5B',
+    sublabel: 'Total household savings market',
     color: 'green',
-    desc: '57M unbanked or underbanked Americans. $2.2T in credit union assets. A $15T consumer lending market structurally inaccessible to the communities that need it most.',
+    desc: '133 Million Households, with a median annual income of $83,370. The current household savings rate is 5%. Only 5% of households currently participate in an informal financial circle.',
   },
   {
     label: 'Serviceable Addressable Market',
-    value: '$380B',
-    sublabel: 'Community cooperative finance segment',
+    value: '$299.5M',
+    sublabel: 'Total household savings market in key demographics',
     color: 'terra',
-    desc: 'Informal savings circles, stokvels, ROSCAs, and credit cooperatives manage an estimated $380B globally, with virtually no digital infrastructure. Village is the infrastructure layer.',
+    desc: '2.5 Million households in NYC, SF, and Boston MSAs falling into immigrant, union, college, or religious populations, with assumed overlap penalties. Current savings remains at 5%, but median annual household income is lower at $47,900.',
   },
   {
     label: 'Serviceable Obtainable Market',
-    value: '$2.1B',
-    sublabel: '5-year target: US metro + LATAM',
+    value: '$7.2M',
+    sublabel: 'Year 1 Post-Launch Goal',
     color: 'green',
-    desc: 'New York, Chicago, San Francisco, Boston, Philadelphia, and LATAM expansion. Village targets the 18M adults in underbanked metro communities who already participate in informal savings groups.',
+    desc: 'Goal of 5,000 users in key demographics across NYC, SF, and Boston MSAs. Calculations continue to use 5% savings rate and $47,900 median annual income.',
   },
 ]
 
@@ -355,39 +355,6 @@ function AumSection() {
             </div>
           )
         })}
-      </div>
-      <div style={{
-        maxWidth: 1280, margin: '0 auto',
-        borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
-        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-      }}>
-        {!isMobile && (
-          <div style={{
-            borderRight: '1px solid var(--rule)',
-            minHeight: 280,
-            overflow: 'hidden',
-            background: 'var(--cream-mid)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <img
-              src="/aum-visual.jpg"
-              alt="Village community"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-              onError={e => {
-                e.currentTarget.style.display = 'none'
-                e.currentTarget.parentElement.style.background = 'var(--cream-mid)'
-              }}
-            />
-          </div>
-        )}
-        <div style={{ padding: isMobile ? '32px 24px' : '40px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>
-            REVENUE MODEL
-          </div>
-          <div style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--ink-muted)', lineHeight: 1.8 }}>
-            Village earns 2% on pooled contributions (declining to 1% at scale). Revenue is non-extractive: no subscription, no exit fees. Projections assume conservative 40% annual member retention and 8% average income pooled.
-          </div>
-        </div>
       </div>
     </section>
   )
