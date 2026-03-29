@@ -81,7 +81,7 @@ function HeroSection() {
           fontFamily: 'var(--serif)',
           fontSize: 'clamp(52px, 6vw, 88px)', fontWeight: 900,
           lineHeight: 1.0, letterSpacing: '-0.02em',
-          height: 'calc(2 * clamp(52px, 6vw, 88px) + 20px)',
+          height: isMobile ? 'calc(3 * clamp(52px, 6vw, 88px) + 20px)' : 'calc(2 * clamp(52px, 6vw, 88px) + 20px)',
           overflow: 'hidden',
           marginBottom: 32,
         }}>
