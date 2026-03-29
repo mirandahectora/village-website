@@ -276,7 +276,7 @@ function AlgorithmicMatchingSection() {
 const FEE_TIERS = [
   { rate: '2%',   color: 'green',  range: '$0 – $100,000 pooled' },
   { rate: '1.5%', color: 'terra',  range: '$100,001 – $250,000 pooled' },
-  { rate: '1%',   color: 'green',  range: '$250,001+ ' },
+  { rate: '1%',   color: 'green',  range: '$250,001+ pooled' },
 ]
 
 function FeeSection() {
