@@ -87,7 +87,7 @@ function HeroSection() {
         }}>
           {' '}
           <Typewriter
-            text={['build future wealth.', 'save money for emergencies.', 'pay off debts.', 'fund a project.', 'be financially independent.', 'build out your dream.', 'thrive.']}
+            text={['invest for the future.', 'save money for emergencies.', 'pay off debts.', 'fund a project.', 'be financially independent.', 'build out your dream.', 'thrive.']}
             speed={70}
             waitTime={1800}
             deleteSpeed={40}
