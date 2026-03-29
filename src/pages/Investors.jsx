@@ -29,19 +29,19 @@ const TAM_DATA = [
 ]
 
 const AUM_PROJECTIONS = [
-  { year: 'Year 1', label: 'NYC Alpha', aum: '$12M',   users: '4,500',   villages: '320',  fee: '$240K',   pct: 6 },
-  { year: 'Year 2', label: 'US Expansion', aum: '$110M',  users: '42,000',  villages: '2,900', fee: '$1.65M',  pct: 55 },
-  { year: 'Year 3', label: 'National + LATAM', aum: '$520M',  users: '190,000', villages: '13,000', fee: '$5.2M',   pct: 100 },
-  { year: 'Year 4', label: 'Scale', aum: '$1.4B',  users: '500,000', villages: '35,000', fee: '$10.5M',  pct: 100 },
-  { year: 'Year 5', label: 'Mature Platform', aum: '$3.2B',  users: '1.1M',    villages: '80,000', fee: '$19.2M',  pct: 100 },
+  { year: 'Year 1', label: 'Stage 1 Launch',       aum: '$7.2M',   users: '3,000',   fee: '2.0%', revenue: '$144K'  },
+  { year: 'Year 2', label: 'Market Consolidation', aum: '$35.9M',  users: '15,000',  fee: '1.9%', revenue: '$683K'  },
+  { year: 'Year 3', label: 'Stage 2 Launches',     aum: '$137.5M', users: '55,000',  fee: '1.8%', revenue: '$2.48M' },
+  { year: 'Year 4', label: 'National',             aum: '$405M',   users: '150,000', fee: '1.7%', revenue: '$6.89M' },
+  { year: 'Year 5', label: 'Mature Platform',      aum: '$1.14B',  users: '380,000', fee: '1.6%', revenue: '$18.24M'},
 ]
 
 const AUM_DESCS = [
-  'NYC closed alpha: first real villages, first pooled funds.',
-  'US city expansion across NYC, San Francisco, and Boston.',
-  'National rollout plus LATAM pilot in Mexico City and São Paulo.',
-  'Platform at scale: reverse credit pilot underway.',
-  'Mature platform across US, LATAM, and early Africa & South Asia entry.',
+  'NYC closed alpha: first villages formed, first funds pooled.',
+  'Deepening presence in Stage 1 MSAs; network effects take hold.',
+  'Expansion into new cities and demographics with focused outreach.',
+  'National footprint established; reverse credit pilot underway.',
+  'Mature platform across US; early-stage into select LATAM markets begins.',
 ]
 
 const TIMELINE_PHASES = [
@@ -127,17 +127,17 @@ const TIMELINE_PHASES = [
     color: 'terra',
     milestones: [
       {
-        date: 'Year 3',
+        date: 'Year 4',
         title: 'Reverse Credit Pilot',
         desc: 'Test the reverse credit model with mature villages: community-pooled liquidity drawn by members without incurring personal debt. The pooled fund as collateral. The community as underwriter.',
       },
       {
-        date: 'Year 3–4',
+        date: 'Year 5',
         title: 'LATAM Expansion',
         desc: 'Launch in Mexico City, São Paulo, Bogotá, and other high-density ROSCA markets. Tanda cultural heritage makes adoption structurally natural.',
       },
       {
-        date: 'Year 4–5',
+        date: 'Year 5+',
         title: 'Africa & South Asia',
         desc: 'Enter markets with existing community finance traditions in South Africa and cooperative finance communities across India, Bangladesh, and the broader South Asian diaspora.',
       },
@@ -314,11 +314,15 @@ function AumSection() {
                 <div style={{ display: 'flex', gap: 24 }}>
                   <div>
                     <div style={{ fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600 }}>{row.users}</div>
-                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>members</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>Members</div>
                   </div>
                   <div>
                     <div style={{ fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600, color: accent }}>{row.fee}</div>
-                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>annual revenue</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>Median Village Fee</div>
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600, color: accent }}>{row.revenue}</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>Annual Revenue</div>
                   </div>
                 </div>
               </div>
