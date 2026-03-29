@@ -335,26 +335,32 @@ function AumSection() {
               borderBottom: '1px solid var(--rule)',
               ...revealStyle(rVis, i * 60),
             }}>
-              <div style={{ padding: '28px 32px', borderRight: '1px solid var(--rule)' }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em' }}>{row.year}</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.06em', marginTop: 4 }}>{row.label}</div>
-              </div>
-              <div style={{ padding: '28px 16px', borderRight: '1px solid var(--rule)', textAlign: 'center' }}>
-                <div style={{ fontFamily: 'var(--serif)', fontSize: 22, fontWeight: 900, color: accent }}>{row.aum}</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em', marginTop: 4 }}>AUM</div>
-              </div>
-              <div style={{ padding: '28px 32px', borderRight: '1px solid var(--rule)' }}>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--ink-muted)', lineHeight: 1.6 }}>
-                  {AUM_DESCS[i]}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                <div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em' }}>{row.year}</div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.06em', marginTop: 2 }}>{row.label}</div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontFamily: 'var(--serif)', fontSize: 26, fontWeight: 900, color: accent }}>{row.aum}</div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>AUM</div>
                 </div>
               </div>
-              <div style={{ padding: '28px 24px', borderRight: '1px solid var(--rule)', textAlign: 'right' }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 600 }}>{row.users}</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em', marginTop: 4 }}>members</div>
+              <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--ink-muted)', lineHeight: 1.6, marginBottom: 12 }}>
+                {AUM_DESCS[i]}
               </div>
-              <div style={{ padding: '28px 32px', textAlign: 'right' }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 600, color: accent }}>{row.fee}</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em', marginTop: 4 }}>annual revenue</div>
+              <div style={{ display: 'flex', gap: 24 }}>
+                <div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600 }}>{row.users}</div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>Members</div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600, color: accent }}>{row.fee}</div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>Median Village Fee</div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600, color: accent }}>{row.revenue}</div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>Annual Revenue</div>
+                </div>
               </div>
             </div>
           )
