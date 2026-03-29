@@ -29,7 +29,7 @@ const TAM_DATA = [
 ]
 
 const AUM_PROJECTIONS = [
-  { year: 'Year 1', label: 'Stage 1 Launch',       aum: '$7.2M',   users: '3,000',   fee: '2.0%', revenue: '$144K'  },
+  { year: 'Year 1', label: 'Stage 1 Launch',       aum: '$7.2M',   users: '5,000',   fee: '2.0%', revenue: '$144K'  },
   { year: 'Year 2', label: 'Market Consolidation', aum: '$35.9M',  users: '15,000',  fee: '1.9%', revenue: '$683K'  },
   { year: 'Year 3', label: 'Stage 2 Launches',     aum: '$137.5M', users: '55,000',  fee: '1.8%', revenue: '$2.48M' },
   { year: 'Year 4', label: 'National',             aum: '$405M',   users: '150,000', fee: '1.7%', revenue: '$6.89M' },
