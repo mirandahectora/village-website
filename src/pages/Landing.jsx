@@ -81,13 +81,13 @@ function HeroSection() {
           fontFamily: 'var(--serif)',
           fontSize: 'clamp(52px, 6vw, 88px)', fontWeight: 900,
           lineHeight: 1.0, letterSpacing: '-0.02em',
-          height: isMobile ? 'calc(3 * clamp(52px, 6vw, 88px) + 20px)' : 'calc(2 * clamp(52px, 6vw, 88px) + 20px)',
+          height: 'calc(2 * clamp(52px, 6vw, 88px) + 20px)',
           overflow: 'hidden',
           marginBottom: 32,
         }}>
           {' '}
           <Typewriter
-            text={['build future wealth.', 'save money for emergencies.', 'pay off debts.', 'fund a project.', 'build something new.', 'be financially independent.', 'thrive.']}
+            text={['build future wealth.', 'save money for emergencies.', 'pay off debts.', 'fund a project.', 'be financially independent.', 'build out your dream.', 'thrive.']}
             speed={70}
             waitTime={1800}
             deleteSpeed={40}
