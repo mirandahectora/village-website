@@ -14,7 +14,7 @@ const TAM_DATA = [
   },
   {
     label: 'Serviceable Addressable Market',
-    value: '$$273.6M',
+    value: '$273.6M',
     sublabel: 'Total household savings market in key demographics',
     color: 'terra',
     desc: '2.5 Million households in NYC and SF MSAs falling into immigrant, union, college, or religious populations, with assumed overlap penalties. Current savings remains at 5%, but median annual household income is lower at $47,900.',
