@@ -5,7 +5,7 @@ import { useMobile } from '../hooks/useMobile'
 const TEAM = [
   {
     name: 'Richie George',
-    focus: 'Co-founder, CXO',
+    focus: 'Co-founder, CEO',
     bio: 'B.A. in History and B.A. Philosophy at Yale. I study how public finance has shaped communities in the U.S. and abroad and how democratic theory can rethink local and global finance for the twenty-first century. I also bring expertise from quantitative approaches in cognitive science and public health.',
     img: "/richie.png",
     position: "60% 29%",
@@ -13,14 +13,14 @@ const TEAM = [
   },
   {
     name: 'Héctor Miranda Plaza',
-    focus: 'Co-founder, CXO',
+    focus: 'Co-founder, COO',
     bio: 'B.A. in Statistics & Data Science and B.A. in Political Science at Yale. I have professional experience with statistical modeling, deep learning, and geographical systems across political, biomedical, and econometric fields. I also study decision-making theory, opinion formation, and governance structures in democratic societies.',
     img: "/hector.jpg",
     position: "center 20%"
   },
   {
     name: 'Matthew Diomidous',
-    focus: 'Co-founder, CXO',
+    focus: 'Co-founder, CTO',
     bio: 'B.S. in Statistics & Data Science at Yale. I have academic experience in quantitative modeling and data-driven systems design, with a strong interest in network dynamics, platform infrastructure, and governance mechanisms. I also explore how data-driven insights can inform strategic decision-making and organizational behavior.',
     img: "/matt.jpeg",
     position: "center"
