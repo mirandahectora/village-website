@@ -80,7 +80,7 @@ const TIMELINE_PHASES = [
       {
         date: 'Nov 2026',
         title: 'Algorithmic Development',
-        desc: '212-variable financial profile dataset. KNN matching with autoencoder architecture. Proprietary scoring model validated on synthetic population data across 12 demographic cohorts.',
+        desc: '212-variable financial profile dataset. Proprietary scoring model validated on synthetic population data across 12 demographic cohorts.',
       },
       {
         date: 'Dec 2026',
@@ -129,7 +129,7 @@ const TIMELINE_PHASES = [
       {
         date: 'Year 3+',
         title: 'LATAM Expansion & Public-Private Partnerships',
-        desc: 'Launch in Mexico City, São Paulo, Bogotá, and other high-density ROSCA markets. Tanda cultural heritage makes adoption structurally natural. Pursue public-private partnerships to expand financial inclusion at scale.',
+        desc: 'Launch in Mexico City, São Paulo, Bogotá, Santo Domingo, San Juan, and other high-density ROSCA markets. Tanda cultural heritage makes adoption structurally natural. Pursue public-private partnerships to expand financial inclusion at scale.',
       },
     ],
   },
