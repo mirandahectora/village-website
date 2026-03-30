@@ -121,11 +121,6 @@ function HeroSection() {
             backgroundImage: `linear-gradient(to right, rgba(196,186,168,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(196,186,168,0.15) 1px, transparent 1px)`,
             backgroundSize: '80px 80px',
           }} />
-          <div style={{
-            position: 'absolute', bottom: 24, right: 24,
-            fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase',
-            background: 'var(--cream)', color: 'var(--ink)', padding: '8px 14px', border: '1px solid var(--rule)',
-          }}>Community pooling / NYC pilot</div>
         </div>
       )}
     </section>
@@ -250,11 +245,6 @@ function AlgorithmicMatchingSection() {
             <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=900&q=80" alt="People connecting"
               style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'saturate(0.7)' }} />
             <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(to right, rgba(196,186,168,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(196,186,168,0.15) 1px, transparent 1px)', backgroundSize: '80px 80px' }} />
-            <div style={{
-              position: 'absolute', bottom: 24, left: 24,
-              fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase',
-              background: 'var(--cream)', color: 'var(--ink)', padding: '8px 14px', border: '1px solid var(--rule)',
-            }}>212-feature matching algorithm</div>
           </div>
         )}
         <div style={{ padding: isMobile ? '48px 24px' : '72px 64px', borderBottom: '1px solid var(--rule)', ...revealStyle(vis, 160) }}>

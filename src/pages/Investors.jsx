@@ -80,7 +80,7 @@ const TIMELINE_PHASES = [
       {
         date: 'Nov 2026',
         title: 'Algorithmic Development',
-        desc: '212-variable financial profile dataset. Proprietary scoring model validated on synthetic population data across 12 demographic cohorts.',
+        desc: '212-variable financial profile dataset. Proprietary matching score model validated on synthetic and alpha testing population data.',
       },
       {
         date: 'Dec 2026',
