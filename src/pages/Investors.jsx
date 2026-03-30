@@ -85,7 +85,7 @@ const TIMELINE_PHASES = [
       {
         date: 'Dec 2026',
         title: 'Waitlist Beta Launch',
-        desc: 'Open the waitlist to the general public in New York, San Francisco, and Boston. Begin community outreach and anchor partnership recruitment in all three cities.',
+        desc: 'Open the waitlist to the general public in New York and San Francisco. Begin community outreach and anchor partnership recruitment in all three cities.',
       },
       {
         date: 'Jan 2027',
