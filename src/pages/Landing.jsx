@@ -34,7 +34,8 @@ const STEPS = [
   {
     num: '05', title: 'Vote, allocate, and grow', color: 'green',
     icon: <TrendingUp size={24} />,
-    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=80',
+    img: '/step_05.png',
+
     desc: "Members vote democratically on allocations, whether to pay off a member's debt, invest in a shared portfolio, or save for a collective goal.",
   },
 ]
@@ -450,7 +451,7 @@ function StepRow({ step, i }) {
         borderRight: isMobile ? 'none' : (isEven ? '1px solid var(--rule)' : 'none'),
         borderBottom: '1px solid var(--rule)', minHeight: isMobile ? 220 : 380,
       }}>
-        <img src={step.img} alt={step.title} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'saturate(0.7)' }} />
+        <img src={step.img} alt={step.title} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'saturate(0.7)', ...step.imgStyle }} />
         <div style={{ position: 'absolute', inset: 0, background: isEven ? 'linear-gradient(to right, rgba(192,80,48,0.12), transparent)' : 'linear-gradient(to left, rgba(42,74,30,0.12), transparent)' }} />
       </div>
     </div>
