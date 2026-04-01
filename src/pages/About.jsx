@@ -141,8 +141,8 @@ function JoinTeamSection() {
           </p>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.8 }}>
             Send your resume and a note on your preferred role to{' '}
-            <a href="mailto:careers@village.finance" style={{ color: 'var(--green)', textDecoration: 'none', borderBottom: '1px solid var(--green)' }}>
-              careers@village.finance
+            <a href="mailto:careers@villagefinance.com" style={{ color: 'var(--green)', textDecoration: 'none', borderBottom: '1px solid var(--green)' }}>
+              careers@villagefinance.com
             </a>
             . We read everything.
           </p>
@@ -216,7 +216,7 @@ function OriginsSection() {
             position: 'relative', overflow: 'hidden', minHeight: 360,
           }}>
             <img
-              src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
+              src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?w=800&q=80"
               alt="Community gathering"
               style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0, filter: 'saturate(0.6) sepia(0.08)' }}
             />

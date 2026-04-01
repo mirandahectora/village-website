@@ -188,7 +188,7 @@ function InvestorHero() {
           ))}
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
-          <a href="mailto:invest@village.finance" className="btn btn-primary">
+          <a href="mailto:invest@villagefinance.com" className="btn btn-primary">
             Investor Inquiries <ArrowRight size={14} />
           </a>
         </div>
@@ -495,13 +495,13 @@ function InvestorCta() {
           <p style={{ fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.8, marginBottom: 32 }}>
             We're raising a pre-seed round. If you invest at the intersection of fintech, cooperative economics, or financial inclusion, we'd like to talk.
           </p>
-          <a href="mailto:invest@village.finance" style={{
+          <a href="mailto:invest@villagefinance.com" style={{
             fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.08em',
             color: 'var(--green)', textDecoration: 'none',
             borderBottom: '1px solid var(--green)', paddingBottom: 2,
             display: 'inline-flex', alignItems: 'center', gap: 8,
           }}>
-            invest@village.finance <ArrowRight size={12} />
+            invest@villagefinance.com <ArrowRight size={12} />
           </a>
         </div>
 
@@ -515,13 +515,13 @@ function InvestorCta() {
           <p style={{ fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.8, marginBottom: 32 }}>
             We're happy to speak on the record about Village, our operations, and the broader case for community-owned financial infrastructure.
           </p>
-          <a href="mailto:press@village.finance" style={{
+          <a href="mailto:press@villagefinance.com" style={{
             fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.08em',
             color: 'var(--terracotta)', textDecoration: 'none',
             borderBottom: '1px solid var(--terracotta)', paddingBottom: 2,
             display: 'inline-flex', alignItems: 'center', gap: 8,
           }}>
-            press@village.finance <ArrowRight size={12} />
+            press@villagefinance.com <ArrowRight size={12} />
           </a>
         </div>
       </div>

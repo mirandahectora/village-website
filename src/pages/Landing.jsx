@@ -10,31 +10,31 @@ const STEPS = [
   {
     num: '01', title: 'Build your financial profile', color: 'green',
     icon: <UserCheck size={24} />,
-    img: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&q=80',
+    img: 'https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=900&q=80',
     desc: 'You can provide Village a snapshot of your income sources, debts, assets, and goals. This information is stored using 256-bit encryption and will not be released to third parties under any circumstances.',
   },
   {
     num: '02', title: 'Invite your community', color: 'terra',
     icon: <Users size={24} />,
-    img: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80',
+    img: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=900&q=80',
     desc: 'Already part of a union, campus group, faith community, or diaspora network? Bring them with you. Village is built for groups that already trust each other.',
   },
   {
     num: '03', title: 'Form your village, make your constitution', color: 'green',
     icon: <Vote size={24} />,
-    img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&q=80',
+    img: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=900&q=80',
     desc: 'Once your group is formed, members establish the rules together: contribution intervals, payout conditions, voting thresholds, and shared goals.',
   },
   {
     num: '04', title: 'Pool funds in escrow', color: 'terra',
     icon: <DollarSign size={24} />,
-    img: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=900&q=80',
+    img: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=900&q=80',
     desc: 'Members contribute on agreed intervals. All funds are held in escrow: transparent, auditable, and only released by democratic vote.',
   },
   {
     num: '05', title: 'Vote, allocate, and grow', color: 'green',
     icon: <TrendingUp size={24} />,
-    img: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=900&q=80',
+    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=80',
     desc: "Members vote democratically on allocations, whether to pay off a member's debt, invest in a shared portfolio, or save for a collective goal.",
   },
 ]
@@ -112,15 +112,10 @@ function HeroSection() {
       {!isMobile && (
         <div style={{ position: 'relative', overflow: 'hidden', minHeight: 600 }}>
           <img
-            src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&q=85"
+            src="https://images.unsplash.com/photo-1573497491208-6b1acb260507?w=1200&q=85"
             alt="Community celebration"
             style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'saturate(0.85)' }}
           />
-          <div style={{
-            position: 'absolute', inset: 0,
-            backgroundImage: `linear-gradient(to right, rgba(196,186,168,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(196,186,168,0.15) 1px, transparent 1px)`,
-            backgroundSize: '80px 80px',
-          }} />
         </div>
       )}
     </section>
@@ -242,9 +237,8 @@ function AlgorithmicMatchingSection() {
             borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
             minHeight: 480, ...revealStyle(vis, 0),
           }}>
-            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=900&q=80" alt="People connecting"
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&q=80" alt="People connecting"
               style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'saturate(0.7)' }} />
-            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(to right, rgba(196,186,168,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(196,186,168,0.15) 1px, transparent 1px)', backgroundSize: '80px 80px' }} />
           </div>
         )}
         <div style={{ padding: isMobile ? '48px 24px' : '72px 64px', borderBottom: '1px solid var(--rule)', ...revealStyle(vis, 160) }}>
@@ -392,13 +386,13 @@ function CtaSection() {
               <p style={{ fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.8, marginBottom: 24, marginTop: 0 }}>
                 Community organizations, credit unions, nonprofits, and financial educators: if our work overlaps with yours, reach out.
               </p>
-              <a href="mailto:hello@village.finance" style={{
+              <a href="mailto:hello@villagefinance.com" style={{
                 fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.08em',
                 color: 'var(--ink)', textDecoration: 'none',
                 borderBottom: '1px solid var(--ink)', paddingBottom: 2,
                 display: 'inline-flex', alignItems: 'center', gap: 8,
               }}>
-                hello@village.finance <ArrowRight size={12} />
+                hello@villagefinance.com <ArrowRight size={12} />
               </a>
             </div>
           </div>
@@ -458,7 +452,6 @@ function StepRow({ step, i }) {
       }}>
         <img src={step.img} alt={step.title} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'saturate(0.7)' }} />
         <div style={{ position: 'absolute', inset: 0, background: isEven ? 'linear-gradient(to right, rgba(192,80,48,0.12), transparent)' : 'linear-gradient(to left, rgba(42,74,30,0.12), transparent)' }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(to right, rgba(196,186,168,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(196,186,168,0.08) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
       </div>
     </div>
   )
