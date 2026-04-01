@@ -61,7 +61,7 @@ const TIMELINE_PHASES = [
         desc: 'Partner with a Banking-as-a-Service provider and build the escrow infrastructure that sits beneath every village. Certify fund isolation and audit trail systems.',
       },
       {
-        date: 'Jun 2026',
+        date: 'Jul 2026',
         title: 'Server & Ledger Deployment',
         desc: 'Backend infrastructure live: API layer, democratic voting engine, member portal, and data pipeline all deployed and load-tested.',
       },
@@ -78,17 +78,17 @@ const TIMELINE_PHASES = [
         desc: 'Closed alpha with invited community groups in New York and San Francisco. First real villages formed, first funds pooled.',
       },
       {
-        date: 'Nov 2026',
+        date: 'Sep 2026',
         title: 'Algorithmic Development',
         desc: '212-variable financial profile dataset. Proprietary matching score model validated on synthetic and alpha testing population data.',
       },
       {
-        date: 'Dec 2026',
+        date: 'Oct 2026',
         title: 'Waitlist Beta Launch',
         desc: 'Open the waitlist to the general public in New York and San Francisco. Begin community outreach and anchor partnership recruitment in all three cities.',
       },
       {
-        date: 'Jan 2027',
+        date: 'Nov 2026',
         title: 'NY/CA Org Services Rollout',
         desc: 'Partner with unions, campus organizations, and immigrant networks in New York and California for structured services rollout. Collect feedback on matching, governance, and payout flows.',
       },
@@ -100,12 +100,12 @@ const TIMELINE_PHASES = [
     color: 'green',
     milestones: [
       {
-        date: 'Mar 2027',
+        date: 'Jan 2027',
         title: 'LA/Boston Market Entries',
         desc: 'Expand into Los Angeles and Boston, targeting high-density communities with existing mutual aid infrastructure and underbanked populations.',
       },
       {
-        date: 'Year 1.5',
+        date: 'Year 1',
         title: 'Solidify Market Participation',
         desc: 'Deepen presence across Stage 1 MSAs as network effects take hold. Consolidate the user base and refine village governance models across active markets.',
       },
@@ -122,12 +122,12 @@ const TIMELINE_PHASES = [
     color: 'terra',
     milestones: [
       {
-        date: 'Year 2.5',
+        date: 'Year 3',
         title: 'Reverse Credit Trials & Index Funds',
         desc: 'Test the reverse credit model with mature villages: community-pooled liquidity drawn by members without incurring personal debt. The pooled fund as collateral. The community as underwriter. Introduce index fund participation for member savings.',
       },
       {
-        date: 'Year 3+',
+        date: 'Year 4+',
         title: 'LATAM Expansion & Public-Private Partnerships',
         desc: 'Launch in Mexico City, São Paulo, Bogotá, Santo Domingo, San Juan, and other high-density ROSCA markets. Tanda cultural heritage makes adoption structurally natural. Pursue public-private partnerships to expand financial inclusion at scale.',
       },
