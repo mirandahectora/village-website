@@ -316,12 +316,17 @@ function SignupFlow({ onSwitch }) {
       <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '80px 64px', overflowY: 'auto' }}>
         <div style={{ width: '100%', maxWidth: 560 }}>
           {/* Progress bar */}
-          <div style={{ height: 3, background: 'var(--cream-dark)', marginBottom: 48, borderRadius: 2 }}>
+          <div style={{ height: 3, background: 'var(--cream-dark)', marginBottom: 20, borderRadius: 2 }}>
             <div style={{
               height: '100%', background: 'var(--green)',
               width: `${((step - 1) / (SIGNUP_STEPS.length - 1)) * 100}%`,
               transition: 'width 0.4s ease', borderRadius: 2,
             }} />
+          </div>
+
+          {/* Demo disclaimer */}
+          <div style={{ background: 'var(--sand)', border: '1px solid var(--terracotta)', borderRadius: 8, padding: '10px 14px', marginBottom: 36, fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--ink-muted)' }}>
+            <strong style={{ color: 'var(--terracotta)' }}>Demo mode</strong> — This is a prototype. No real accounts are created and no data is stored or shared.
           </div>
 
           {step === 1 && <StepAccount data={data} update={update} onNext={next} />}
