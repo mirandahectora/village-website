@@ -187,7 +187,7 @@ function LoginForm({ onSwitch }) {
           </div>
         </div>
         <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'rgba(244,238,226,0.3)', letterSpacing: '0.08em' }}>
-          © 2026 Village Financial
+          © 2026 Village Finance, Corp.
         </div>
       </div>
 

@@ -20,7 +20,7 @@ export default function Footer() {
         gap: isMobile ? 12 : 0,
       }}>
         <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'rgba(244,238,226,0.3)', letterSpacing: '0.06em' }}>
-          © {year} Village Financial, Inc. / Yale, New Haven CT
+          © {year} Village Finance, Corp. / Yale, New Haven CT
         </span>
         <div style={{ display: 'flex', gap: 24 }}>
           {['Privacy', 'Terms', 'Cookies'].map(l => (
