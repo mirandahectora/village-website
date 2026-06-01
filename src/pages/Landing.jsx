@@ -477,6 +477,8 @@ function FeatureCard({ icon, title, desc }) {
 function WaitlistForm() {
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '' })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const field = (key) => ({
     value: form[key],
@@ -497,6 +499,27 @@ function WaitlistForm() {
     textTransform: 'uppercase', display: 'block', marginBottom: 8,
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError(false)
+    const endpoint = import.meta.env.VITE_WAITLIST_ENDPOINT
+    try {
+      await fetch(endpoint, {
+        method: 'POST',
+        // no-cors: Apps Script doesn't return CORS headers; the POST still lands
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, submittedAt: new Date().toISOString() }),
+      })
+      setSubmitted(true)
+    } catch {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   if (submitted) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', gap: 12 }}>
@@ -509,10 +532,7 @@ function WaitlistForm() {
   }
 
   return (
-    <form
-      onSubmit={(e) => { e.preventDefault(); setSubmitted(true) }}
-      style={{ display: 'flex', flexDirection: 'column', gap: 24 }}
-    >
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
         <div>
           <label style={labelStyle}>First name</label>
@@ -533,8 +553,13 @@ function WaitlistForm() {
         </label>
         <input type="tel" placeholder="+1 (555) 000-0000" style={inputStyle} {...field('phone')} />
       </div>
-      <button type="submit" className="btn btn-primary" style={{ alignSelf: 'flex-start' }}>
-        Join Us <ArrowRight size={14} />
+      {error && (
+        <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--terracotta)', letterSpacing: '0.04em' }}>
+          Something went wrong. Please try again or email us directly.
+        </div>
+      )}
+      <button type="submit" disabled={loading} className="btn btn-primary" style={{ alignSelf: 'flex-start', opacity: loading ? 0.6 : 1 }}>
+        {loading ? 'Submitting…' : <>Join Us <ArrowRight size={14} /></>}
       </button>
     </form>
   )

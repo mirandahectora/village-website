@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useMobile } from '../hooks/useMobile'
 
 export default function Footer() {
@@ -22,14 +23,10 @@ export default function Footer() {
         <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'rgba(244,238,226,0.3)', letterSpacing: '0.06em' }}>
           © {year} Village Finance, Corp. / Yale, New Haven CT
         </span>
-        <div style={{ display: 'flex', gap: 24 }}>
-          {['Privacy', 'Terms', 'Cookies'].map(l => (
-            <a key={l} href="#" style={{
-              fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.06em',
-              color: 'rgba(244,238,226,0.3)', textDecoration: 'none',
-            }}>{l}</a>
-          ))}
-        </div>
+        <Link to="/privacy" style={{
+          fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.06em',
+          color: 'rgba(244,238,226,0.3)', textDecoration: 'none',
+        }}>Privacy</Link>
       </div>
     </footer>
   )

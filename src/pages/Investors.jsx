@@ -503,13 +503,13 @@ function InvestorCta() {
           <p style={{ fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.8, marginBottom: 32 }}>
             We're happy to speak on the record about Village, our operations, and the broader case for community-owned financial infrastructure.
           </p>
-          <a href="mailto:hector.miranda@yale.edu" style={{
+          <a href="mailto:richard.george@yale.edu" style={{
             fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.08em',
             color: 'var(--terracotta)', textDecoration: 'none',
             borderBottom: '1px solid var(--terracotta)', paddingBottom: 2,
             display: 'inline-flex', alignItems: 'center', gap: 8,
           }}>
-            hector.miranda@yale.edu <ArrowRight size={12} />
+            richard.george@yale.edu <ArrowRight size={12} />
           </a>
         </div>
       </div>

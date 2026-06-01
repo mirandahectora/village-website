@@ -58,7 +58,7 @@ export default function About() {
               fontFamily: 'var(--mono)', fontSize: 11,
               color: 'rgba(244,238,226,0.6)', letterSpacing: '0.08em',
               marginTop: 24,
-            }}>The founding question, 2025</div>
+            }}>The founding question </div>
           </div>
         </div>
       </section>
@@ -134,8 +134,8 @@ function JoinTeamSection() {
           </p>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.8 }}>
             Send your resume and a note on your preferred role to{' '}
-            <a href="mailto:hector.miranda@yale.edu" style={{ color: 'var(--green)', textDecoration: 'none', borderBottom: '1px solid var(--green)' }}>
-              hector.miranda@yale.edu
+            <a href="mailto:richard.george@yale.edu" style={{ color: 'var(--green)', textDecoration: 'none', borderBottom: '1px solid var(--green)' }}>
+              richard.george@yale.edu
             </a>
             . We read everything.
           </p>

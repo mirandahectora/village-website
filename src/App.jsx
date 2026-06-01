@@ -10,6 +10,7 @@ import Investors from './pages/Investors'
 import Faq from './pages/Faq'
 import Auth from './pages/Auth'
 import Dashboard from './pages/Dashboard'
+import Privacy from './pages/Privacy'
 import './index.css'
 
 const pageVariants = {
@@ -54,6 +55,7 @@ function AnimatedRoutes() {
             <Route path="/faq"        element={<Faq />} />
             <Route path="/auth"       element={user ? <Navigate to="/dashboard" /> : <Auth />} />
             <Route path="/dashboard"  element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+            <Route path="/privacy"    element={<Privacy />} />
           </Routes>
           {!isDash && !isAuth && <Footer />}
         </motion.div>

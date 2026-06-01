@@ -42,7 +42,7 @@ export default function Nav() {
         justifyContent: 'space-between',
       }}>
         <Link to="/" style={{ textDecoration: 'none' }}>
-          <span style={{ fontFamily: 'var(--serif)', fontWeight: 700, fontSize: 22, color: 'var(--ink)', letterSpacing: '0.02em' }}>Village</span>
+          <span style={{ fontFamily: 'var(--serif)', fontWeight: 700, fontSize: 32, color: 'var(--ink)', letterSpacing: '0.02em' }}>Village</span>
         </Link>
 
         {isMobile ? (
