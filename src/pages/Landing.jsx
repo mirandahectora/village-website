@@ -135,7 +135,7 @@ function MarqueeBand() {
       flexWrap: isMobile ? 'wrap' : 'nowrap',
     }}>
       <span style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.1em', textAlign: 'center' }}>
-        Public waitlist opens <strong style={{ color: 'var(--cream)', fontWeight: 700 }}>Q3 2026</strong>, New York City
+        Public waitlist opens <strong style={{ color: 'var(--cream)', fontWeight: 700 }}>Q3 2026</strong>
       </span>
       <span style={{ width: 1, height: 14, background: 'rgba(244,238,226,0.3)', display: isMobile ? 'none' : 'inline-block' }} />
       <a href="#waitlist" style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.1em', color: 'var(--cream)', textDecoration: 'none', borderBottom: '1px solid rgba(244,238,226,0.5)' }}>
