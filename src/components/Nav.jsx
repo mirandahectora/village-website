@@ -41,8 +41,7 @@ export default function Nav() {
         height: 72, display: 'flex', alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-        <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
-          <VillageLogo />
+        <Link to="/" style={{ textDecoration: 'none' }}>
           <span style={{ fontFamily: 'var(--serif)', fontWeight: 700, fontSize: 22, color: 'var(--ink)', letterSpacing: '0.02em' }}>Village</span>
         </Link>
 
@@ -125,19 +124,3 @@ export default function Nav() {
   )
 }
 
-function VillageLogo() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-      {[0,1,2].map(row => [0,1,2].map(col => {
-        const colors = [
-          ['var(--green)','var(--green)','var(--terracotta)'],
-          ['var(--green)','var(--cream-dark)','var(--green)'],
-          ['var(--terracotta)','var(--green)','var(--green)'],
-        ]
-        return (
-          <rect key={`${row}-${col}`} x={col*10} y={row*10} width={8} height={8} rx={1} fill={colors[row][col]} />
-        )
-      }))}
-    </svg>
-  )
-}

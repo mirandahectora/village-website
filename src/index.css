@@ -76,6 +76,14 @@ hr.rule { border: none; border-top: 1px solid var(--rule); width: 100%; }
   text-decoration: none;
   border: none;
 }
+@keyframes dashFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.dash-fade-in {
+  animation: dashFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 .btn-primary { background: var(--green); color: var(--cream); }
 .btn-primary:hover { background: var(--green-mid); transform: translateY(-1px); }
 .btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--ink); }

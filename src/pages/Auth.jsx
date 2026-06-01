@@ -210,7 +210,7 @@ function LoginForm({ onSwitch }) {
 
           <FormField label="Email address">
             <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-              placeholder="you@email.com" style={inputStyle} />
+              placeholder="you@gmail.com" style={inputStyle} />
           </FormField>
 
           <FormField label="Password">
@@ -414,7 +414,7 @@ function StepAccount({ data, update, onNext }) {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
         <FormField label="First name" error={errors.first_name}>
           <input value={data.first_name} onChange={e => { update('first_name', e.target.value); setErrors(ev => ({ ...ev, first_name: null })) }}
-            placeholder="Hector"
+            placeholder="Jordan"
             style={{ ...inputStyle, borderColor: errors.first_name ? 'var(--terracotta)' : undefined }} />
         </FormField>
         <FormField label="Last name" error={errors.last_name}>
@@ -426,7 +426,7 @@ function StepAccount({ data, update, onNext }) {
 
       <FormField label="Email address" error={errors.email}>
         <input type="email" value={data.email} onChange={e => { update('email', e.target.value); setErrors(ev => ({ ...ev, email: null })) }}
-          placeholder="you@email.com"
+          placeholder="you@gmail.com"
           style={{ ...inputStyle, borderColor: errors.email ? 'var(--terracotta)' : undefined }} />
       </FormField>
 

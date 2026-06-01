@@ -250,25 +250,130 @@ const STRUCTURE_LABELS = {
 }
 
 function JoinModal({ v, onConfirm, onCancel }) {
+  const { user } = useAuth()
+  const [step, setStep] = useState(0)
   const [message, setMessage] = useState('')
+  const [signerName, setSignerName] = useState(`${user?.first_name || ''} ${user?.last_name || ''}`.trim())
+  const [signerDate, setSignerDate] = useState(new Date().toISOString().split('T')[0])
   const accentColor = v.color === 'green' ? 'var(--green)' : 'var(--terracotta)'
-  const btnClass = 'btn btn-terra'
   const s = v.structure
 
   const constitutionRows = s ? [
-    ['Account type',         STRUCTURE_LABELS.accountType[s.accountType]],
-    ['Pay-in frequency',     STRUCTURE_LABELS.payInFrequency[s.payInFrequency]],
-    ['Pool size goal',       s.poolTarget ? `$${s.poolTarget.toLocaleString()}` : '-'],
-    ['Min. contribution',    s.minContribution ? `$${s.minContribution.toLocaleString()} / period` : '-'],
-    ['Payout structure',     STRUCTURE_LABELS.payoutStructure[s.payoutStructure]],
-    ['Amendment threshold',  STRUCTURE_LABELS.amendmentThreshold[s.amendmentThreshold]],
-    ['Vote quorum',          STRUCTURE_LABELS.quorum[s.quorum]],
-    ['Member admission',     s.memberAdmission ? STRUCTURE_LABELS.memberAdmission[s.memberAdmission] : '-'],
+    ['Account type',        STRUCTURE_LABELS.accountType[s.accountType]],
+    ['Pay-in frequency',    STRUCTURE_LABELS.payInFrequency[s.payInFrequency]],
+    ['Pool size goal',      s.poolTarget ? `$${s.poolTarget.toLocaleString()}` : '-'],
+    ['Min. contribution',   s.minContribution ? `$${s.minContribution.toLocaleString()} / period` : '-'],
+    ['Payout structure',    STRUCTURE_LABELS.payoutStructure[s.payoutStructure]],
+    ['Amendment threshold', STRUCTURE_LABELS.amendmentThreshold[s.amendmentThreshold]],
+    ['Vote quorum',         STRUCTURE_LABELS.quorum[s.quorum]],
+    ['Member admission',    s.memberAdmission ? STRUCTURE_LABELS.memberAdmission[s.memberAdmission] : '-'],
     ['Dishonorable exit',   STRUCTURE_LABELS.dishonorableExit[s.dishonorableExit]],
-    ['Probation period',     STRUCTURE_LABELS.probationPeriod[s.probationPeriod]],
-    ['Late payment policy',  STRUCTURE_LABELS.latePaymentPolicy[s.latePaymentPolicy]],
-    ['Exit notice period',   s.exitNoticePeriod ? STRUCTURE_LABELS.exitNoticePeriod[s.exitNoticePeriod] : '-'],
+    ['Probation period',    STRUCTURE_LABELS.probationPeriod[s.probationPeriod]],
+    ['Late payment policy', STRUCTURE_LABELS.latePaymentPolicy[s.latePaymentPolicy]],
+    ['Exit notice period',  s.exitNoticePeriod ? STRUCTURE_LABELS.exitNoticePeriod[s.exitNoticePeriod] : '-'],
   ].filter(([, val]) => val && val !== 'undefined') : []
+
+  // Prose label maps for the formal document
+  const ACCT   = { hysa: 'High-Yield Savings (HYSA)', checking: 'Checking Account', brokerage: 'Brokerage Account' }
+  const FREQ   = { weekly: 'weekly', biweekly: 'bi-weekly', monthly: 'monthly' }
+  const PAYOUT_L = { rotating: 'Rotating (ROSCA)', voted: 'Voted Allocation' }
+  const THRESH = { majority: 'a simple majority (>50%)', two_thirds: 'a two-thirds supermajority (≥67%)', unanimous: 'unanimous consent (100%)' }
+  const QUORUM_L = { any: 'any member may cast a vote', two_thirds: 'at least two-thirds of members must vote', all: 'all members must vote' }
+  const ADMIT  = { vote_required: 'requires a full village vote', invite_no_vote: 'is granted upon invitation by an existing member, without a vote', any_member: 'may be granted freely by any current member' }
+  const PROB   = { none: 'no probationary period', '1_month': 'one (1) month', '3_months': 'three (3) months', '6_months': 'six (6) months' }
+  const LATE   = {
+    grace_7: 'A seven-day grace period applies; payments not received within this window will be flagged to all members.',
+    immediate_penalty: 'An immediate penalty fee shall be assessed on any late payment.',
+    removal_3_missed: 'A member shall be removed from the village upon three (3) consecutive missed payments.',
+    voted: 'Consequences for late payment shall be determined by village vote on a case-by-case basis.',
+  }
+  const EXIT_F = {
+    withheld: "that member's contributed funds shall be withheld by the village",
+    returned_no_interest: "that member's contributed funds shall be returned in full, without interest",
+    returned_with_interest: "that member's contributed funds shall be returned in full, with accrued interest",
+  }
+  const NOTICE = {
+    immediate: 'no advance notice is required',
+    '1_month': "one (1) month's advance notice",
+    '2_months': "two (2) months' advance notice",
+    '3_months': "three (3) months' advance notice",
+    '1_cycle': "one (1) full contribution cycle's advance notice",
+  }
+
+  const F = ({ children }) => (
+    <span style={{ fontWeight: 600, borderBottom: '1.5px solid var(--ink)', paddingBottom: 1 }}>{children}</span>
+  )
+
+  const articles = s ? [
+    {
+      title: 'Article I — Name and Purpose',
+      clauses: [
+        <>This organization is known as <F>{v.name}</F>{v.handle ? <>, identified by the handle <F>{v.handle}</F></> : ''}.</>,
+        v.location ? <>The village is based in <F>{v.location}</F>.</> : null,
+        <>The primary financial goal of this village is <F>{v.goal}</F>.</>,
+        v.headline ? <>{v.headline}</> : null,
+      ].filter(Boolean),
+    },
+    {
+      title: 'Article II — Membership',
+      clauses: [
+        <>Admission of new members <F>{ADMIT[s.memberAdmission] || s.memberAdmission}</F>.</>,
+        <>New members shall serve a probationary period of <F>{PROB[s.probationPeriod] || s.probationPeriod}</F>. During probation, members may not vote on binding village resolutions.</>,
+        <>The village may have a maximum of twenty (20) active members at any time.</>,
+      ],
+    },
+    {
+      title: 'Article III — Contributions and Banking',
+      clauses: [
+        <>Village funds shall be held in a <F>{ACCT[s.accountType] || s.accountType}</F> account in the name of the village.</>,
+        <>Members shall make contributions on a <F>{FREQ[s.payInFrequency] || s.payInFrequency}</F> basis.</>,
+        s.minContribution
+          ? <>The minimum contribution per period is <F>${Number(s.minContribution).toLocaleString()}</F>.</>
+          : <>No minimum contribution amount has been set; members contribute as mutually agreed.</>,
+        s.poolTarget ? <>The village has set a pool target of <F>${Number(s.poolTarget).toLocaleString()}</F>.</> : null,
+        s.accountType === 'brokerage' && s.portfolioAllocation
+          ? <>The brokerage portfolio shall be allocated as: <F>{s.portfolioAllocation.equities}% equities</F>, <F>{s.portfolioAllocation.bonds}% bonds</F>, and <F>{s.portfolioAllocation.cash ?? (100 - s.portfolioAllocation.equities - s.portfolioAllocation.bonds)}% cash</F>.</>
+          : null,
+      ].filter(Boolean),
+    },
+    {
+      title: 'Article IV — Payout Structure',
+      clauses: [
+        <>This village uses a <F>{PAYOUT_L[s.payoutStructure] || s.payoutStructure}</F> payout structure.</>,
+        s.payoutStructure === 'rotating'
+          ? <>Each member shall receive the full pooled amount once per contribution cycle, in a rotation order established at founding. Members who join after founding are added to the end of the rotation.</>
+          : <>Disbursements from the pool shall be proposed and authorized by member vote in accordance with this constitution.</>,
+      ],
+    },
+    {
+      title: 'Article V — Governance',
+      clauses: [
+        <>Amendments to this constitution require <F>{THRESH[s.amendmentThreshold] || s.amendmentThreshold}</F>.</>,
+        <>For any vote to be binding, <F>{QUORUM_L[s.quorum] || s.quorum}</F>.</>,
+        <>Members in their probationary period may not vote on binding resolutions.</>,
+      ],
+    },
+    {
+      title: 'Article VI — Member Conduct and Exit',
+      clauses: [
+        <><F>{LATE[s.latePaymentPolicy] || s.latePaymentPolicy}</F></>,
+        <>Upon dishonorable exit or expulsion, <F>{EXIT_F[s.dishonorableExit] || s.dishonorableExit}</F>.</>,
+        <>A member wishing to leave in good standing must provide <F>{NOTICE[s.exitNoticePeriod] || s.exitNoticePeriod}</F> prior to their departure.</>,
+        <>Any member with a pending payout or unresolved financial obligation to the village remains bound by these terms until that obligation is settled.</>,
+      ],
+    },
+  ] : []
+
+  const formattedDate = signerDate
+    ? new Date(signerDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+    : ''
+
+  const inputSt = {
+    width: '100%', padding: '11px 14px', boxSizing: 'border-box',
+    fontFamily: 'var(--sans)', fontSize: 14,
+    background: 'var(--cream-mid)', border: '1px solid var(--rule)',
+    borderRadius: 2, outline: 'none', color: 'var(--ink)',
+  }
 
   return (
     <div style={{
@@ -278,68 +383,208 @@ function JoinModal({ v, onConfirm, onCancel }) {
     }} onClick={onCancel}>
       <div style={{
         background: 'var(--cream)', border: '1px solid var(--rule)',
-        padding: '32px', width: 520, maxWidth: '92vw', maxHeight: '88vh',
-        overflowY: 'auto',
+        padding: '32px',
+        width: step === 1 ? 620 : 520, maxWidth: '94vw', maxHeight: '90vh',
+        display: 'flex', flexDirection: 'column',
         boxShadow: '0 8px 32px rgba(30,25,18,0.18)',
       }} onClick={e => e.stopPropagation()}>
-        <div style={{ marginBottom: 20 }}>
-          <h3 style={{ fontFamily: 'var(--serif)', fontSize: 20, fontWeight: 700, marginBottom: 4 }}>{v.name}</h3>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: accentColor, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            Request to join
-          </div>
-        </div>
 
-        {/* Constitution */}
-        {constitutionRows.length > 0 && (
-          <div style={{ marginBottom: 24 }}>
-            <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-muted)', marginBottom: 10 }}>
-              Village Constitution
+        {/* ── Step 0: Request + constitution summary ── */}
+        {step === 0 && (
+          <div style={{ overflowY: 'auto' }}>
+            <div style={{ marginBottom: 20 }}>
+              <h3 style={{ fontFamily: 'var(--serif)', fontSize: 20, fontWeight: 700, marginBottom: 4 }}>{v.name}</h3>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: accentColor, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Request to join
+              </div>
             </div>
-            <div style={{
-              background: 'var(--cream-mid)', border: '1px solid var(--rule)',
-              borderRadius: 2, overflow: 'hidden',
-            }}>
-              {constitutionRows.map(([key, val], i) => (
-                <div key={key} style={{
-                  display: 'grid', gridTemplateColumns: '1fr 1fr',
-                  padding: '9px 14px',
-                  borderBottom: i < constitutionRows.length - 1 ? '1px solid var(--rule)' : 'none',
-                }}>
-                  <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.06em' }}>{key}</span>
-                  <span style={{ fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--ink)', fontWeight: 500 }}>{val}</span>
+
+            {constitutionRows.length > 0 && (
+              <div style={{ marginBottom: 24 }}>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-muted)', marginBottom: 10 }}>
+                  Village Constitution
                 </div>
-              ))}
+                <div style={{ background: 'var(--cream-mid)', border: '1px solid var(--rule)', overflow: 'hidden' }}>
+                  {constitutionRows.map(([key, val], i) => (
+                    <div key={key} style={{
+                      display: 'grid', gridTemplateColumns: '1fr 1fr',
+                      padding: '9px 14px',
+                      borderBottom: i < constitutionRows.length - 1 ? '1px solid var(--rule)' : 'none',
+                    }}>
+                      <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.06em' }}>{key}</span>
+                      <span style={{ fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--ink)', fontWeight: 500 }}>{val}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <label style={{ display: 'block', marginBottom: 6, fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              Message <span style={{ color: 'var(--rule)' }}>(optional)</span>
+            </label>
+            <textarea
+              value={message}
+              onChange={e => setMessage(e.target.value)}
+              placeholder="Introduce yourself or explain why you'd like to join…"
+              rows={3}
+              style={{
+                width: '100%', padding: '12px 14px', marginBottom: 20,
+                fontFamily: 'var(--sans)', fontSize: 13, lineHeight: 1.6,
+                background: 'var(--cream-mid)', border: '1px solid var(--rule)',
+                borderRadius: 2, outline: 'none', color: 'var(--ink)',
+                resize: 'vertical', boxSizing: 'border-box',
+              }}
+              onFocus={e => e.target.style.borderColor = 'var(--ink-muted)'}
+              onBlur={e => e.target.style.borderColor = 'var(--rule)'}
+            />
+
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+              <button className="btn btn-outline" style={{ padding: '9px 18px', fontSize: 11 }} onClick={onCancel}>
+                Cancel
+              </button>
+              <button className="btn btn-primary" style={{ padding: '9px 18px', fontSize: 11 }} onClick={() => setStep(1)}>
+                Review constitution <ArrowRight size={12} />
+              </button>
             </div>
           </div>
         )}
 
-        <label style={{ display: 'block', marginBottom: 6, fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-          Message <span style={{ color: 'var(--rule)' }}>(optional)</span>
-        </label>
-        <textarea
-          value={message}
-          onChange={e => setMessage(e.target.value)}
-          placeholder="Introduce yourself or explain why you'd like to join…"
-          rows={3}
-          style={{
-            width: '100%', padding: '12px 14px', marginBottom: 20,
-            fontFamily: 'var(--sans)', fontSize: 13, lineHeight: 1.6,
-            background: 'var(--cream-mid)', border: '1px solid var(--rule)',
-            borderRadius: 2, outline: 'none', color: 'var(--ink)',
-            resize: 'vertical', boxSizing: 'border-box',
-          }}
-          onFocus={e => e.target.style.borderColor = 'var(--ink-muted)'}
-          onBlur={e => e.target.style.borderColor = 'var(--rule)'}
-        />
+        {/* ── Step 1: Formal constitution + signing ── */}
+        {step === 1 && (
+          <>
+            <div style={{ marginBottom: 14, flexShrink: 0 }}>
+              <h3 style={{ fontFamily: 'var(--serif)', fontSize: 20, fontWeight: 700, marginBottom: 4 }}>{v.name}</h3>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Prospective Member Agreement
+              </div>
+            </div>
 
-        <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
-          <button className="btn btn-outline" style={{ padding: '9px 18px', fontSize: 11 }} onClick={onCancel}>
-            Cancel
-          </button>
-          <button className={btnClass} style={{ padding: '9px 18px', fontSize: 11 }} onClick={() => onConfirm(message)}>
-            Send request <ArrowRight size={12} />
-          </button>
-        </div>
+            {/* Scrollable document */}
+            <div style={{
+              border: '1px solid var(--rule)',
+              padding: '36px 40px 32px',
+              overflowY: 'auto',
+              flex: 1,
+              minHeight: 0,
+              maxHeight: '50vh',
+              marginBottom: 18,
+            }}>
+              <div style={{ textAlign: 'center', marginBottom: 22 }}>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--ink-muted)', marginBottom: 10 }}>
+                  Village Constitution
+                </div>
+                <div style={{ fontFamily: 'var(--serif)', fontSize: 24, fontWeight: 700, lineHeight: 1.2, marginBottom: 6 }}>
+                  {v.name}
+                </div>
+                {v.handle && (
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-muted)', letterSpacing: '0.06em', marginBottom: 4 }}>
+                    {v.handle}
+                  </div>
+                )}
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.04em' }}>
+                  Founded {v.founded}{v.location ? ` · ${v.location}` : ''}
+                </div>
+              </div>
+
+              <div style={{ borderTop: '2px solid var(--ink)', borderBottom: '1px solid var(--rule)', height: 3, marginBottom: 22 }} />
+
+              <p style={{ fontFamily: 'var(--sans)', fontSize: 13, lineHeight: 1.85, color: 'var(--ink-muted)', fontStyle: 'italic', marginBottom: 26 }}>
+                This agreement is submitted by the prospective member as a condition of applying to join{' '}
+                <span style={{ fontStyle: 'normal', fontWeight: 600, color: 'var(--ink)' }}>{v.name}</span>.
+                {' '}These terms are not yet binding — they will take effect upon formal admission to the village, as ratified by the existing membership in accordance with the admission policy set forth in Article II.
+              </p>
+
+              {articles.map((article, ai) => (
+                <div key={ai} style={{ marginBottom: 22 }}>
+                  <div style={{ fontFamily: 'var(--serif)', fontSize: 14, fontWeight: 700, marginBottom: 8, paddingBottom: 5, borderBottom: '1px solid var(--rule)' }}>
+                    {article.title}
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {article.clauses.map((clause, ci) => (
+                      <div key={ci} style={{ display: 'flex', gap: 12 }}>
+                        <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', flexShrink: 0, paddingTop: 3, letterSpacing: '0.04em', minWidth: 26 }}>
+                          {ai + 1}.{ci + 1}
+                        </span>
+                        <span style={{ fontFamily: 'var(--sans)', fontSize: 13, lineHeight: 1.75, color: 'var(--ink)' }}>
+                          {clause}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+
+              {/* Signature block inside document */}
+              <div style={{ borderTop: '1px solid var(--rule)', paddingTop: 20, marginTop: 4 }}>
+                <div style={{ fontFamily: 'var(--serif)', fontSize: 14, fontWeight: 700, marginBottom: 8, paddingBottom: 5, borderBottom: '1px solid var(--rule)' }}>
+                  Signatures
+                </div>
+                <p style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--ink-muted)', lineHeight: 1.7, marginBottom: 18 }}>
+                  By signing below, the prospective member confirms having read this constitution and agrees to be bound by its terms upon admission to the village.
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 40, alignItems: 'end' }}>
+                  <div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ink-muted)', marginBottom: 5 }}>
+                      Prospective Member
+                    </div>
+                    <div style={{ fontFamily: 'var(--serif)', fontSize: 17, fontStyle: 'italic', minHeight: 28, borderBottom: '1px solid var(--ink)', paddingBottom: 3, color: signerName ? 'var(--ink)' : 'transparent' }}>
+                      {signerName || '—'}
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ink-muted)', marginBottom: 5 }}>
+                      Date
+                    </div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 12, minHeight: 28, borderBottom: '1px solid var(--ink)', paddingBottom: 3, color: 'var(--ink)' }}>
+                      {formattedDate}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Sign inputs */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, alignItems: 'end', marginBottom: 16, flexShrink: 0 }}>
+              <div>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-muted)', marginBottom: 6 }}>
+                  Sign with your full name
+                </div>
+                <input
+                  value={signerName}
+                  onChange={e => setSignerName(e.target.value)}
+                  placeholder="Your full legal name"
+                  style={{ ...inputSt, fontFamily: 'var(--serif)', fontSize: 15, fontStyle: 'italic' }}
+                  autoFocus
+                />
+              </div>
+              <div>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-muted)', marginBottom: 6 }}>
+                  Date
+                </div>
+                <input
+                  type="date"
+                  value={signerDate}
+                  onChange={e => setSignerDate(e.target.value)}
+                  style={{ ...inputSt, fontFamily: 'var(--mono)', fontSize: 12, width: 'auto' }}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
+              <button className="btn btn-terra" style={{ padding: '10px 20px', fontSize: 11 }} onClick={() => setStep(0)}>
+                ← Back
+              </button>
+              <button
+                className="btn btn-primary"
+                disabled={!signerName.trim()}
+                style={{ flex: 1, justifyContent: 'center', fontSize: 11, opacity: signerName.trim() ? 1 : 0.4 }}
+                onClick={() => onConfirm(message)}
+              >
+                Send request <ArrowRight size={12} />
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

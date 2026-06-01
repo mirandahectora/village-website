@@ -301,52 +301,358 @@ const MOCK_BANKS = [
   'Navy Federal', 'PNC Bank', 'SoFi', 'TD Bank', 'US Bank', 'Wells Fargo',
 ]
 
+const POPULAR_BANKS = ['Chase', 'Bank of America', 'Wells Fargo', 'Capital One', 'Citibank', 'TD Bank', 'US Bank', 'PNC Bank']
+
+const BANK_COLORS = {
+  'Chase': '#117ACA', 'Bank of America': '#E31837', 'Wells Fargo': '#D71E28',
+  'Capital One': '#004977', 'Citibank': '#003B8E', 'TD Bank': '#34B233',
+  'US Bank': '#0A2B6F', 'PNC Bank': '#F58025', 'Ally Bank': '#6E2B8C',
+  'SoFi': '#7B68EE', 'American Express': '#007BC1', 'Discover': '#E55C00',
+  'Navy Federal': '#002244', 'Marcus by Goldman Sachs': '#171717',
+}
+
+function randLast4() { return String(Math.floor(1000 + Math.random() * 9000)) }
+
+function BankLogo({ bank, size = 36 }) {
+  const color = BANK_COLORS[bank] || '#5A5446'
+  return (
+    <div style={{
+      width: size, height: size, borderRadius: '50%', flexShrink: 0,
+      background: color, color: '#fff',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontFamily: 'var(--sans)', fontSize: Math.round(size * 0.38), fontWeight: 700,
+    }}>
+      {bank[0]}
+    </div>
+  )
+}
+
+function PlaidModal({ onClose, onConnected }) {
+  const [step, setStep] = useState(0) // 0: intro  1: search  2: oauth  3: select  4: success
+  const [query, setQuery] = useState('')
+  const [selectedBank, setSelectedBank] = useState(null)
+  const [fakeAccounts, setFakeAccounts] = useState([])
+  const [selectedIds, setSelectedIds] = useState(new Set())
+
+  const filtered = query.trim()
+    ? MOCK_BANKS.filter(b => b.toLowerCase().includes(query.toLowerCase()))
+    : MOCK_BANKS
+
+  const handlePickBank = (bank) => {
+    setSelectedBank(bank)
+    setStep(2)
+  }
+
+  const handleOAuth = () => {
+    const accounts = [
+      { id: `a-${Date.now()}-1`, type: 'Checking', last4: randLast4() },
+      { id: `a-${Date.now()}-2`, type: 'Savings',  last4: randLast4() },
+    ]
+    setFakeAccounts(accounts)
+    setSelectedIds(new Set(accounts.map(a => a.id)))
+    setStep(3)
+  }
+
+  const toggleId = (id) => setSelectedIds(prev => {
+    const next = new Set(prev)
+    next.has(id) ? next.delete(id) : next.add(id)
+    return next
+  })
+
+  const handleLink = () => {
+    onConnected(fakeAccounts.filter(a => selectedIds.has(a.id)).map(a => ({
+      ...a, bank: selectedBank, status: 'active', isDefault: false,
+    })))
+    setStep(4)
+  }
+
+  const bankColor = selectedBank ? (BANK_COLORS[selectedBank] || '#5A5446') : 'var(--green)'
+  const W = { width: '100%', padding: '14px', border: 'none', borderRadius: 6, fontFamily: 'var(--sans)', fontSize: 15, fontWeight: 600, cursor: 'pointer' }
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      onClick={onClose}>
+      <div style={{
+        width: 460, height: 580, background: '#fff', borderRadius: 12,
+        display: 'flex', flexDirection: 'column', overflow: 'hidden',
+        boxShadow: '0 24px 64px rgba(0,0,0,0.22)',
+      }} onClick={e => e.stopPropagation()}>
+
+        {/* ── Step 0: Intro ── */}
+        {step === 0 && (
+          <>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 48px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 36 }}>
+                <div style={{ width: 52, height: 52, borderRadius: 14, background: 'var(--green)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Landmark size={22} color="#fff" />
+                </div>
+                <div style={{ display: 'flex', gap: 4 }}>{[0,1,2].map(i => <div key={i} style={{ width: 5, height: 5, borderRadius: '50%', background: '#ddd' }} />)}</div>
+                <div style={{ width: 52, height: 52, borderRadius: 14, background: '#f2f4f7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Landmark size={22} color="#888" />
+                </div>
+              </div>
+              <h2 style={{ fontFamily: 'var(--sans)', fontSize: 21, fontWeight: 700, textAlign: 'center', marginBottom: 10, color: '#111' }}>
+                Connect a bank account
+              </h2>
+              <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: '#777', textAlign: 'center', lineHeight: 1.7, marginBottom: 36 }}>
+                Village uses bank-grade encryption to securely read your account data. Your login credentials are never stored or shared.
+              </p>
+              <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {[
+                  '256-bit AES encryption on all data in transit',
+                  'Village never stores your bank credentials',
+                  'Read-only access — no transfers permitted',
+                  'Disconnect at any time from Settings',
+                ].map((item, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#eef6ee', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <CheckCircle2 size={11} color="var(--green)" />
+                    </div>
+                    <span style={{ fontFamily: 'var(--sans)', fontSize: 13, color: '#555' }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ padding: '16px 32px 28px' }}>
+              <button onClick={() => setStep(1)} style={{ ...W, background: 'var(--green)', color: '#fff', marginBottom: 8 }}>Continue</button>
+              <button onClick={onClose} style={{ ...W, background: 'none', color: '#aaa', padding: '8px', fontSize: 13 }}>Cancel</button>
+            </div>
+          </>
+        )}
+
+        {/* ── Step 1: Search ── */}
+        {step === 1 && (
+          <>
+            <div style={{ padding: '20px 24px 14px', borderBottom: '1px solid #f0f0f0' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+                <button onClick={() => setStep(0)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888', fontSize: 18, lineHeight: 1, padding: '0 4px' }}>←</button>
+                <span style={{ fontFamily: 'var(--sans)', fontSize: 15, fontWeight: 600, color: '#111', flex: 1 }}>Select your bank</span>
+                <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', display: 'flex' }}><X size={18} /></button>
+              </div>
+              <div style={{ position: 'relative' }}>
+                <Search size={14} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#bbb', pointerEvents: 'none' }} />
+                <input
+                  autoFocus value={query} onChange={e => setQuery(e.target.value)}
+                  placeholder="Search 12,000+ institutions"
+                  style={{
+                    width: '100%', padding: '10px 12px 10px 36px', boxSizing: 'border-box',
+                    fontFamily: 'var(--sans)', fontSize: 14,
+                    background: '#f5f5f5', border: '1.5px solid transparent',
+                    borderRadius: 8, outline: 'none', color: '#111',
+                  }}
+                  onFocus={e => e.target.style.borderColor = 'var(--green)'}
+                  onBlur={e => e.target.style.borderColor = 'transparent'}
+                />
+              </div>
+            </div>
+
+            <div style={{ flex: 1, overflowY: 'auto', padding: '16px 24px' }}>
+              {!query.trim() && (
+                <>
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: 11, fontWeight: 600, color: '#bbb', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10 }}>
+                    Popular
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 24 }}>
+                    {POPULAR_BANKS.map(bank => (
+                      <button key={bank} onClick={() => handlePickBank(bank)} style={{
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7,
+                        padding: '14px 6px', background: '#fafafa',
+                        border: '1px solid #efefef', borderRadius: 10, cursor: 'pointer',
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.background = '#f0f0f0'; e.currentTarget.style.borderColor = '#ddd' }}
+                      onMouseLeave={e => { e.currentTarget.style.background = '#fafafa'; e.currentTarget.style.borderColor = '#efefef' }}
+                      >
+                        <BankLogo bank={bank} size={30} />
+                        <span style={{ fontFamily: 'var(--sans)', fontSize: 10, fontWeight: 500, color: '#444', textAlign: 'center', lineHeight: 1.3 }}>
+                          {bank.split(' ')[0]}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: 11, fontWeight: 600, color: '#bbb', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10 }}>
+                    All institutions
+                  </div>
+                </>
+              )}
+              {filtered.map((bank, i) => (
+                <button key={bank} onClick={() => handlePickBank(bank)} style={{
+                  width: '100%', padding: '11px 4px', textAlign: 'left', background: 'none', border: 'none',
+                  borderBottom: i < filtered.length - 1 ? '1px solid #f5f5f5' : 'none',
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 14,
+                }}
+                onMouseEnter={e => e.currentTarget.style.opacity = '0.65'}
+                onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+                >
+                  <BankLogo bank={bank} size={36} />
+                  <span style={{ fontFamily: 'var(--sans)', fontSize: 14, color: '#111', fontWeight: 500 }}>{bank}</span>
+                  <span style={{ marginLeft: 'auto', color: '#ccc', fontSize: 18, lineHeight: 1 }}>›</span>
+                </button>
+              ))}
+              {filtered.length === 0 && (
+                <div style={{ padding: '48px 0', textAlign: 'center', fontFamily: 'var(--sans)', fontSize: 14, color: '#aaa' }}>
+                  No results for "{query}"
+                </div>
+              )}
+            </div>
+
+            <div style={{ padding: '8px 24px 10px', borderTop: '1px solid #f5f5f5', textAlign: 'center' }}>
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 11, color: '#ccc' }}>Secured by Village · Bank-grade encryption</span>
+            </div>
+          </>
+        )}
+
+        {/* ── Step 2: OAuth redirect ── */}
+        {step === 2 && selectedBank && (
+          <>
+            <div style={{ padding: '20px 24px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', gap: 10 }}>
+              <button onClick={() => setStep(1)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888', fontSize: 18, lineHeight: 1, padding: '0 4px' }}>←</button>
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 15, fontWeight: 600, color: '#111', flex: 1 }}>{selectedBank}</span>
+              <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', display: 'flex' }}><X size={18} /></button>
+            </div>
+
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 48px' }}>
+              <BankLogo bank={selectedBank} size={72} />
+              <h3 style={{ fontFamily: 'var(--sans)', fontSize: 19, fontWeight: 700, color: '#111', marginTop: 20, marginBottom: 8, textAlign: 'center' }}>
+                {selectedBank}
+              </h3>
+              <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: '#777', textAlign: 'center', lineHeight: 1.7, marginBottom: 12 }}>
+                You'll be redirected to {selectedBank} to securely authorize read-only access. Village will not see your login credentials.
+              </p>
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                padding: '7px 14px', background: '#f5f5f5', borderRadius: 20,
+              }}>
+                <Shield size={11} color="#999" />
+                <span style={{ fontFamily: 'var(--sans)', fontSize: 12, color: '#999' }}>
+                  Read-only · No transfers
+                </span>
+              </div>
+            </div>
+
+            <div style={{ padding: '16px 32px 28px' }}>
+              <button onClick={handleOAuth} style={{ ...W, background: bankColor, color: '#fff', marginBottom: 8 }}>
+                Continue to {selectedBank}
+              </button>
+              <button onClick={() => setStep(1)} style={{ ...W, background: 'none', color: '#aaa', padding: '8px', fontSize: 13 }}>
+                Choose a different bank
+              </button>
+            </div>
+
+            <div style={{ padding: '0 24px 10px', textAlign: 'center' }}>
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 11, color: '#ccc' }}>Secured by Village · Bank-grade encryption</span>
+            </div>
+          </>
+        )}
+
+        {/* ── Step 3: Account selection ── */}
+        {step === 3 && (
+          <>
+            <div style={{ padding: '20px 24px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', gap: 10 }}>
+              <BankLogo bank={selectedBank} size={26} />
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 15, fontWeight: 600, color: '#111', flex: 1 }}>Select accounts to link</span>
+              <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', display: 'flex' }}><X size={18} /></button>
+            </div>
+
+            <div style={{ flex: 1, padding: '20px 24px' }}>
+              <p style={{ fontFamily: 'var(--sans)', fontSize: 13, color: '#999', marginBottom: 18 }}>
+                Select which {selectedBank} accounts you'd like to connect to Village.
+              </p>
+              {fakeAccounts.map(acct => {
+                const on = selectedIds.has(acct.id)
+                return (
+                  <button key={acct.id} onClick={() => toggleId(acct.id)} style={{
+                    width: '100%', padding: '15px 16px', marginBottom: 10,
+                    background: on ? '#f0f7f0' : '#fafafa',
+                    border: `1.5px solid ${on ? 'var(--green)' : '#efefef'}`,
+                    borderRadius: 10, cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', gap: 14, textAlign: 'left',
+                  }}>
+                    <div style={{
+                      width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
+                      border: `2px solid ${on ? 'var(--green)' : '#ccc'}`,
+                      background: on ? 'var(--green)' : '#fff',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      {on && <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                    </div>
+                    <div>
+                      <div style={{ fontFamily: 'var(--sans)', fontSize: 14, fontWeight: 600, color: '#111', marginBottom: 2 }}>
+                        {selectedBank} {acct.type}
+                      </div>
+                      <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: '#999' }}>···· {acct.last4}</div>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+
+            <div style={{ padding: '16px 32px 28px' }}>
+              <button
+                onClick={handleLink} disabled={selectedIds.size === 0}
+                style={{ ...W, background: selectedIds.size > 0 ? 'var(--green)' : '#ddd', color: '#fff', cursor: selectedIds.size > 0 ? 'pointer' : 'default' }}
+              >
+                Link {selectedIds.size} account{selectedIds.size !== 1 ? 's' : ''}
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* ── Step 4: Success ── */}
+        {step === 4 && (
+          <>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 48px' }}>
+              <div style={{ width: 72, height: 72, borderRadius: '50%', background: '#eef6ee', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 22 }}>
+                <CheckCircle2 size={36} color="var(--green)" />
+              </div>
+              <h2 style={{ fontFamily: 'var(--sans)', fontSize: 20, fontWeight: 700, color: '#111', marginBottom: 8, textAlign: 'center' }}>
+                Account{selectedIds.size !== 1 ? 's' : ''} linked
+              </h2>
+              <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: '#777', textAlign: 'center', lineHeight: 1.7, marginBottom: 28 }}>
+                {selectedIds.size} account{selectedIds.size !== 1 ? 's' : ''} from {selectedBank} connected successfully.
+              </p>
+              <div style={{ width: '100%' }}>
+                {fakeAccounts.filter(a => selectedIds.has(a.id)).map(acct => (
+                  <div key={acct.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', background: '#f9f9f9', borderRadius: 10, marginBottom: 8 }}>
+                    <BankLogo bank={selectedBank} size={32} />
+                    <div>
+                      <div style={{ fontFamily: 'var(--sans)', fontSize: 13, fontWeight: 600, color: '#111' }}>{selectedBank} {acct.type}</div>
+                      <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: '#aaa' }}>···· {acct.last4}</div>
+                    </div>
+                    <CheckCircle2 size={16} color="var(--green)" style={{ marginLeft: 'auto' }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ padding: '16px 32px 28px' }}>
+              <button onClick={onClose} style={{ ...W, background: 'var(--green)', color: '#fff' }}>Done</button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
 function AccountsSection() {
   const [accounts, setAccounts] = useState([
     { id: 'a1', bank: 'Chase', type: 'Checking', last4: '4821', status: 'active', isDefault: true },
   ])
   const [showModal, setShowModal] = useState(false)
-  const [step, setStep]           = useState(1) // 1: search  2: connecting  3: success
-  const [bankQuery, setBankQuery] = useState('')
-  const [selectedBank, setSelectedBank]   = useState('')
-  const [newAccountType, setNewAccountType] = useState('Checking')
-  const [newLast4, setNewLast4]   = useState('')
 
-  const openModal = () => { setStep(1); setBankQuery(''); setSelectedBank(''); setShowModal(true) }
-
-  const handleSelectBank = (bank) => {
-    setSelectedBank(bank)
-    setNewLast4(String(Math.floor(1000 + Math.random() * 9000)))
-    setStep(2)
-    setTimeout(() => setStep(3), 1800)
-  }
-
-  const handleAdd = () => {
-    setAccounts(prev => [...prev, {
-      id: `a-${Date.now()}`,
-      bank: selectedBank,
-      type: newAccountType,
-      last4: newLast4,
-      status: 'active',
-      isDefault: prev.length === 0,
-    }])
-    setShowModal(false)
+  const handleConnected = (newAccts) => {
+    setAccounts(prev => [
+      ...prev,
+      ...newAccts.map((a, i) => ({ ...a, isDefault: prev.length === 0 && i === 0 })),
+    ])
   }
 
   const setDefault = (id) => setAccounts(prev => prev.map(a => ({ ...a, isDefault: a.id === id })))
   const remove = (id) => setAccounts(prev => prev.filter(a => a.id !== id))
 
-  const filtered = bankQuery.trim()
-    ? MOCK_BANKS.filter(b => b.toLowerCase().includes(bankQuery.toLowerCase()))
-    : MOCK_BANKS
-
   return (
     <>
-      <SectionHeader
-        title="Linked Accounts"
-      />
+      <SectionHeader title="Linked Accounts" />
 
-      {/* Connected accounts */}
       {accounts.length === 0 && (
         <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-muted)', letterSpacing: '0.04em', marginBottom: 24 }}>
           No accounts linked yet.
@@ -359,22 +665,13 @@ function AccountsSection() {
             padding: '16px 0',
             borderBottom: i < accounts.length - 1 ? '1px solid var(--rule)' : 'none',
           }}>
-            <div style={{
-              width: 42, height: 42, borderRadius: '50%', flexShrink: 0,
-              background: 'var(--cream-dark)', color: 'var(--ink)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: 'var(--mono)', fontSize: 14, fontWeight: 700,
-            }}>
-              {acct.bank[0]}
-            </div>
+            <BankLogo bank={acct.bank} size={42} />
             <div style={{ flex: 1 }}>
               <div style={{ fontFamily: 'var(--sans)', fontSize: 14, fontWeight: 500, marginBottom: 3 }}>
                 {acct.bank} {acct.type}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.04em' }}>
-                  ···· {acct.last4}
-                </span>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.04em' }}>···· {acct.last4}</span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--green)', letterSpacing: '0.04em' }}>
                   <CheckCircle2 size={11} /> Connected
                 </span>
@@ -382,27 +679,20 @@ function AccountsSection() {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               {acct.isDefault ? (
-                <span style={{
-                  fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.08em',
-                  color: 'var(--green)', border: '1px solid var(--green)',
-                  padding: '3px 8px', borderRadius: 2,
-                }}>DEFAULT</span>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.08em', color: 'var(--green)', border: '1px solid var(--green)', padding: '3px 8px', borderRadius: 2 }}>
+                  DEFAULT
+                </span>
               ) : (
                 <button onClick={() => setDefault(acct.id)} style={{
                   fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.06em',
                   color: 'var(--ink-muted)', border: '1px solid var(--rule)',
-                  padding: '3px 8px', borderRadius: 2,
-                  background: 'none', cursor: 'pointer',
+                  padding: '3px 8px', borderRadius: 2, background: 'none', cursor: 'pointer',
                 }}>Set default</button>
               )}
-              <button onClick={() => remove(acct.id)} style={{
-                background: 'none', border: 'none', cursor: 'pointer',
-                color: 'var(--ink-muted)', display: 'flex', alignItems: 'center',
-                padding: 4,
-              }}
-              title="Disconnect account"
-              onMouseEnter={e => e.currentTarget.style.color = 'var(--terracotta)'}
-              onMouseLeave={e => e.currentTarget.style.color = 'var(--ink-muted)'}
+              <button onClick={() => remove(acct.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-muted)', display: 'flex', padding: 4 }}
+                title="Disconnect account"
+                onMouseEnter={e => e.currentTarget.style.color = 'var(--terracotta)'}
+                onMouseLeave={e => e.currentTarget.style.color = 'var(--ink-muted)'}
               >
                 <Unlink2 size={15} />
               </button>
@@ -411,133 +701,11 @@ function AccountsSection() {
         ))}
       </div>
 
-      <button onClick={openModal} className="btn btn-primary" style={{ gap: 8 }}>
+      <button onClick={() => setShowModal(true)} className="btn btn-primary" style={{ gap: 8 }}>
         <Link2 size={14} /> Connect a bank account
       </button>
 
-      {/* Connect modal */}
-      {showModal && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 1000,
-          background: 'rgba(30,25,18,0.45)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }} onClick={() => setShowModal(false)}>
-          <div style={{
-            background: 'var(--cream)', border: '1px solid var(--rule)',
-            width: 440, maxWidth: '92vw', padding: '32px',
-            boxShadow: '0 8px 32px rgba(30,25,18,0.18)',
-          }} onClick={e => e.stopPropagation()}>
-
-            {/* Step 1 — bank search */}
-            {step === 1 && (
-              <>
-                <div style={{ marginBottom: 24 }}>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>Connect bank account</div>
-                  <h3 style={{ fontFamily: 'var(--serif)', fontSize: 20, fontWeight: 700 }}>Select your bank</h3>
-                </div>
-                <div style={{ position: 'relative', marginBottom: 16 }}>
-                  <Search size={13} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--ink-muted)' }} />
-                  <input
-                    autoFocus
-                    value={bankQuery}
-                    onChange={e => setBankQuery(e.target.value)}
-                    placeholder="Search banks…"
-                    style={{
-                      width: '100%', padding: '10px 12px 10px 34px',
-                      fontFamily: 'var(--mono)', fontSize: 12,
-                      background: 'var(--cream-mid)', border: '1px solid var(--rule)',
-                      borderRadius: 2, outline: 'none', color: 'var(--ink)',
-                      boxSizing: 'border-box',
-                    }}
-                  />
-                </div>
-                <div style={{ maxHeight: 260, overflowY: 'auto', border: '1px solid var(--rule)', borderRadius: 2 }}>
-                  {filtered.map((bank, i) => (
-                    <button key={bank} onClick={() => handleSelectBank(bank)} style={{
-                      width: '100%', padding: '12px 16px', textAlign: 'left',
-                      background: 'none', border: 'none',
-                      borderBottom: i < filtered.length - 1 ? '1px solid var(--rule)' : 'none',
-                      cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12,
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'var(--cream-mid)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'none'}
-                    >
-                      <div style={{
-                        width: 32, height: 32, borderRadius: '50%', flexShrink: 0,
-                        background: 'var(--cream-dark)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 700, color: 'var(--ink)',
-                      }}>{bank[0]}</div>
-                      <span style={{ fontFamily: 'var(--sans)', fontSize: 14 }}>{bank}</span>
-                    </button>
-                  ))}
-                  {filtered.length === 0 && (
-                    <div style={{ padding: '16px', fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-muted)' }}>
-                      No results for "{bankQuery}"
-                    </div>
-                  )}
-                </div>
-                <button onClick={() => setShowModal(false)} className="btn btn-outline" style={{ marginTop: 16, fontSize: 11 }}>Cancel</button>
-              </>
-            )}
-
-            {/* Step 2 — connecting */}
-            {step === 2 && (
-              <div style={{ textAlign: 'center', padding: '24px 0' }}>
-                <div style={{
-                  width: 56, height: 56, borderRadius: '50%',
-                  background: 'var(--cream-dark)', color: 'var(--ink)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontFamily: 'var(--mono)', fontSize: 20, fontWeight: 700,
-                  margin: '0 auto 20px',
-                }}>{selectedBank[0]}</div>
-                <div style={{ fontFamily: 'var(--serif)', fontSize: 18, fontWeight: 700, marginBottom: 8 }}>
-                  Connecting to {selectedBank}…
-                </div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-muted)', letterSpacing: '0.04em' }}>
-                  Verifying credentials securely
-                </div>
-              </div>
-            )}
-
-            {/* Step 3 — success */}
-            {step === 3 && (
-              <>
-                <div style={{ textAlign: 'center', marginBottom: 28 }}>
-                  <CheckCircle2 size={40} color="var(--green)" style={{ marginBottom: 14 }} />
-                  <div style={{ fontFamily: 'var(--serif)', fontSize: 18, fontWeight: 700, marginBottom: 6 }}>
-                    {selectedBank} connected
-                  </div>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-muted)', letterSpacing: '0.04em' }}>
-                    ···· {newLast4}
-                  </div>
-                </div>
-                <div style={{ marginBottom: 24 }}>
-                  <label style={{ display: 'block', fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-muted)', marginBottom: 8 }}>
-                    Account type
-                  </label>
-                  <select value={newAccountType} onChange={e => setNewAccountType(e.target.value)} style={{
-                    width: '100%', padding: '11px 14px',
-                    fontFamily: 'var(--sans)', fontSize: 14,
-                    background: 'var(--cream-mid)', border: '1px solid var(--rule)',
-                    borderRadius: 2, outline: 'none', color: 'var(--ink)', cursor: 'pointer',
-                  }}>
-                    <option>Checking</option>
-                    <option>Savings</option>
-                    <option>Money Market</option>
-                  </select>
-                </div>
-                <div style={{ display: 'flex', gap: 10 }}>
-                  <button onClick={() => setShowModal(false)} className="btn btn-outline" style={{ fontSize: 11 }}>Cancel</button>
-                  <button onClick={handleAdd} className="btn btn-primary" style={{ fontSize: 11, gap: 8 }}>
-                    <Link2 size={13} /> Add account
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+      {showModal && <PlaidModal onClose={() => setShowModal(false)} onConnected={handleConnected} />}
     </>
   )
 }

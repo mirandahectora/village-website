@@ -387,13 +387,13 @@ function CtaSection() {
               <p style={{ fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.8, marginBottom: 24, marginTop: 0 }}>
                 Community organizations, credit unions, nonprofits, and financial educators: if our work overlaps with yours, reach out.
               </p>
-              <a href="mailto:hello@villagefinance.com" style={{
+              <a href="mailto:hector.miranda@yale.edu" style={{
                 fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.08em',
                 color: 'var(--ink)', textDecoration: 'none',
                 borderBottom: '1px solid var(--ink)', paddingBottom: 2,
                 display: 'inline-flex', alignItems: 'center', gap: 8,
               }}>
-                hello@villagefinance.com <ArrowRight size={12} />
+                hector.miranda@yale.edu <ArrowRight size={12} />
               </a>
             </div>
           </div>
@@ -525,7 +525,7 @@ function WaitlistForm() {
       </div>
       <div>
         <label style={labelStyle}>Email</label>
-        <input type="email" placeholder="jane@example.com" required style={inputStyle} {...field('email')} />
+        <input type="email" placeholder="you@gmail.com" required style={inputStyle} {...field('email')} />
       </div>
       <div>
         <label style={{ ...labelStyle }}>

@@ -56,7 +56,7 @@ const TIMELINE_PHASES = [
         desc: 'Incorporate, establish governance documents, and set up foundational banking relationships. Define the cooperative legal framework Village operates under.',
       },
       {
-        date: 'May 2026',
+        date: 'June 2026',
         title: 'BaaS and Escrow Structure',
         desc: 'Partner with a Banking-as-a-Service provider and build the escrow infrastructure that sits beneath every village. Certify fund isolation and audit trail systems.',
       },
@@ -175,20 +175,8 @@ function InvestorHero() {
         <p style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(18px, 2vw, 26px)', lineHeight: 1.6, marginBottom: 40, fontWeight: 400, maxWidth: 640 }}>
           Village is an early-stage cooperative finance platform targeting the $380B informal savings market, beginning with 57M underbanked Americans and expanding globally.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, border: '1px solid var(--rule)', marginBottom: 40 }}>
-          {[
-            { label: 'Founded', value: '2025' },
-            { label: 'Stage', value: 'Pre-Seed' },
-            { label: 'HQ', value: 'NYC' },
-          ].map((s, i) => (
-            <div key={i} style={{ padding: isMobile ? '16px' : '24px 28px', borderRight: i < 2 ? '1px solid var(--rule)' : 'none' }}>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>{s.label}</div>
-              <div style={{ fontFamily: 'var(--serif)', fontSize: isMobile ? 20 : 24, fontWeight: 700 }}>{s.value}</div>
-            </div>
-          ))}
-        </div>
         <div style={{ display: 'flex', gap: 12 }}>
-          <a href="mailto:invest@villagefinance.com" className="btn btn-primary">
+          <a href="mailto:hector.miranda@yale.edu" className="btn btn-primary">
             Investor Inquiries <ArrowRight size={14} />
           </a>
         </div>
@@ -251,7 +239,7 @@ function TamSection() {
           South African stokvels alone, annually
         </div>
         <p style={{ fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.8 }}>
-          Rotating savings and credit associations (ROSCAs) operate in every country on earth. They are the dominant financial institution for billions of people, and they run on spreadsheets, WhatsApp, and trust. Village provides the technological and legal infrastructure that turns informal community savings into a regulated, scalable, and auditable financial system.
+          Financial clubs such as stokvels or rotating savings and credit associations (ROSCAs) operate in every country on earth. They are the dominant financial institution for billions of people, and they run on spreadsheets, WhatsApp, and trust. Village provides the technological and legal infrastructure that turns informal community savings into a regulated, scalable, and auditable financial system.
         </p>
       </div>
     </section>
@@ -495,13 +483,13 @@ function InvestorCta() {
           <p style={{ fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.8, marginBottom: 32 }}>
             We're raising a pre-seed round. If you invest at the intersection of fintech, cooperative economics, or financial inclusion, we'd like to talk.
           </p>
-          <a href="mailto:invest@villagefinance.com" style={{
+          <a href="mailto:hector.miranda@yale.edu" style={{
             fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.08em',
             color: 'var(--green)', textDecoration: 'none',
             borderBottom: '1px solid var(--green)', paddingBottom: 2,
             display: 'inline-flex', alignItems: 'center', gap: 8,
           }}>
-            invest@villagefinance.com <ArrowRight size={12} />
+            hector.miranda@yale.edu <ArrowRight size={12} />
           </a>
         </div>
 
@@ -515,13 +503,13 @@ function InvestorCta() {
           <p style={{ fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.8, marginBottom: 32 }}>
             We're happy to speak on the record about Village, our operations, and the broader case for community-owned financial infrastructure.
           </p>
-          <a href="mailto:press@villagefinance.com" style={{
+          <a href="mailto:hector.miranda@yale.edu" style={{
             fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.08em',
             color: 'var(--terracotta)', textDecoration: 'none',
             borderBottom: '1px solid var(--terracotta)', paddingBottom: 2,
             display: 'inline-flex', alignItems: 'center', gap: 8,
           }}>
-            press@villagefinance.com <ArrowRight size={12} />
+            hector.miranda@yale.edu <ArrowRight size={12} />
           </a>
         </div>
       </div>

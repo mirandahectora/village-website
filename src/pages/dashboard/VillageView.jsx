@@ -7,6 +7,54 @@ import {
   Link2, Copy, Check,
 } from 'lucide-react'
 
+/* ── ROSCA helpers ───────────────────────────────── */
+function strToSeed(str) {
+  let h = 0
+  for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0
+  return Math.abs(h)
+}
+
+function seededShuffle(arr, seed) {
+  const a = [...arr]
+  let s = seed
+  for (let i = a.length - 1; i > 0; i--) {
+    s = ((s * 1664525) + 1013904223) >>> 0
+    const j = s % (i + 1)
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+function getRoscaPayoutOrder(village) {
+  const members = village.memberList || []
+  if (members.length === 0) return []
+  const MO = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }
+  const parse = (str) => {
+    if (!str || str === '-') return new Date(0)
+    const p = str.split(' ')
+    return p.length === 3 ? new Date(+p[2], MO[p[0]] ?? 0, parseInt(p[1])) : new Date(0)
+  }
+  const withDates = members.map(m => ({ ...m, joinDate: parse(m.joined) }))
+  const validMs = withDates.map(m => m.joinDate.getTime()).filter(d => d > 0)
+  const foundingMs = validMs.length ? Math.min(...validMs) : 0
+  const cutoff = foundingMs + 45 * 24 * 60 * 60 * 1000
+  const founders = withDates.filter(m => m.joinDate.getTime() <= cutoff)
+  const newer = withDates.filter(m => m.joinDate.getTime() > cutoff)
+    .sort((a, b) => a.joinDate - b.joinDate)
+  return [...seededShuffle(founders, strToSeed(village.id || 'v')), ...newer]
+}
+
+function getRoscaReceivedSet(village) {
+  const received = new Set()
+  ;(village.votes || [])
+    .filter(v => v.status === 'passed' && /allocate/i.test(v.title || ''))
+    .forEach(v => {
+      const m = (v.title || '').match(/allocate[^t]+to\s+([^:]+)/i)
+      if (m) received.add(m[1].trim().toLowerCase())
+    })
+  return received
+}
+
 function Avatar({ photo, initials, size = 32, border, borderColor }) {
   const inner = photo
     ? <img src={photo} alt={initials} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', display: 'block' }} />
@@ -83,7 +131,7 @@ export default function VillageView({ village, tab, setTab, onLeave }) {
               fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.08em',
               color: tab === t.id ? 'var(--ink)' : 'var(--ink-muted)',
               borderBottom: tab === t.id ? '2px solid var(--ink)' : '2px solid transparent',
-              transition: 'color 0.15s',
+              transition: 'color 0.15s, border-color 0.15s',
             }}>
               {t.icon}{t.label}
             </button>
@@ -93,11 +141,13 @@ export default function VillageView({ village, tab, setTab, onLeave }) {
 
       {/* Tab content */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        {tab === 'overview'     && <OverviewTab village={village} />}
-        {tab === 'chat'         && <ChatTab village={village} sendMessage={sendMessage} />}
-        {tab === 'votes'        && <VotesTab village={village} castVote={castVote} cancelVote={cancelVote} draftResolution={draftResolution} user={user} />}
-        {tab === 'members'      && <MembersTab village={village} draftResolution={draftResolution} onLeave={onLeave} />}
-        {tab === 'constitution' && <ConstitutionTab village={village} draftResolution={draftResolution} />}
+        <div key={tab} className="dash-fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          {tab === 'overview'     && <OverviewTab village={village} />}
+          {tab === 'chat'         && <ChatTab village={village} sendMessage={sendMessage} />}
+          {tab === 'votes'        && <VotesTab village={village} castVote={castVote} cancelVote={cancelVote} draftResolution={draftResolution} user={user} />}
+          {tab === 'members'      && <MembersTab village={village} draftResolution={draftResolution} onLeave={onLeave} />}
+          {tab === 'constitution' && <ConstitutionTab village={village} draftResolution={draftResolution} />}
+        </div>
       </div>
     </div>
   )
@@ -1358,6 +1408,11 @@ const RESOLUTION_TYPES = [
 ]
 
 function VotesTab({ village, castVote, cancelVote, draftResolution, user }) {
+  const isRosca = village.structure?.payoutStructure === 'rotating'
+  const availableResTypes = isRosca
+    ? RESOLUTION_TYPES.filter(t => t.id !== 'allocation' && t.id !== 'investment')
+    : RESOLUTION_TYPES
+
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ type: '', title: '', description: '', amount: '' })
   const [errors, setErrors] = useState({})
@@ -1365,7 +1420,7 @@ function VotesTab({ village, castVote, cancelVote, draftResolution, user }) {
   const open   = village.votes.filter(v => v.status === 'open')
   const closed = village.votes.filter(v => v.status !== 'open')
 
-  const resType = RESOLUTION_TYPES.find(t => t.id === form.type)
+  const resType = availableResTypes.find(t => t.id === form.type)
 
   const handleSubmit = () => {
     const e = {}
@@ -1414,7 +1469,7 @@ function VotesTab({ village, castVote, cancelVote, draftResolution, user }) {
           <div style={{ marginBottom: 20 }}>
             <label style={{ display: 'block', fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-muted)', marginBottom: 8 }}>Resolution type *</label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
-              {RESOLUTION_TYPES.map(t => {
+              {availableResTypes.map(t => {
                 const active = form.type === t.id
                 return (
                   <button
@@ -2005,6 +2060,7 @@ const DEFAULT_PERMS = {
 function MembersTab({ village, draftResolution, onLeave }) {
   const { leaveVillage } = useAuth()
   const total = village.memberList.reduce((s, m) => s + m.contrib, 0)
+  const isRosca = village.structure?.payoutStructure === 'rotating'
   const [subtab, setSubtab] = useState('roster')
   const [requests, setRequests] = useState(village.joinRequests || [])
   const [modal, setModal] = useState(null) // { type: 'remove'|'add', member?: obj }
@@ -2283,8 +2339,9 @@ function MembersTab({ village, draftResolution, onLeave }) {
       <div style={{ display: 'flex', alignItems: 'center', borderBottom: '1px solid var(--rule)', marginBottom: 28, flexShrink: 0 }}>
         {[
           { id: 'roster', label: 'Roster' },
+          isRosca && { id: 'payout', label: 'Payout Order' },
           { id: 'requests', label: 'Join Requests', badge: requests.length },
-        ].map(t => (
+        ].filter(Boolean).map(t => (
           <button key={t.id} onClick={() => setSubtab(t.id)} style={{
             padding: '10px 20px', background: 'none', border: 'none', cursor: 'pointer',
             display: 'flex', alignItems: 'center', gap: 7,
@@ -2304,6 +2361,82 @@ function MembersTab({ village, draftResolution, onLeave }) {
           </button>
         ))}
       </div>
+
+      {subtab === 'payout' && (() => {
+        const order = getRoscaPayoutOrder(village)
+        const received = getRoscaReceivedSet(village)
+        const firstPending = order.findIndex(m => {
+          const fullName = m.name.toLowerCase()
+          return !Array.from(received).some(r => fullName.includes(r) || r.includes(fullName.split(' ')[0].toLowerCase()))
+        })
+        return (
+          <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+            <div style={{
+              display: 'flex', alignItems: 'flex-start', gap: 10,
+              padding: '14px 16px', marginBottom: 20,
+              background: 'var(--cream-mid)', border: '1px solid var(--rule)',
+            }}>
+              <Vote size={13} color="var(--ink-muted)" style={{ flexShrink: 0, marginTop: 2 }} />
+              <p style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--ink-muted)', lineHeight: 1.6, margin: 0 }}>
+                This village uses a rotating (ROSCA) payout structure. Members receive the full pool in the order below — one per contribution cycle. New members join at the end of the queue.
+              </p>
+            </div>
+
+            {/* Header */}
+            <div style={{
+              display: 'grid', gridTemplateColumns: '40px 40px 1fr 100px 110px',
+              padding: '10px 16px',
+              fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)',
+              letterSpacing: '0.1em', textTransform: 'uppercase',
+              borderBottom: '1px solid var(--rule)',
+            }}>
+              <span>#</span><span></span><span>Member</span><span>Joined</span><span>Status</span>
+            </div>
+
+            {order.map((m, i) => {
+              const fullName = m.name.toLowerCase()
+              const hasReceived = Array.from(received).some(r => fullName.includes(r) || r.includes(fullName.split(' ')[0].toLowerCase()))
+              const isNext = i === firstPending
+              const accentColor = village.color === 'green' ? 'var(--green)' : 'var(--terracotta)'
+              return (
+                <div key={m.id} style={{
+                  display: 'grid', gridTemplateColumns: '40px 40px 1fr 100px 110px',
+                  padding: '14px 16px', alignItems: 'center',
+                  borderBottom: '1px solid var(--rule)',
+                  background: isNext ? 'rgba(42,74,30,0.04)' : 'transparent',
+                }}>
+                  <span style={{
+                    fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 700,
+                    color: hasReceived ? 'var(--rule)' : isNext ? accentColor : 'var(--ink-muted)',
+                  }}>{i + 1}</span>
+                  <Avatar photo={m.photo} initials={m.initials} size={30} />
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: 14, fontWeight: m.name.includes('Jordan') ? 600 : 400, color: hasReceived ? 'var(--ink-muted)' : 'var(--ink)' }}>
+                    {m.name}
+                    {m.name.includes('Jordan') && <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--green)', marginLeft: 6 }}>YOU</span>}
+                  </div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-muted)', letterSpacing: '0.04em' }}>
+                    {m.joined?.split(' ').slice(0, 2).join(' ') || '—'}
+                  </div>
+                  <div>
+                    {hasReceived ? (
+                      <span style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.06em', color: 'var(--ink-muted)', textDecoration: 'line-through' }}>Received</span>
+                    ) : isNext ? (
+                      <span style={{
+                        fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.06em',
+                        color: accentColor, fontWeight: 600,
+                        background: village.color === 'green' ? 'rgba(42,74,30,0.08)' : 'rgba(192,80,48,0.08)',
+                        padding: '3px 8px', border: `1px solid ${accentColor}`,
+                      }}>Up next</span>
+                    ) : (
+                      <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--rule)', letterSpacing: '0.06em' }}>—</span>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )
+      })()}
 
       {subtab === 'requests' && (
         <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
@@ -2403,17 +2536,17 @@ function MembersTab({ village, draftResolution, onLeave }) {
             display: 'grid', gridTemplateColumns: '40px 1fr 100px 120px 80px',
             padding: '14px 16px', alignItems: 'center',
             borderBottom: '1px solid var(--rule)',
-            background: m.name.includes('Hector') ? 'rgba(42,74,30,0.04)' : 'transparent',
+            background: m.name.includes('Jordan') ? 'rgba(42,74,30,0.04)' : 'transparent',
             transition: 'background 0.15s',
           }}
-          onMouseEnter={e => { if (!m.name.includes('Hector')) e.currentTarget.style.background = 'var(--cream-mid)' }}
-          onMouseLeave={e => { if (!m.name.includes('Hector')) e.currentTarget.style.background = 'transparent' }}
+          onMouseEnter={e => { if (!m.name.includes('Jordan')) e.currentTarget.style.background = 'var(--cream-mid)' }}
+          onMouseLeave={e => { if (!m.name.includes('Jordan')) e.currentTarget.style.background = 'transparent' }}
           >
             <Avatar photo={m.photo} initials={m.initials} size={30} />
 
             <div>
-              <div style={{ fontFamily: 'var(--sans)', fontSize: 14, fontWeight: m.name.includes('Hector') ? 600 : 400 }}>
-                {m.name} {m.name.includes('Hector') && <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--green)', marginLeft: 6 }}>YOU</span>}
+              <div style={{ fontFamily: 'var(--sans)', fontSize: 14, fontWeight: m.name.includes('Jordan') ? 600 : 400 }}>
+                {m.name} {m.name.includes('Jordan') && <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--green)', marginLeft: 6 }}>YOU</span>}
               </div>
             </div>
 
