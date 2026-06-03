@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last updated: June 1, 2026**
+**Last updated: [   ]**
 
 Village Finance, Corp. ("Village," "we," "us," or "our") operates the website located at https://villagefinance.netlify.app (the "Site"). This Privacy Policy explains what information we collect through the Site, how we use it, and the choices you have.
 

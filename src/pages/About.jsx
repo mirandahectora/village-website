@@ -4,19 +4,19 @@ import { useMobile } from '../hooks/useMobile'
 
 const TEAM = [
   {
+    name: 'Héctor Miranda Plaza',
+    focus: 'Co-founder',
+    bio: 'B.A. in Statistics & Data Science and B.A. in Political Science at Yale. I have professional experience with statistical modeling, deep learning, and geographical systems across political, biomedical, and econometric fields. I also study decision-making theory, opinion formation, and governance structures in democratic societies.',
+    img: "/hector.jpg",
+    position: "center 20%"
+  },
+  {
     name: 'Richie George',
     focus: 'Co-founder',
     bio: 'B.A. in History and B.A. Philosophy at Yale. I study how public finance has shaped communities in the U.S. and abroad and how democratic theory can rethink local and global finance for the twenty-first century. I also bring expertise from quantitative approaches in cognitive science and public health.',
     img: "/richie.png",
     position: "60% 29%",
     scale: 1.5
-  },
-  {
-    name: 'Héctor Miranda Plaza',
-    focus: 'Co-founder',
-    bio: 'B.A. in Statistics & Data Science and B.A. in Political Science at Yale. I have professional experience with statistical modeling, deep learning, and geographical systems across political, biomedical, and econometric fields. I also study decision-making theory, opinion formation, and governance structures in democratic societies.',
-    img: "/hector.jpg",
-    position: "center 20%"
   },
 ]
 
