@@ -178,13 +178,13 @@ function LoginForm({ onSwitch }) {
         <Link to="/" style={{ fontFamily: 'var(--serif)', fontSize: 24, fontWeight: 700, color: 'var(--cream)', textDecoration: 'none' }}>
           Village
         </Link>
-        <div>
-          <p style={{ fontFamily: 'var(--serif)', fontSize: 32, lineHeight: 1.3, fontWeight: 700, marginBottom: 24 }}>
-            "Our village paid off two members' student debt in the first year."
-          </p>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'rgba(244,238,226,0.5)', letterSpacing: '0.08em' }}>
-            Amara T., New Haven Collective
-          </div>
+        <div style={{ flex: 1, margin: '40px 0', borderRadius: 8, overflow: 'hidden', position: 'relative' }}>
+          <img
+            src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=800&q=80"
+            alt="Community"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', filter: 'saturate(0.7) brightness(0.85)' }}
+          />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(28,50,20,0.45) 0%, transparent 60%)' }} />
         </div>
         <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'rgba(244,238,226,0.3)', letterSpacing: '0.08em' }}>
           © 2026 Village Finance, Corp.
