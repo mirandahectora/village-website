@@ -316,20 +316,22 @@ function TeamCard({ m }) {
       borderBottom: '1px solid var(--rule)',
       overflow: 'hidden',
     }}>
-      <div style={{ height: 260, overflow: 'hidden', position: 'relative' }}>
-        <img src={m.img} alt={m.name}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: m.position || 'center', transform: `scale(${m.scale || 1})`, transformOrigin: m.position || 'center' }}
-        />
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '28px 0 0' }}>
+        <div style={{ width: 160, height: 160, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+          <img src={m.img} alt={m.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: m.position || 'center', transform: `scale(${m.scale || 1})`, transformOrigin: m.position || 'center' }}
+          />
+        </div>
       </div>
 
       <div style={{ padding: '28px 28px 36px' }}>
-        <div style={{ fontFamily: 'var(--serif)', fontSize: 22, fontWeight: 700, marginBottom: 4 }}>
+        <div style={{ fontFamily: 'var(--serif)', fontSize: 22, fontWeight: 700, marginBottom: 4, textAlign: 'center' }}>
           {m.name}
         </div>
         <div style={{
           fontFamily: 'var(--mono)', fontSize: 10,
           color: 'var(--terracotta)', letterSpacing: '0.1em',
-          textTransform: 'uppercase', marginBottom: 8,
+          textTransform: 'uppercase', marginBottom: 8, textAlign: 'center',
         }}>{m.focus}</div>
         <p style={{
           fontFamily: 'var(--sans)', fontSize: 13,
