@@ -37,7 +37,7 @@ export default function Nav() {
     }}>
       {/* Main bar */}
       <div style={{
-        maxWidth: 1280, margin: '0 auto', padding: '0 32px',
+        padding: '0 32px',
         height: 72, display: 'flex', alignItems: 'center',
         justifyContent: 'space-between',
       }}>
