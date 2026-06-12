@@ -150,9 +150,9 @@ function JoinTeamSection() {
             Areas we're hiring in
           </div>
           {[
-            { area: 'Engineering', detail: 'Full-stack, ML, fintech infrastructure, security and cryptography' },
+            { area: 'Cybersecurity', detail: 'SOC 2 Type I audit, threat modeling, security architecture design' },
             { area: 'Product & Design', detail: 'Product management, marketing, UX/UI design' },
-            { area: 'Operations & Growth', detail: 'Community partnerships, compliance, analytics' },
+            { area: 'Operations & Growth', detail: 'Community partnerships, outreach, analytics' },
           ].map((item, i) => (
             <div key={i} style={{ paddingTop: i > 0 ? 32 : 0, borderTop: i > 0 ? '1px solid var(--rule)' : 'none' }}>
               <div style={{ fontFamily: 'var(--serif)', fontSize: 18, fontWeight: 700, marginBottom: 6 }}>{item.area}</div>
@@ -180,22 +180,48 @@ function OriginsSection() {
         ...revealStyle(vis, 0),
       }}>
         <FlickeringGrid color="#2A4A1E" maxOpacity={0.1} flickerChance={0.06} squareSize={4} gridGap={6} />
-        <h2 style={{ fontSize: 'clamp(24px, 2.5vw, 36px)', position: 'relative' }}>Origins</h2>
+        <h2 style={{ fontSize: 'clamp(24px, 2.5vw, 36px)', position: 'relative' }}>The Problem</h2>
       </div>
 
       <div ref={refA} style={{
         maxWidth: 1280, margin: '0 auto',
         borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
-        padding: isMobile ? '40px 24px' : '72px 64px',
         ...revealStyle(visA, 0),
       }}>
-        <p style={{
-          fontFamily: 'var(--serif)', fontSize: 'clamp(18px, 2vw, 28px)',
-          lineHeight: 1.65, fontWeight: 400, maxWidth: 820,
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(3, 1fr)',
         }}>
-          Village started as a question in a seminar room at Yale in 2025: why does the financial
-          system treat community trust as invisible, when it's the thing people actually rely on?
-        </p>
+          {[
+            { stat: '63%', desc: 'of Americans cannot afford a $500 surprise expense' },
+            { stat: '25%', desc: 'of Americans must choose between paying debts and basic necessities' },
+            { stat: '48%', desc: 'of Americans do not own any form of investment assets' },
+            { stat: '48%', desc: 'of American loan applicants have been rejected at least once' },
+            { stat: '56%', desc: 'of Americans feel they are not on track to retire comfortably' },
+            { stat: '41%', desc: 'of low and middle income households have informal loans with others' },
+          ].map((item, i) => {
+            const isLastRow = i >= 3
+            const isLastCol = (i + 1) % 3 === 0
+            return (
+              <div key={i} style={{
+                padding: isMobile ? '32px 24px' : '48px 48px',
+                borderRight: (!isMobile && !isLastCol) ? '1px solid var(--rule)' : (isMobile && i % 2 === 0) ? '1px solid var(--rule)' : 'none',
+                borderBottom: !isLastRow ? '1px solid var(--rule)' : 'none',
+              }}>
+                <div style={{
+                  fontFamily: 'var(--serif)', fontWeight: 900,
+                  fontSize: 'clamp(36px, 3.5vw, 52px)', lineHeight: 1,
+                  color: i % 2 === 0 ? 'var(--green)' : 'var(--terracotta)',
+                  marginBottom: 12,
+                }}>{item.stat}</div>
+                <div style={{
+                  fontFamily: 'var(--sans)', fontSize: 13,
+                  color: 'var(--ink-muted)', lineHeight: 1.7,
+                }}>{item.desc}</div>
+              </div>
+            )
+          })}
+        </div>
       </div>
 
       <div style={{

@@ -4,8 +4,8 @@ import { useMobile } from '../hooks/useMobile'
 
 const FAQ = [
   {
-    q: 'How is Village different from a credit union?',
-    a: 'Credit unions are geographically bound with professional management. Village is a hub for peer-managed cooperatives not dependent on the location or profession of its members. Village provides the infrastructure; your village provides the decisions.',
+    q: 'Why does Village work?',
+    a: 'Village leverages existing social dynamics to overcome the collective action problems that cause financial initiatives within groups to fall apart like free-riding, lack of accountability, and coordination failure.',
   },
   {
     q: 'Are there any fees beyond the contribution percentage?',
@@ -13,7 +13,7 @@ const FAQ = [
   },
   {
     q: "What if I don't have an existing community to bring?",
-    a: "Village's matching algorithm pairs you with members who have compatible goals and similar financial circumstances, drawn from a detailed profile. You build the trust from there.",
+    a: "Our current pilots are designed for existing social groups and institutions. If you don't have a group to bring, you're still welcome to join the waitlist. We will be building out a recommendations system that will help connect individuals without an existing group to compatible people and Villages on the platform.",
   },
   {
     q: 'What happens if my village grows across a tier threshold?',
@@ -28,12 +28,12 @@ const FAQ = [
     a: "All funds are held in escrow, separate from Village's operating accounts. No funds can be released without a democratic village vote. All transactions are fully auditable.",
   },
   {
-    q: 'How does the matching algorithm work?',
-    a: 'Our proprietary algorithm uses a 212-feature financial profile to identify compatible matches. It weighs similarity in goals and contribution capacity against complementarity across financial circumstances.',
+    q: 'Does Village involve cryptocurrencies?',
+    a: 'No. Village operates entirely through traditional escrow banking infrastructure. That said, we are exploring future integrations with blockchain-based tools as a complement to our escrow model.',
   },
   {
-    q: 'Does Village take a cut of investment returns?',
-    a: 'No. Village only charges on contributions deposited, not on investment returns, interest, or any downstream value your village generates. Your upside is entirely yours.',
+    q: 'How is Village different from a credit union?',
+    a: 'Credit unions are geographically bound with professional management. Village is a hub for peer-managed cooperatives not dependent on the location or profession of its members. Village provides the infrastructure; your village provides the decisions.',
   },
 ]
 

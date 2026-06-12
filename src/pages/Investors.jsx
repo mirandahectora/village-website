@@ -7,42 +7,27 @@ import { useMobile } from '../hooks/useMobile'
 const TAM_DATA = [
   {
     label: 'Total Addressable Market',
-    value: '$33.5B',
-    sublabel: 'Total household savings market',
+    value: '$113B',
+    sublabel: 'General population, U.S.',
     color: 'green',
-    desc: '133 Million Households, with a median annual income of $83,370. The current household savings rate is 5%. Only 5% of households currently participate in an informal financial circle.',
+    desc: '47 million adults who are credit invisible or unscoreable. Based on $100/month average savings rate for informal finance clubs (low-end estimate). Implies $2.03B ARR at Village\'s 1.8% average revenue rate.',
   },
   {
     label: 'Serviceable Addressable Market',
-    value: '$273.6M',
-    sublabel: 'Total household savings market in key demographics',
+    value: '$3.5B',
+    sublabel: 'Stage 1 launch markets',
     color: 'terra',
-    desc: '2.5 Million households in NYC and SF MSAs falling into immigrant, union, college, or religious populations, with assumed overlap penalties. Current savings remains at 5%, but median annual household income is lower at $47,900.',
+    desc: '1.45 million adults credit invisible or unscoreable in Stage 1 locations. Based on $100/month average savings rate for informal finance clubs (low-end estimate). Implies $63M ARR at Village\'s 1.8% average revenue rate.',
   },
   {
     label: 'Serviceable Obtainable Market',
-    value: '$7.2M',
-    sublabel: 'Year 1 Post-Launch Goal',
+    value: '$6M',
+    sublabel: 'Year 1 Post-Launch Capture Goal',
     color: 'green',
-    desc: 'Goal of 5,000 users in key demographics across NYC, SF, and Boston MSAs. Calculations continue to use 5% savings rate and $47,900 median annual income.',
+    desc: 'Goal of 5,000 users across all Villages in Stage 1 locations. Based on $100/month average savings rate for informal finance clubs (low-end estimate). Implies $108K ARR at Village\'s 1.8% average revenue rate.',
   },
 ]
 
-const AUM_PROJECTIONS = [
-  { year: 'Year 1', label: 'Stage 1 Launch',       aum: '$7.2M',   users: '5,000',   fee: '2.0%', revenue: '$144K'  },
-  { year: 'Year 2', label: 'Market Consolidation', aum: '$35.9M',  users: '15,000',  fee: '1.9%', revenue: '$683K'  },
-  { year: 'Year 3', label: 'Stage 2 Launches',     aum: '$137.5M', users: '55,000',  fee: '1.8%', revenue: '$2.48M' },
-  { year: 'Year 4', label: 'National',             aum: '$405M',   users: '150,000', fee: '1.7%', revenue: '$6.89M' },
-  { year: 'Year 5', label: 'Mature Platform',      aum: '$1.14B',  users: '380,000', fee: '1.6%', revenue: '$18.24M'},
-]
-
-const AUM_DESCS = [
-  'NYC closed alpha: first villages formed, first funds pooled.',
-  'Deepening presence in Stage 1 MSAs; network effects take hold.',
-  'Expansion into new cities and demographics with focused outreach.',
-  'National footprint established; reverse credit pilot underway.',
-  'Mature platform across US; early-stage into select LATAM markets begins.',
-]
 
 const TIMELINE_PHASES = [
   {
@@ -79,18 +64,13 @@ const TIMELINE_PHASES = [
       },
       {
         date: 'Sep 2026',
-        title: 'Algorithmic Development',
-        desc: '212-variable financial profile dataset. Proprietary matching score model validated on synthetic and alpha testing population data.',
+        title: 'Recommendations System',
+        desc: 'Developing a user/village recommendation system for future users interested in using Village, but which don\'t have an immediate social group to create a Village with. For use in public launch as seceondary feature.',
       },
       {
         date: 'Oct 2026',
         title: 'Waitlist Beta Launch',
         desc: 'Open the waitlist to the general public in New York and San Francisco. Begin community outreach and anchor partnership recruitment in all three cities.',
-      },
-      {
-        date: 'Nov 2026',
-        title: 'NY/CA Org Services Rollout',
-        desc: 'Partner with unions, campus organizations, and immigrant networks in New York and California for structured services rollout. Collect feedback on matching, governance, and payout flows.',
       },
     ],
   },
@@ -107,7 +87,7 @@ const TIMELINE_PHASES = [
       {
         date: 'Year 1',
         title: 'Solidify Market Participation',
-        desc: 'Deepen presence across Stage 1 MSAs as network effects take hold. Consolidate the user base and refine village governance models across active markets.',
+        desc: 'Deepen presence across Stage 1 market areas as network effects take hold. Consolidate the user base and refine village governance models across active markets.',
       },
       {
         date: 'Year 2',
@@ -123,8 +103,8 @@ const TIMELINE_PHASES = [
     milestones: [
       {
         date: 'Year 3',
-        title: 'Reverse Credit Trials & Index Funds',
-        desc: 'Test the reverse credit model with mature villages: community-pooled liquidity drawn by members without incurring personal debt. The pooled fund as collateral. The community as underwriter. Introduce index fund participation for member savings.',
+        title: 'Brokerage Account Villages',
+        desc: 'Expand Village into direct investment: communities pool funds into shared brokerage accounts, voting democratically on allocations across stocks, index funds, and other instruments.',
       },
       {
         date: 'Year 4+',
@@ -141,7 +121,6 @@ export default function Investors() {
     <main className="page">
       <InvestorHero />
       <TamSection />
-      <AumSection />
       <TimelineSection />
       <InvestorCta />
     </main>
@@ -173,7 +152,7 @@ function InvestorHero() {
       </div>
       <div style={{ padding: isMobile ? '40px 24px' : '80px 64px' }}>
         <p style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(18px, 2vw, 26px)', lineHeight: 1.6, marginBottom: 40, fontWeight: 400, maxWidth: 640 }}>
-          Village is an early-stage cooperative finance platform targeting the $380B informal savings market, beginning with 57M underbanked Americans and expanding globally.
+          Village is an early-stage cooperative finance platform targeting a $113B addressable market, beginning with 47M credit-invisible Americans and expanding globally.
         </p>
         <div style={{ display: 'flex', gap: 12 }}>
           <a href="mailto:hector.miranda@yale.edu" className="btn btn-primary">
@@ -246,105 +225,7 @@ function TamSection() {
   )
 }
 
-function AumSection() {
-  const [ref, vis] = useInView()
-  const isMobile = useMobile()
-  return (
-    <section style={{ borderBottom: '1px solid var(--rule)' }}>
-      <div ref={ref} style={{
-        maxWidth: 1280, margin: '0 auto', padding: isMobile ? '32px 24px' : '48px 32px',
-        borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-        position: 'relative', overflow: 'hidden',
-        ...revealStyle(vis, 0),
-      }}>
-        <FlickeringGrid color="#2A4A1E" maxOpacity={0.1} flickerChance={0.06} squareSize={4} gridGap={6} />
-        <h2 style={{ fontSize: 'clamp(24px, 2.5vw, 36px)', position: 'relative' }}>AUM Projections</h2>
-      </div>
-      <div style={{
-        maxWidth: 1280, margin: '0 auto',
-        borderLeft: '1px solid var(--rule)', borderRight: '1px solid var(--rule)',
-      }}>
-        {AUM_PROJECTIONS.map((row, i) => {
-          const [rRef, rVis] = useInView()
-          const accent = i % 2 === 0 ? 'var(--green)' : 'var(--terracotta)'
-          if (isMobile) {
-            return (
-              <div key={row.year} ref={rRef} style={{
-                padding: '24px',
-                borderBottom: '1px solid var(--rule)',
-                borderTop: `3px solid ${accent}`,
-                ...revealStyle(rVis, 0),
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
-                  <div>
-                    <div style={{ fontFamily: 'var(--mono)', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em' }}>{row.year}</div>
-                    <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.06em', marginTop: 2 }}>{row.label}</div>
-                  </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontFamily: 'var(--serif)', fontSize: 26, fontWeight: 900, color: accent }}>{row.aum}</div>
-                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>AUM</div>
-                  </div>
-                </div>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--ink-muted)', lineHeight: 1.6, marginBottom: 12 }}>
-                  {AUM_DESCS[i]}
-                </div>
-                <div style={{ display: 'flex', gap: 24 }}>
-                  <div>
-                    <div style={{ fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600 }}>{row.users}</div>
-                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>Members</div>
-                  </div>
-                  <div>
-                    <div style={{ fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600, color: accent }}>{row.fee}</div>
-                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>Median Village Fee</div>
-                  </div>
-                  <div>
-                    <div style={{ fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600, color: accent }}>{row.revenue}</div>
-                    <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>Annual Revenue</div>
-                  </div>
-                </div>
-              </div>
-            )
-          }
-          return (
-            <div key={row.year} ref={rRef} style={{
-              display: 'grid', gridTemplateColumns: '160px 140px 1fr 100px 140px 160px',
-              alignItems: 'center', gap: 0,
-              borderBottom: '1px solid var(--rule)',
-              ...revealStyle(rVis, i * 60),
-            }}>
-              <div style={{ padding: '28px 32px', borderRight: '1px solid var(--rule)' }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em' }}>{row.year}</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-muted)', letterSpacing: '0.06em', marginTop: 4 }}>{row.label}</div>
-              </div>
-              <div style={{ padding: '28px 16px', borderRight: '1px solid var(--rule)', textAlign: 'center' }}>
-                <div style={{ fontFamily: 'var(--serif)', fontSize: 22, fontWeight: 900, color: accent }}>{row.aum}</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em', marginTop: 4 }}>AUM</div>
-              </div>
-              <div style={{ padding: '28px 32px', borderRight: '1px solid var(--rule)' }}>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--ink-muted)', lineHeight: 1.6 }}>
-                  {AUM_DESCS[i]}
-                </div>
-              </div>
-              <div style={{ padding: '28px 16px', borderRight: '1px solid var(--rule)', textAlign: 'right' }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 600 }}>{row.users}</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em', marginTop: 4 }}>members</div>
-              </div>
-              <div style={{ padding: '28px 20px', borderRight: '1px solid var(--rule)', textAlign: 'right' }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 600, color: accent }}>{row.fee}</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em', marginTop: 4 }}>median fee</div>
-              </div>
-              <div style={{ padding: '28px 32px', textAlign: 'right' }}>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 600, color: accent }}>{row.revenue}</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--ink-muted)', letterSpacing: '0.08em', marginTop: 4 }}>annual revenue</div>
-              </div>
-            </div>
-          )
-        })}
-      </div>
-    </section>
-  )
-}
+
 
 function TimelineSection() {
   const [ref, vis] = useInView()

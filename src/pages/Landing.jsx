@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, Users, Shield, Vote, TrendingUp, UserCheck, DollarSign, Lock } from 'lucide-react'
+import { ArrowRight, Users, Shield, Vote, TrendingUp, DollarSign, Lock } from 'lucide-react'
 import { useInView, revealStyle } from '../hooks/useInView'
 import { Typewriter } from '../components/ui/typewriter'
 import { FlickeringGrid } from '../components/ui/flickering-grid'
@@ -8,35 +8,22 @@ import { useMobile } from '../hooks/useMobile'
 
 const STEPS = [
   {
-    num: '01', title: 'Build your financial profile', color: 'green',
-    icon: <UserCheck size={24} />,
-    img: 'https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=900&q=80',
-    desc: 'You can provide Village a snapshot of your income sources, debts, assets, and goals. This information is stored using 256-bit encryption and will not be released to third parties under any circumstances.',
-  },
-  {
-    num: '02', title: 'Invite your community', color: 'terra',
-    icon: <Users size={24} />,
-    img: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=900&q=80',
-    desc: 'Already part of a union, campus group, faith community, or diaspora network? Bring them with you. Village is built for groups that already trust each other.',
-  },
-  {
-    num: '03', title: 'Form your village, make your constitution', color: 'green',
+    num: '01', title: 'Create your village', color: 'green',
     icon: <Vote size={24} />,
     img: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=900&q=80',
-    desc: 'Once your group is formed, members establish the rules together: contribution intervals, payout conditions, voting thresholds, and shared goals.',
+    desc: 'Your social group creates a village and writes its constitution together: contribution amounts, intervals, and shared governance rules. Villages can be made up of any group of people, from friends to family, to religious and social organizations.',
   },
   {
-    num: '04', title: 'Pool funds in escrow', color: 'terra',
+    num: '02', title: 'Save with Village', color: 'terra',
     icon: <DollarSign size={24} />,
     img: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=900&q=80',
-    desc: 'Members contribute on agreed intervals. All funds are held in escrow: transparent, auditable, and only released by democratic vote.',
+    desc: 'Members of a Village make automatic deposits into a secure escrow account, with each Village holding funds in either a Checking or High-Yield Savings escrow depending on the Village constitution. Every contribution is transparent and auditable..',
   },
   {
-    num: '05', title: 'Vote, allocate, and grow', color: 'green',
+    num: '03', title: 'Spend with Village', color: 'green',
     icon: <TrendingUp size={24} />,
     img: '/step_05.png',
-
-    desc: "Members vote democratically on allocations, whether to pay off a member's debt, invest in a shared portfolio, or save for a collective goal.",
+    desc: 'Villages discuss and vote on how to use their pooled funds. Uses are determined by Villages themselves, and can range from helping out a member in an emergency, to using funds for a group vacation, or starting a new project. Funds are only dispensed to a given member\'s account when the village decides.',
   },
 ]
 
@@ -100,8 +87,8 @@ function HeroSection() {
           fontFamily: 'var(--sans)', fontSize: 18, color: 'var(--ink-muted)',
           lineHeight: 1.7, marginBottom: 0,
         }}>
-          Village is built on a simple idea: the people around you are your most reliable financial resource.
-          We give that trust a robust financial, legal, and democratic governance structure built to last.
+          Village is built on a simple idea: the people in your social circle are your most valuable financial resource.
+          We give you the robust financial, legal, and democratic governance structure needed to tap into it.
         </p>
         <p className="fade-up fade-up-4" style={{
           fontFamily: 'var(--sans)', fontSize: 18, color: 'var(--ink-muted)',
@@ -204,11 +191,11 @@ function WhatIsVillage() {
         </div>
         <div style={{ padding: isMobile ? '32px 24px' : '80px 64px', ...revealStyle(vis, 120) }} ref={ref2}>
           <p style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(18px, 2vw, 26px)', lineHeight: 1.6, marginBottom: 40, fontWeight: 400 }}>
-            Village is a platform for cooperative finance that empowers you create financial clubs within your community, pool funds collectively, and work democratically toward shared financial goals.
+            Village is a platform for cooperative finance that empowers you create financial clubs within your social groups, pool funds collectively, and work democratically toward shared financial goals.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', gap: 24 }}>
             {[
-              { icon: <Users size={18} />, title: 'Your Village', desc: 'Villages are groups of 5–30 members working toward shared financial goals. Start one with people you know, or join an existing one.' },
+              { icon: <Users size={18} />, title: 'Your Village', desc: 'Villages are groups of at least 5 members working toward shared financial goals. Start one with your friends and family, or participate in one alongside your social organization.' },
               { icon: <Vote size={18} />, title: 'Democratic Control', desc: 'Once money enters a village, members vote on how to save, invest, and spend the funds.' },
               { icon: <Shield size={18} />, title: 'Escrow Security', desc: 'Village funds are held in escrow accounts through our BaaS partners, ensuring security, transparency, and auditability at all times.' },
               { icon: <TrendingUp size={18} />, title: 'Shared Growth', desc: 'Pooled funds work on economies of scale. Members access greater returns, faster debt payoff, and lower personal risk when they work together.' },
@@ -285,7 +272,7 @@ function FeeSection() {
             fontFamily: 'var(--serif)', fontSize: 'clamp(20px, 2vw, 28px)',
             lineHeight: 1.5, fontWeight: 400, margin: 0,
           }}>
-            We make our money with a small, up-front percentage fee of funds entered into villages. The more money your village pools, the lower the fee; your success compounds.
+            We take a small percentage fee of funds entered into villages, with decreasing rates as your pool grows. Individuals accessing credit alone face high interest rates and "poverty premiums." By bringing people together financially, Village reduces costs across the board — and we only succeed when you do.
           </p>
         </div>
         <div style={{
