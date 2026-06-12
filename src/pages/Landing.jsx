@@ -17,7 +17,7 @@ const STEPS = [
     num: '02', title: 'Save with Village', color: 'terra',
     icon: <DollarSign size={24} />,
     img: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=900&q=80',
-    desc: 'Members of a Village make automatic deposits into a secure escrow account, with each Village holding funds in either a Checking or High-Yield Savings escrow depending on the Village constitution. Every contribution is transparent and auditable..',
+    desc: 'Members of a Village make manual or automatic deposits into a secure escrow account, with each Village holding funds in either a Checking or High-Yield Savings escrow depending on the Village constitution. Every contribution is transparent and auditable..',
   },
   {
     num: '03', title: 'Spend with Village', color: 'green',

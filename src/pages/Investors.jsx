@@ -21,10 +21,10 @@ const TAM_DATA = [
   },
   {
     label: 'Serviceable Obtainable Market',
-    value: '$6M',
+    value: '$3M',
     sublabel: 'Year 1 Post-Launch Capture Goal',
     color: 'green',
-    desc: 'Goal of 5,000 users across all Villages in Stage 1 locations. Based on $100/month average savings rate for informal finance clubs (low-end estimate). Implies $108K ARR at Village\'s 1.8% average revenue rate.',
+    desc: 'Goal of 5,000 users across all Villages in Stage 1 locations. Based on $50/month average savings rate. Implies $54K ARR at Village\'s 1.8% average revenue rate.',
   },
 ]
 
