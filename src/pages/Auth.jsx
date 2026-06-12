@@ -143,6 +143,8 @@ export const ASSET_VARS = [
   { key: 'other_land_contract_owed_worth',     label: 'Other Land Contract Owed' },
 ]
 
+const DEMO_ENABLED = false
+
 export default function Auth() {
   const [params] = useSearchParams()
   const [mode, setMode] = useState(params.get('mode') === 'signup' ? 'signup' : 'login')
@@ -190,49 +192,61 @@ function LoginForm({ onSwitch }) {
 
       {/* Right panel */}
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px' }}>
-        <div style={{ width: '100%', maxWidth: 400 }}>
-          <h1 style={{ fontSize: 36, marginBottom: 8 }}>Sign in</h1>
-          <p style={{ fontFamily: 'var(--sans)', color: 'var(--ink-muted)', marginBottom: 40 }}>
-            Don't have an account?{' '}
-            <button onClick={onSwitch} style={{ background: 'none', border: 'none', color: 'var(--green)', cursor: 'pointer', fontFamily: 'var(--sans)', fontWeight: 500, padding: 0 }}>
-              Create one
-            </button>
-          </p>
-
-          {error && (
-            <div style={{ padding: '12px 16px', background: 'var(--terra-light)', border: '1px solid var(--terracotta)', marginBottom: 20, fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--terracotta)' }}>
-              {error}
-            </div>
-          )}
-
-          <FormField label="Email address">
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-              placeholder="you@gmail.com" style={inputStyle} />
-          </FormField>
-
-          <FormField label="Password">
-            <div style={{ position: 'relative' }}>
-              <input type={showPw ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
-                placeholder="••••••••" style={{ ...inputStyle, paddingRight: 48 }} />
-              <button onClick={() => setShowPw(!showPw)} style={{
-                position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)',
-                background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-muted)',
-              }}>
-                {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-          </FormField>
-
-          <button onClick={handleSubmit} className="btn btn-terra" style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}>
-            Sign In <ArrowRight size={14} />
-          </button>
-
-          <div style={{ marginTop: 24, textAlign: 'center' }}>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-muted)', letterSpacing: '0.06em' }}>
-              Demo: any email + password works
-            </span>
+        {!DEMO_ENABLED ? (
+          <div style={{ width: '100%', maxWidth: 400, textAlign: 'center' }}>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: 28, fontWeight: 700, marginBottom: 16 }}>Sign-up is temporarily unavailable.</div>
+            <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.7, marginBottom: 32 }}>
+              We're not yet open to the public. Join the waitlist and we'll be in touch when your spot opens.
+            </p>
+            <Link to="/#waitlist" className="btn btn-primary" style={{ justifyContent: 'center' }}>
+              Join the waitlist <ArrowRight size={14} />
+            </Link>
           </div>
-        </div>
+        ) : (
+          <div style={{ width: '100%', maxWidth: 400 }}>
+            <h1 style={{ fontSize: 36, marginBottom: 8 }}>Sign in</h1>
+            <p style={{ fontFamily: 'var(--sans)', color: 'var(--ink-muted)', marginBottom: 40 }}>
+              Don't have an account?{' '}
+              <button onClick={onSwitch} style={{ background: 'none', border: 'none', color: 'var(--green)', cursor: 'pointer', fontFamily: 'var(--sans)', fontWeight: 500, padding: 0 }}>
+                Create one
+              </button>
+            </p>
+
+            {error && (
+              <div style={{ padding: '12px 16px', background: 'var(--terra-light)', border: '1px solid var(--terracotta)', marginBottom: 20, fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--terracotta)' }}>
+                {error}
+              </div>
+            )}
+
+            <FormField label="Email address">
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                placeholder="you@gmail.com" style={inputStyle} />
+            </FormField>
+
+            <FormField label="Password">
+              <div style={{ position: 'relative' }}>
+                <input type={showPw ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
+                  placeholder="••••••••" style={{ ...inputStyle, paddingRight: 48 }} />
+                <button onClick={() => setShowPw(!showPw)} style={{
+                  position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)',
+                  background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-muted)',
+                }}>
+                  {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </FormField>
+
+            <button onClick={handleSubmit} className="btn btn-terra" style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}>
+              Sign In <ArrowRight size={14} />
+            </button>
+
+            <div style={{ marginTop: 24, textAlign: 'center' }}>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-muted)', letterSpacing: '0.06em' }}>
+                Demo: any email + password works
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -255,6 +269,7 @@ function SignupFlow({ onSwitch }) {
   const update = (key, val) => setData(prev => ({ ...prev, [key]: val }))
 
   const next = () => {
+    if (!DEMO_ENABLED) return
     if (step === 6) { signup(data); setStep(7) }
     else setStep(s => s + 1)
   }
@@ -310,7 +325,18 @@ function SignupFlow({ onSwitch }) {
       </div>
 
       {/* Right panel */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '80px 64px', overflowY: 'auto' }}>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 64px', overflowY: 'auto' }}>
+        {!DEMO_ENABLED ? (
+          <div style={{ width: '100%', maxWidth: 560, textAlign: 'center' }}>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: 28, fontWeight: 700, marginBottom: 16 }}>Sign-up is temporarily unavailable.</div>
+            <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--ink-muted)', lineHeight: 1.7, marginBottom: 32 }}>
+              We're not yet open to the public. Join the waitlist and we'll be in touch when your spot opens.
+            </p>
+            <Link to="/#waitlist" className="btn btn-primary" style={{ justifyContent: 'center' }}>
+              Join the waitlist <ArrowRight size={14} />
+            </Link>
+          </div>
+        ) : (
         <div style={{ width: '100%', maxWidth: 560 }}>
           {/* Progress bar */}
           <div style={{ height: 3, background: 'var(--cream-dark)', marginBottom: 20, borderRadius: 2 }}>
@@ -370,6 +396,7 @@ function SignupFlow({ onSwitch }) {
           {step === 6 && <StepBank data={data} update={update} onNext={next} onBack={back} />}
           {step === 7 && <StepDone navigate={navigate} />}
         </div>
+        )}
       </div>
     </div>
   )
