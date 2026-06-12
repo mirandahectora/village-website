@@ -21,7 +21,7 @@ const FAQ = [
   },
   {
     q: 'What if a member stops contributing?',
-    a: 'Village constitutions establish non-contribution protocols. Most villages choose graduated warnings followed by a democratic vote to suspend or remove non-contributing members.',
+    a: 'Village constitutions establish non-contribution protocols. Villages can choose from a variety of approaches, ranging from informal warnings and grace periods to suspension of voting rights or removal from the village.',
   },
   {
     q: 'How are funds kept safe?',
